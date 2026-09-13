@@ -416,9 +416,9 @@ SCRIPT = """
         p.classList.toggle("in", order.indexOf(p.getAttribute("data-t"))>=lo);
       });
 
-      var fam=btn.getAttribute("data-in");
+      var nm=btn.getAttribute("data-name");
       mocks.forEach(function(m){
-        m.classList.toggle("on", m.getAttribute("data-fam")===fam);
+        m.classList.toggle("on", m.getAttribute("data-mod")===nm);
       });
     }
 
@@ -612,49 +612,179 @@ def tier_table():
     return "\n".join(out)
 
 
-# One illustrative frame per family, not per module: the shape of the work is
-# what differs between families. Every name and figure in them is invented.
-FAM_MOCK = {
- "spend": """
-  <div class="app-h"><h5>Signature chain</h5><span class="badge b-warn">CFO review</span></div>
-  <table class="t"><tbody>
-   <tr><td class="n">Raised</td><td>Adaeze Nwankwo</td><td><span class="badge b-ok">Signed</span></td></tr>
-   <tr><td class="n">Supervisor</td><td>Bayo Fashola</td><td><span class="badge b-ok">Signed</span></td></tr>
-   <tr><td class="n">Executive Director</td><td>Chiamaka Eze</td><td><span class="badge b-ok">Signed</span></td></tr>
-   <tr><td class="n">CFO</td><td>Damilola Ajayi</td><td><span class="badge b-warn">Reviewing</span></td></tr>
-  </tbody></table>""",
- "people": """
-  <div class="app-h"><h5>Team</h5><span class="badge b-info">4 on leave</span></div>
-  <table class="t"><tbody>
-   <tr><td class="n">Adaeze Nwankwo</td><td>Sales</td><td><span class="badge b-ok">Confirmed</span></td></tr>
-   <tr><td class="n">Bayo Fashola</td><td>Sales</td><td><span class="badge b-info">On leave</span></td></tr>
-   <tr><td class="n">Ifeoma Balogun</td><td>Finance</td><td><span class="badge b-warn">Probation</span></td></tr>
-   <tr><td class="n">Uche Madu</td><td>Projects</td><td><span class="badge b-ok">Confirmed</span></td></tr>
-  </tbody></table>""",
- "revenue": """
-  <div class="app-h"><h5>Pipeline</h5><span class="badge b-ok">22% win rate</span></div>
-  <div class="mini"><div><b>146</b><span>Open</span></div><div><b>&#8358;318m</b><span>Weighted</span></div><div><b>18</b><span>To call</span></div></div>
-  <table class="t"><tbody>
-   <tr><td class="n">Sade Martins</td><td class="m">&#8358;68,000,000</td><td><span class="badge b-ok">Negotiation</span></td></tr>
-   <tr><td class="n">Tari Georgewill</td><td class="m">&#8358;45,000,000</td><td><span class="badge b-warn">Qualified</span></td></tr>
-  </tbody></table>""",
- "ops": """
-  <div class="app-h"><h5>This week</h5><span class="badge b-warn">2 late</span></div>
-  <table class="t"><tbody>
-   <tr><td class="n">Weekly report</td><td>Projects</td><td><span class="badge b-ok">Filed</span></td></tr>
-   <tr><td class="n">Weekly report</td><td>Facilities</td><td><span class="badge b-err">Escalated</span></td></tr>
-   <tr><td class="n">Device handover</td><td>IT</td><td><span class="badge b-warn">Unsigned</span></td></tr>
-   <tr><td class="n">Pool car, Lagos run</td><td>Admin</td><td><span class="badge b-ok">Closed out</span></td></tr>
-  </tbody></table>""",
- "gov": """
-  <div class="app-h"><h5>Audit trail</h5><span class="badge b-mute">Immutable</span></div>
-  <table class="t"><tbody>
-   <tr><td class="n">Viewed</td><td>REQ-2026-0412</td><td>Chiamaka Eze</td></tr>
-   <tr><td class="n">Approved</td><td>REQ-2026-0412</td><td>Damilola Ajayi</td></tr>
-   <tr><td class="n">Override</td><td>Budget ceiling</td><td><span class="badge b-warn">Flagged</span></td></tr>
-   <tr><td class="n">Exported</td><td>Payroll summary</td><td>Ikenna Obi</td></tr>
-  </tbody></table>""",
+# ── One illustrative frame per module ────────────────────────────────────
+# Held as data, not markup: (heading, badge, mini stats, rows). A cell is a
+# plain string, "n:" for the emphasised first column, "m:" for a figure, or
+# "b:<kind>:<text>" for a badge. Every name and number here is invented; see
+# the style rules about never putting real client data in a demo.
+NAIRA = "&#8358;"
+
+MOCKS = {
+ # ── Spend and approvals ──
+ "Requisitions": ("Signature chain", ("warn", "CFO review"), [], [
+   ("n:Raised", "Adaeze Nwankwo", "b:ok:Signed"),
+   ("n:Supervisor", "Bayo Fashola", "b:ok:Signed"),
+   ("n:Executive Director", "Chiamaka Eze", "b:ok:Signed"),
+   ("n:CFO", "Damilola Ajayi", "b:warn:Reviewing")]),
+ "Procurement and vendor quotes": ("Line items", ("err", "Blocked"), [], [
+   ("n:Perimeter fencing", "3 quotes", "b:ok:Cleared"),
+   ("n:Survey drone", "1 quote", "b:err:Needs 2"),
+   ("n:Generator parts", "2 quotes", "b:ok:Cleared"),
+   ("n:Site signage", "0 quotes", "b:err:Needs 2")]),
+ "Site budgets": ("Committed against budget", ("warn", "1 over"), [], [
+   ("n:Harmattan Heights", "m:" + NAIRA + "82m of 100m", "b:ok:82%"),
+   ("n:Cedarline Court", "m:" + NAIRA + "47m of 60m", "b:ok:78%"),
+   ("n:Meridian Motors", "m:" + NAIRA + "31m of 28m", "b:err:MD notified")]),
+ "Implementation tracking": ("Milestones", ("info", "Evidence required"), [], [
+   ("n:Site cleared", "Photos attached", "b:ok:Accepted"),
+   ("n:Foundation poured", "Photos attached", "b:ok:Accepted"),
+   ("n:Block work", "No evidence", "b:warn:Awaiting"),
+   ("n:Roofing", "Photos attached", "b:err:Rejected")]),
+
+ # ── People ──
+ "Leave": ("Entitlement", ("ok", "Approved"), [("14", "Days left"), ("6", "Taken"), ("20", "Accrued")], [
+   ("n:Applied", "Adaeze Nwankwo, 4 days", "b:ok:Signed"),
+   ("n:Supervisor", "Bayo Fashola", "b:ok:Signed"),
+   ("n:Executive Director", "Chiamaka Eze", "b:ok:Final")]),
+ "Employee lifecycle": ("Record", ("ok", "Confirmed"), [], [
+   ("n:Onboarded", "12 March", "b:ok:Complete"),
+   ("n:Documents", "6 of 6 filed", "b:ok:Complete"),
+   ("n:Confirmation", "After 6 months", "b:ok:Confirmed"),
+   ("n:Disciplinary", "None on record", "b:mute:Clear")]),
+ "Appraisals": ("Cycle", ("info", "With the MD"), [("4.2", "Overall"), ("3", "Of 4 done"), ("H1", "Period")], [
+   ("n:Self assessment", "Adaeze Nwankwo", "b:ok:Submitted"),
+   ("n:Supervisor score", "Bayo Fashola", "b:ok:Scored"),
+   ("n:MD verdict", "Confirmation and increment", "b:warn:Pending")]),
+ "Attendance and policies": ("Today", ("ok", "Reconciled"), [("41", "Present"), ("4", "On leave"), ("2", "Absent")], [
+   ("n:Adaeze Nwankwo", "08:42", "b:ok:Present"),
+   ("n:Bayo Fashola", "Approved absence", "b:info:On leave"),
+   ("n:Uche Madu", "No record", "b:err:Absent")]),
+ "Recruitment and job portal": ("Open role", ("info", "Shortlisting"), [("38", "Applied"), ("6", "Shortlisted"), ("2", "Interviewed")], [
+   ("n:Site Engineer", "Posted 4 days ago", "b:ok:Live"),
+   ("n:Sales Consultant", "Posted 2 weeks ago", "b:warn:Closing"),
+   ("n:Accounts Officer", "Draft", "b:mute:Unposted")]),
+ "Offer letters": ("Issued", ("warn", "Awaiting signature"), [], [
+   ("n:Ifeoma Balogun", "Site Engineer", "b:ok:Accepted"),
+   ("n:Tari Georgewill", "Sales Consultant", "b:warn:Sent"),
+   ("n:Uche Madu", "Accounts Officer", "b:err:Declined")]),
+ "Staff broadcasts": ("Delivery", ("ok", "Sent"), [("47", "Recipients"), ("44", "Opened"), ("3", "Unread")], [
+   ("n:Email", "47 delivered", "b:ok:Complete"),
+   ("n:Push", "41 delivered", "b:ok:Complete"),
+   ("n:In app sticker", "Shown on sign in", "b:ok:Active")]),
+
+ # ── Revenue and CRM ──
+ "CRM and leads": ("Intake", ("info", "Deduplicated"), [("146", "Open"), ("23", "This week"), ("4", "Merged")], [
+   ("n:Sade Martins", "Paid social", "b:ok:Qualified"),
+   ("n:Tari Georgewill", "Walk in", "b:warn:New"),
+   ("n:Northgate Ltd", "Referral", "b:ok:Qualified"),
+   ("n:Duplicate number", "Matched on +234", "b:mute:Merged")]),
+ "Guided calling": ("Next in queue", ("warn", "Promised callback"), [("1", "Served"), ("3rd", "Attempt"), ("14", "Day ladder")], [
+   ("n:Lead", "Ifeoma Balogun", "b:ok:Qualified"),
+   ("n:Promised", "Today, 2:00pm", "b:warn:Due"),
+   ("n:Last attempt", "No answer, 11:00am", "b:mute:Logged"),
+   ("n:Next if missed", "Friday, 4:00pm", "b:info:Scheduled")]),
+ "Deals and pipeline": ("Stages", ("ok", "22% win rate"), [("146", "Open"), (NAIRA + "318m", "Weighted"), ("9", "Stuck")], [
+   ("n:Sade Martins", "m:" + NAIRA + "68,000,000", "b:ok:Negotiation 75%"),
+   ("n:Northgate Ltd", "m:" + NAIRA + "120,000,000", "b:warn:Proposal 50%"),
+   ("n:Uche Madu", "m:" + NAIRA + "34,000,000", "b:mute:Qualification 10%")]),
+ "Market demand": ("Requested against stock", ("err", "Unmet demand"), [], [
+   ("n:Lekki and Ajah", "62 asked", "b:ok:We have stock"),
+   ("n:Ikoyi", "38 asked", "b:err:No stock"),
+   ("n:Outside Lagos", "21 asked", "b:err:No stock"),
+   ("n:Undecided", "17 asked", "b:mute:Nurturing")]),
+ "Revenue outlook": ("Money", ("ok", "Committed"), [(NAIRA + "418m", "Signed"), (NAIRA + "96m", "Due 30 days"), (NAIRA + "12m", "Overdue")], [
+   ("n:Meridian Group", "Instalment 3 of 6", "b:ok:Paid"),
+   ("n:Cedarline Court", "Instalment 2 of 4", "b:warn:Due Friday"),
+   ("n:Harmattan Heights", "Instalment 1 of 8", "b:err:Overdue")]),
+ "Sales activities": ("Event", ("err", "Report outstanding"), [], [
+   ("n:Open day, Lekki", "m:" + NAIRA + "1,800,000", "b:ok:Report filed"),
+   ("n:Radio campaign", "m:" + NAIRA + "2,400,000", "b:err:No report"),
+   ("n:Estate tour", "Budget requested", "b:mute:Held")]),
+ "Sale commissions": ("Commission chain", ("info", "With the CFO"), [], [
+   ("n:Raised", "Adaeze Nwankwo", "b:ok:Signed"),
+   ("n:Sales Manager", "Bayo Fashola", "b:ok:Signed"),
+   ("n:Executive Director", "Chiamaka Eze", "b:ok:Signed"),
+   ("n:CFO, payment", "m:" + NAIRA + "1,240,000", "b:warn:Releasing")]),
+ "Client portfolios": ("Client record", ("warn", "Outstanding"), [], [
+   ("n:Bought", "Harmattan Heights, 3 bed", "b:ok:Allocated"),
+   ("n:Paid", "m:" + NAIRA + "52,000,000", "b:ok:Cleared"),
+   ("n:Outstanding", "m:" + NAIRA + "16,000,000", "b:warn:2 instalments"),
+   ("n:Title documents", "Handover pack", "b:ok:On file")]),
+
+ # ── Operations ──
+ "Work reports": ("This week", ("warn", "2 late"), [], [
+   ("n:Projects", "Filed Monday", "b:ok:On time"),
+   ("n:Facilities", "3 days late", "b:err:Escalated"),
+   ("n:Sales", "Filed Monday", "b:ok:On time"),
+   ("n:Rolls into", "Monthly, then quarterly", "b:mute:Automatic")]),
+ "Monthly performance": ("Declarations", ("warn", "Blocker carried"), [], [
+   ("n:Projections", "5 of 6 heads filed", "b:ok:Filed"),
+   ("n:Blockers", "Vendor lead times", "b:err:Carried forward"),
+   ("n:Support asked", "2 extra site staff", "b:warn:With the ED")]),
+ "IT devices and CUG lines": ("Assignment", ("warn", "Unacknowledged"), [("64", "Devices"), ("58", "Signed for"), ("12", "CUG lines")], [
+   ("n:Laptop, Meridian", "Adaeze Nwankwo", "b:ok:Acknowledged"),
+   ("n:Laptop, Cedarline", "Uche Madu", "b:err:Unsigned"),
+   ("n:CUG line 0803", "Bayo Fashola", "b:ok:Active")]),
+ "Pool car booking": ("Trip", ("ok", "Closed out"), [], [
+   ("n:Vehicle", "Meridian Motors, Hilux", "b:ok:Returned"),
+   ("n:Driver", "Uche Madu", "b:ok:Assigned"),
+   ("n:Mileage", "218 km", "b:ok:Logged"),
+   ("n:Fuel", "m:" + NAIRA + "34,000", "b:ok:Reconciled")]),
+ "Management meeting": ("Boardroom", ("info", "Live"), [("14", "Slides"), ("9", "In the room"), ("1", "Chair")], [
+   ("n:Uploaded", "Mixed formats", "b:ok:Normalised"),
+   ("n:Deck", "One uniform deck", "b:ok:Ready"),
+   ("n:Screens", "Following the chair", "b:info:Synced")]),
+
+ # ── Governance ──
+ "Audit log": ("Trail", ("mute", "Immutable"), [], [
+   ("n:Viewed", "REQ-2026-0412", "Chiamaka Eze"),
+   ("n:Approved", "REQ-2026-0412", "Damilola Ajayi"),
+   ("n:Override", "Budget ceiling", "b:warn:Flagged"),
+   ("n:Exported", "Payroll summary", "Ikenna Obi")]),
+ "Root console": ("Break glass", ("err", "PIN required"), [], [
+   ("n:Access", "PIN, rate limited", "b:warn:Challenged"),
+   ("n:Confirmation", "Typed by hand", "b:err:Required"),
+   ("n:Snapshot", "Table copied first", "b:ok:Taken"),
+   ("n:Logged", "Against itself", "b:ok:Recorded")]),
+ "Oversight analytics": ("Leadership view", ("mute", "Read only"), [("5", "Departments"), ("0", "Actions"), ("12", "Reports")], [
+   ("n:Spend by site", "Rolling 90 days", "b:ok:Current"),
+   ("n:Headcount", "By arm and grade", "b:ok:Current"),
+   ("n:Approvals", "Median 3.2 days", "b:ok:Current")]),
+ "Social media monitor": ("Connected accounts", ("ok", "Tokens encrypted"), [("3", "Accounts"), ("48k", "Reach"), ("6.1%", "Engagement")], [
+   ("n:Instagram", "Business account", "b:ok:Connected"),
+   ("n:Facebook", "Page linked", "b:ok:Connected"),
+   ("n:Access tokens", "AES-GCM at rest", "b:mute:Never readable")]),
 }
+
+
+def _cell(c):
+    if c.startswith("b:"):
+        _, kind, txt = c.split(":", 2)
+        return f'<td><span class="badge b-{kind}">{txt}</span></td>'
+    if c.startswith("n:"):
+        return f'<td class="n">{c[2:]}</td>'
+    if c.startswith("m:"):
+        return f'<td class="m">{c[2:]}</td>'
+    return f"<td>{c}</td>"
+
+
+def render_mock(name):
+    """Build one module's frame body. Fails loudly rather than rendering an
+    empty panel, which is the bug this replaced: five family panels meant
+    every module in a family showed the same picture."""
+    if name not in MOCKS:
+        raise SystemExit(f"  ! No MOCKS entry for module {name!r}")
+    heading, badge, minis, rows = MOCKS[name]
+    b = f'<span class="badge b-{badge[0]}">{badge[1]}</span>' if badge else ""
+    mini = ""
+    if minis:
+        mini = '<div class="mini">' + "".join(
+            f"<div><b>{v}</b><span>{l}</span></div>" for v, l in minis) + "</div>"
+    body = "".join("<tr>" + "".join(_cell(c) for c in r) + "</tr>" for r in rows)
+    return (f'<div class="app-h"><h5>{heading}</h5>{b}</div>{mini}'
+            f'<div class="t-scroll"><table class="t"><tbody>{body}</tbody></table></div>')
+
+
 TIER_LABEL = {"core": "Core", "ops": "Operations", "ent": "Enterprise"}
 
 
@@ -680,8 +810,8 @@ def module_explorer():
         items += "</div>"
 
     pills = "".join(f'<span class="tp" data-t="{k}">{v}</span>' for k, v in TIER_LABEL.items())
-    mocks = "".join(f'<div class="exp-mock" data-fam="{k}">{v}</div>'
-                    for k, v in FAM_MOCK.items())
+    mocks = "".join(f'<div class="exp-mock" data-mod="{m.name}">{render_mock(m.name)}</div>'
+                    for m in MODULES)
     return f"""<div class="exp-grid" id="explorer">
   <div class="exp-list">{items}</div>
   <div class="exp-side">

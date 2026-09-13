@@ -363,9 +363,9 @@
         p.classList.toggle("in", order.indexOf(p.getAttribute("data-t"))>=lo);
       });
 
-      var fam=btn.getAttribute("data-in");
+      var nm=btn.getAttribute("data-name");
       mocks.forEach(function(m){
-        m.classList.toggle("on", m.getAttribute("data-fam")===fam);
+        m.classList.toggle("on", m.getAttribute("data-mod")===nm);
       });
     }
 
