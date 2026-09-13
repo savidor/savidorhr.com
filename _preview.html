@@ -1039,6 +1039,7 @@ html,body{max-width:100%;}
 .mod-grid .mod-card{transition:opacity .26s ease, transform .26s ease,
   box-shadow .25s, border-color .2s;}
 .mod-grid .mod-card.hide{display:none;}
+.exp-group.hide{display:none;}
 
 /* Motion is decoration here, never information: it all reads the same
    standing still. */
@@ -1047,6 +1048,96 @@ html,body{max-width:100%;}
   .flow-step{border-color:var(--line-2);}
   .flow-pulse{display:none;}
   .reveal, .reveal.in{opacity:1; transform:none; transition:none;}
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Module explorer. Replaces the twenty eight card grid: one description is
+   open at a time on the left, and a frame on the right follows the choice.
+   ═══════════════════════════════════════════════════════════════════════ */
+.exp-grid{display:grid; grid-template-columns:1fr 1.05fr; gap:52px; align-items:start;}
+
+.exp-group{margin-bottom:26px;}
+.exp-group:last-child{margin-bottom:0;}
+.exp-group h6{
+  font-size:.7rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--ink-4); margin-bottom:8px; padding-left:2px;
+}
+.exp-item{
+  display:flex; align-items:center; gap:12px; width:100%; cursor:pointer;
+  background:none; border:0; border-bottom:1px solid var(--line);
+  padding:14px 2px; text-align:left; font-family:inherit;
+  font-size:1.02rem; font-weight:600; color:var(--ink-3);
+  transition:color .16s;
+}
+.exp-item:hover{color:var(--brand);}
+.exp-item.on{color:var(--ink); border-bottom-color:transparent;}
+.exp-ic{
+  width:34px; height:34px; border-radius:9px; flex:0 0 auto;
+  background:var(--bg-2); border:1px solid var(--line);
+  display:grid; place-items:center; transition:background .18s, border-color .18s;
+}
+.exp-ic svg{width:17px; height:17px; color:var(--ink-3); transition:color .18s;}
+.exp-item.on .exp-ic{background:var(--brand); border-color:var(--brand);}
+.exp-item.on .exp-ic svg{color:#fff;}
+.exp-name{flex:1; min-width:0;}
+.exp-ch{width:17px; height:17px; flex:0 0 auto; color:var(--ink-4); transition:transform .22s;}
+.exp-item.on .exp-ch{transform:rotate(-90deg); color:var(--brand);}
+
+.exp-body{
+  display:grid; grid-template-rows:0fr; overflow:hidden;
+  transition:grid-template-rows .28s cubic-bezier(.4,0,.2,1);
+  border-bottom:1px solid var(--line);
+}
+.exp-body > p{
+  min-height:0; overflow:hidden;
+  font-size:.95rem; line-height:1.62; color:var(--ink-2);
+}
+.exp-item.on + .exp-body{grid-template-rows:1fr;}
+.exp-item.on + .exp-body > p{
+  background:var(--brand-50); border:1px solid var(--brand-100);
+  border-radius:var(--r); padding:16px 18px; margin:0 0 16px;
+}
+
+/* The frame follows you down the list rather than scrolling away. */
+.exp-side{position:sticky; top:92px;}
+.exp-shot{overflow:hidden;}
+.exp-crumb{
+  margin-left:auto; font-size:.72rem; font-weight:600; letter-spacing:.03em;
+  color:var(--ink-4); text-transform:uppercase;
+}
+.exp-title{
+  font-family:var(--f-d); font-size:1.3rem; font-weight:800; color:var(--ink);
+  letter-spacing:-.02em; margin-bottom:12px;
+}
+.exp-tiers{
+  display:flex; align-items:center; flex-wrap:wrap; gap:7px;
+  padding-bottom:18px; margin-bottom:18px; border-bottom:1px solid var(--line);
+}
+.tp-l{font-size:.72rem; font-weight:600; color:var(--ink-4);
+  text-transform:uppercase; letter-spacing:.05em; margin-right:3px;}
+.tp{
+  font-size:.74rem; font-weight:600; padding:4px 11px; border-radius:99px;
+  background:var(--bg-3); color:var(--ink-4); border:1px solid transparent;
+  transition:background .18s, color .18s, border-color .18s;
+}
+.tp.in{background:var(--ok-bg); color:var(--ok); border-color:var(--ok-line);}
+
+.exp-mocks{position:relative;}
+.exp-mock{display:none;}
+.exp-mock.on{display:block; animation:mockIn .3s ease;}
+@keyframes mockIn{from{opacity:0; transform:translateY(7px);} to{opacity:1; transform:none;}}
+.exp-mock table.t{width:100%;}
+
+@media (max-width:980px){
+  .exp-grid{grid-template-columns:1fr; gap:30px;}
+  /* The frame leads on a phone: you see what it looks like, then read. */
+  .exp-side{position:static; order:-1;}
+}
+@media (prefers-reduced-motion: reduce){
+  .exp-body{transition:none;}
+  .exp-mock.on{animation:none;}
+  .exp-ch{transition:none;}
 }
 
 </style>
@@ -1874,213 +1965,63 @@ html,body{max-width:100%;}
       <button class="chip" data-fam="gov">Governance</button>
     </div>
 
-    <p class="fam-note" id="famNote" data-all="Everything below is live today. Filter to a family to see what a single starting point looks like."
+    <p class="fam-note" id="famNote" data-all="Every one of these is live today. Pick any module to see what it does, or filter to a family to see what a single starting point looks like."
        data-spend="Where money leaves the company. Requests carry their budget line and their full signature history."
        data-people="One employee record from offer letter to exit, so nothing is retyped and nothing goes missing."
        data-revenue="Where money comes in. Leads get called, deals get staged, and commissions walk their own approval chain."
        data-ops="The running of the place: reports, devices, vehicles and the monthly management rhythm."
        data-gov="Who did what, who looked, and who can break the glass. The part auditors ask about.">
-      Everything below is live today. Filter to a family to see what a single starting point looks like.
+      Every one of these is live today. Pick any module to see what it does, or filter to a family to see what a single starting point looks like.
     </p>
 
-    <div class="cards c3 mod-grid">
-      <div class="mod-card reveal" data-in="spend">
-        <div class="ic"><svg><use href="#i-doc"/></svg></div>
-        <h4>Requisitions</h4>
-        <p>Every request carries its site, its budget line and its full signature history.
-          Returned requests carry the reason back to the raiser, never a silent rejection.</p>
-        <span class="fam-t">Spend and approvals</span>
-      </div>
-      <div class="mod-card reveal" data-in="spend">
-        <div class="ic"><svg><use href="#i-cart"/></svg></div>
-        <h4>Procurement and vendor quotes</h4>
-        <p>Where a site's chain includes a Procurement Officer, a line item with fewer than
-          two vendor quotes blocks the whole requisition from advancing.</p>
-        <span class="fam-t">Spend and approvals</span>
-      </div>
-      <div class="mod-card reveal" data-in="spend">
-        <div class="ic"><svg><use href="#i-wallet"/></svg></div>
-        <h4>Site budgets</h4>
-        <p>Approved spend commits against its site before money moves. Approving past a
-          ceiling is allowed, but it notifies the Managing Director automatically.</p>
-        <span class="fam-t">Spend and approvals</span>
-      </div>
-      <div class="mod-card reveal" data-in="spend">
-        <div class="ic"><svg><use href="#i-build"/></svg></div>
-        <h4>Implementation tracking</h4>
-        <p>Opens the moment the CFO releases payment. A milestone needs photographic or
-          documentary evidence, and a rejected one reopens the original spend.</p>
-        <span class="fam-t">Spend and approvals</span>
-      </div>
-      <div class="mod-card reveal" data-in="people">
-        <div class="ic"><svg><use href="#i-cal"/></svg></div>
-        <h4>Leave</h4>
-        <p>Nightly accrual, live balances and a two stage approval that stops at the
-          Executive Director. HR sees every application read only, by policy.</p>
-        <span class="fam-t">People</span>
-      </div>
-      <div class="mod-card reveal" data-in="people">
-        <div class="ic"><svg><use href="#i-users"/></svg></div>
-        <h4>Employee lifecycle</h4>
-        <p>Onboarding to exit with documents, confirmation, disciplinary record and
-          deactivation. Account status stays separate from employment status.</p>
-        <span class="fam-t">People</span>
-      </div>
-      <div class="mod-card reveal" data-in="people">
-        <div class="ic"><svg><use href="#i-award"/></svg></div>
-        <h4>Appraisals</h4>
-        <p>Self assessment, supervisor scoring and a Managing Director verdict on one form,
-          covering confirmation, promotion and salary increment.</p>
-        <span class="fam-t">People</span>
-      </div>
-      <div class="mod-card reveal" data-in="people">
-        <div class="ic"><svg><use href="#i-clock"/></svg></div>
-        <h4>Attendance and policies</h4>
-        <p>Daily presence against the published holiday calendar. Leave is resolved first,
-          so a person on approved absence is never marked absent.</p>
-        <span class="fam-t">People</span>
-      </div>
-      <div class="mod-card reveal" data-in="people">
-        <div class="ic"><svg><use href="#i-case"/></svg></div>
-        <h4>Recruitment and job portal</h4>
-        <p>Publish a role, collect applications on a public portal, shortlist and interview
-          in one place. Everything after the application stays inside your permissions.</p>
-        <span class="fam-t">People</span>
-      </div>
-      <div class="mod-card reveal" data-in="people">
-        <div class="ic"><svg><use href="#i-mail"/></svg></div>
-        <h4>Offer letters</h4>
-        <p>Generated from the approved role and grade, issued for signature and tracked to
-          acceptance. An accepted offer creates the employee record automatically.</p>
-        <span class="fam-t">People</span>
-      </div>
-      <div class="mod-card reveal" data-in="people">
-        <div class="ic"><svg><use href="#i-mega"/></svg></div>
-        <h4>Staff broadcasts</h4>
-        <p>HR notices, policy nuggets and company announcements by email, push and in app
-          sticker, with delivery tracked per person.</p>
-        <span class="fam-t">People</span>
-      </div>
-      <div class="mod-card reveal" data-in="revenue">
-        <div class="ic"><svg><use href="#i-target"/></svg></div>
-        <h4>CRM and leads</h4>
-        <p>Capture, qualify and convert with duplicate detection on the full international
-          phone number. Leads from paid social arrive by signed webhook and route themselves.</p>
-        <span class="fam-t">Revenue</span>
-      </div>
-      <div class="mod-card reveal" data-in="revenue">
-        <div class="ic"><svg><use href="#i-mega"/></svg></div>
-        <h4>Guided calling</h4>
-        <p>The queue serves one lead at a time and the script branches on what the person
-          actually said. No call can end without a dated next step.</p>
-        <span class="fam-t">Revenue</span>
-      </div>
-      <div class="mod-card reveal" data-in="revenue">
-        <div class="ic"><svg><use href="#i-layers"/></svg></div>
-        <h4>Deals and pipeline</h4>
-        <p>Stages carry their own odds and every move is kept, so stuck deals and slow
-          stages are visible. A deal lost always records why.</p>
-        <span class="fam-t">Revenue</span>
-      </div>
-      <div class="mod-card reveal" data-in="revenue">
-        <div class="ic"><svg><use href="#i-case"/></svg></div>
-        <h4>Market demand</h4>
-        <p>Locations, property types and budgets captured during calls, ranked against what
-          you have available. Demand you cannot meet is counted too.</p>
-        <span class="fam-t">Revenue</span>
-      </div>
-      <div class="mod-card reveal" data-in="revenue">
-        <div class="ic"><svg><use href="#i-wallet"/></svg></div>
-        <h4>Revenue outlook</h4>
-        <p>Signed money with real instalment dates, kept separate from weighted forecast.
-          Leadership reads both and the two are never added together.</p>
-        <span class="fam-t">Revenue</span>
-      </div>
-      <div class="mod-card reveal" data-in="revenue">
-        <div class="ic"><svg><use href="#i-zap"/></svg></div>
-        <h4>Sales activities</h4>
-        <p>Register an event, raise its marketing spend, then file the report that justifies
-          it. No further budget is released while a report is outstanding.</p>
-        <span class="fam-t">Revenue</span>
-      </div>
-      <div class="mod-card reveal" data-in="revenue">
-        <div class="ic"><svg><use href="#i-chart"/></svg></div>
-        <h4>Sale commissions</h4>
-        <p>A won lead becomes a commission request that walks its own approval chain to the
-          CFO for payment. Rates are configuration, changed once and applied everywhere.</p>
-        <span class="fam-t">Revenue</span>
-      </div>
-      <div class="mod-card reveal" data-in="revenue">
-        <div class="ic"><svg><use href="#i-db"/></svg></div>
-        <h4>Client portfolios</h4>
-        <p>What each client bought, what they have paid and what is still outstanding, with
-          handover and title documents on the same record.</p>
-        <span class="fam-t">Revenue</span>
-      </div>
-      <div class="mod-card reveal" data-in="ops">
-        <div class="ic"><svg><use href="#i-doc"/></svg></div>
-        <h4>Work reports</h4>
-        <p>Daily and weekly reports route to the supervisor and escalate when late. Weekly
-          rolls into monthly, quarterly and yearly without re entering a line.</p>
-        <span class="fam-t">Operations</span>
-      </div>
-      <div class="mod-card reveal" data-in="ops">
-        <div class="ic"><svg><use href="#i-layers"/></svg></div>
-        <h4>Monthly performance</h4>
-        <p>Heads of department declare projections, blockers and the support they need. An
-          unresolved blocker carries forward into next month automatically.</p>
-        <span class="fam-t">Operations</span>
-      </div>
-      <div class="mod-card reveal" data-in="ops">
-        <div class="ic"><svg><use href="#i-laptop"/></svg></div>
-        <h4>IT devices and CUG lines</h4>
-        <p>Assignment, acknowledgement, maintenance history and closed user group control.
-          An unacknowledged device stays flagged until the holder signs for it.</p>
-        <span class="fam-t">Operations</span>
-      </div>
-      <div class="mod-card reveal" data-in="ops">
-        <div class="ic"><svg><use href="#i-car"/></svg></div>
-        <h4>Pool car booking</h4>
-        <p>Book a vehicle and driver against a trip. Mileage and fuel close out on return,
-          so a trip cannot be quietly left open.</p>
-        <span class="fam-t">Operations</span>
-      </div>
-      <div class="mod-card reveal" data-in="ops">
-        <div class="ic"><svg><use href="#i-screen"/></svg></div>
-        <h4>Management meeting</h4>
-        <p>Any format uploaded becomes one uniform deck, presented in a synchronised
-          boardroom where every screen follows the chair.</p>
-        <span class="fam-t">Operations</span>
-      </div>
-      <div class="mod-card reveal" data-in="gov">
-        <div class="ic"><svg><use href="#i-shield"/></svg></div>
-        <h4>Audit log</h4>
-        <p>Every view, decision and override in one immutable trail. Page views are logged
-          as well as actions, so who looked is answerable too.</p>
-        <span class="fam-t">Governance</span>
-      </div>
-      <div class="mod-card reveal" data-in="gov">
-        <div class="ic"><svg><use href="#i-lock"/></svg></div>
-        <h4>Root console</h4>
-        <p>Break glass administration behind a PIN, rate limited and logged against itself.
-          Anything that writes needs confirmation typed by hand.</p>
-        <span class="fam-t">Governance</span>
-      </div>
-      <div class="mod-card reveal" data-in="gov">
-        <div class="ic"><svg><use href="#i-eye"/></svg></div>
-        <h4>Oversight analytics</h4>
-        <p>Read only cross department reporting for the Executive Director and Managing
-          Director. Leadership reads everything and approves nothing here.</p>
-        <span class="fam-t">Governance</span>
-      </div>
-      <div class="mod-card reveal" data-in="gov">
-        <div class="ic"><svg><use href="#i-share"/></svg></div>
-        <h4>Social media monitor</h4>
-        <p>Connected business accounts, reach and engagement in one view, with access tokens
-          encrypted at rest and never readable off the server.</p>
-        <span class="fam-t">Governance</span>
+    <div class="exp-grid" id="explorer">
+  <div class="exp-list"><div class="exp-group" data-in="spend"><h6>Spend and approvals</h6><button type="button" aria-expanded="true" class="exp-item on" data-in="spend" data-name="Requisitions" data-famlabel="Spend and approvals" data-tier="core"><span class="exp-ic"><svg><use href="#i-doc"/></svg></span><span class="exp-name">Requisitions</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>Every request carries its site, its budget line and its full signature history. Returned requests carry the reason back to the raiser, never a silent rejection.</p></div><button type="button" aria-expanded="false" class="exp-item" data-in="spend" data-name="Procurement and vendor quotes" data-famlabel="Spend and approvals" data-tier="ops"><span class="exp-ic"><svg><use href="#i-cart"/></svg></span><span class="exp-name">Procurement and vendor quotes</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>Where a site's chain includes a Procurement Officer, a line item with fewer than two vendor quotes blocks the whole requisition from advancing.</p></div><button type="button" aria-expanded="false" class="exp-item" data-in="spend" data-name="Site budgets" data-famlabel="Spend and approvals" data-tier="ops"><span class="exp-ic"><svg><use href="#i-wallet"/></svg></span><span class="exp-name">Site budgets</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>Approved spend commits against its site before money moves. Approving past a ceiling is allowed, but it notifies the Managing Director automatically.</p></div><button type="button" aria-expanded="false" class="exp-item" data-in="spend" data-name="Implementation tracking" data-famlabel="Spend and approvals" data-tier="ops"><span class="exp-ic"><svg><use href="#i-build"/></svg></span><span class="exp-name">Implementation tracking</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>Opens the moment the CFO releases payment. A milestone needs photographic or documentary evidence, and a rejected one reopens the original spend.</p></div></div><div class="exp-group" data-in="people"><h6>People</h6><button type="button" aria-expanded="false" class="exp-item" data-in="people" data-name="Leave" data-famlabel="People" data-tier="core"><span class="exp-ic"><svg><use href="#i-cal"/></svg></span><span class="exp-name">Leave</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>Nightly accrual, live balances and a two stage approval that stops at the Executive Director. HR sees every application read only, by policy.</p></div><button type="button" aria-expanded="false" class="exp-item" data-in="people" data-name="Employee lifecycle" data-famlabel="People" data-tier="ops"><span class="exp-ic"><svg><use href="#i-users"/></svg></span><span class="exp-name">Employee lifecycle</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>Onboarding to exit with documents, confirmation, disciplinary record and deactivation. Account status stays separate from employment status.</p></div><button type="button" aria-expanded="false" class="exp-item" data-in="people" data-name="Appraisals" data-famlabel="People" data-tier="core"><span class="exp-ic"><svg><use href="#i-award"/></svg></span><span class="exp-name">Appraisals</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>Self assessment, supervisor scoring and a Managing Director verdict on one form, covering confirmation, promotion and salary increment.</p></div><button type="button" aria-expanded="false" class="exp-item" data-in="people" data-name="Attendance and policies" data-famlabel="People" data-tier="ops"><span class="exp-ic"><svg><use href="#i-clock"/></svg></span><span class="exp-name">Attendance and policies</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>Daily presence against the published holiday calendar. Leave is resolved first, so a person on approved absence is never marked absent.</p></div><button type="button" aria-expanded="false" class="exp-item" data-in="people" data-name="Recruitment and job portal" data-famlabel="People" data-tier="ent"><span class="exp-ic"><svg><use href="#i-case"/></svg></span><span class="exp-name">Recruitment and job portal</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>Publish a role, collect applications on a public portal, shortlist and interview in one place. Everything after the application stays inside your permissions.</p></div><button type="button" aria-expanded="false" class="exp-item" data-in="people" data-name="Offer letters" data-famlabel="People" data-tier="ent"><span class="exp-ic"><svg><use href="#i-mail"/></svg></span><span class="exp-name">Offer letters</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>Generated from the approved role and grade, issued for signature and tracked to acceptance. An accepted offer creates the employee record automatically.</p></div><button type="button" aria-expanded="false" class="exp-item" data-in="people" data-name="Staff broadcasts" data-famlabel="People" data-tier="ops"><span class="exp-ic"><svg><use href="#i-mega"/></svg></span><span class="exp-name">Staff broadcasts</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>HR notices, policy nuggets and company announcements by email, push and in app sticker, with delivery tracked per person.</p></div></div><div class="exp-group" data-in="revenue"><h6>Revenue and CRM</h6><button type="button" aria-expanded="false" class="exp-item" data-in="revenue" data-name="CRM and leads" data-famlabel="Revenue and CRM" data-tier="ent"><span class="exp-ic"><svg><use href="#i-target"/></svg></span><span class="exp-name">CRM and leads</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>Capture, qualify and convert with duplicate detection on the full international phone number. Leads from paid social arrive by signed webhook and route themselves.</p></div><button type="button" aria-expanded="false" class="exp-item" data-in="revenue" data-name="Guided calling" data-famlabel="Revenue and CRM" data-tier="ent"><span class="exp-ic"><svg><use href="#i-mega"/></svg></span><span class="exp-name">Guided calling</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>The queue serves one lead at a time and the script branches on what the person actually said. No call can end without a dated next step.</p></div><button type="button" aria-expanded="false" class="exp-item" data-in="revenue" data-name="Deals and pipeline" data-famlabel="Revenue and CRM" data-tier="ent"><span class="exp-ic"><svg><use href="#i-layers"/></svg></span><span class="exp-name">Deals and pipeline</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>Stages carry their own odds and every move is kept, so stuck deals and slow stages are visible. A deal lost always records why.</p></div><button type="button" aria-expanded="false" class="exp-item" data-in="revenue" data-name="Market demand" data-famlabel="Revenue and CRM" data-tier="ent"><span class="exp-ic"><svg><use href="#i-case"/></svg></span><span class="exp-name">Market demand</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>Locations, property types and budgets captured during calls, ranked against what you have available. Demand you cannot meet is counted too.</p></div><button type="button" aria-expanded="false" class="exp-item" data-in="revenue" data-name="Revenue outlook" data-famlabel="Revenue and CRM" data-tier="ent"><span class="exp-ic"><svg><use href="#i-wallet"/></svg></span><span class="exp-name">Revenue outlook</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>Signed money with real instalment dates, kept separate from weighted forecast. Leadership reads both and the two are never added together.</p></div><button type="button" aria-expanded="false" class="exp-item" data-in="revenue" data-name="Sales activities" data-famlabel="Revenue and CRM" data-tier="ent"><span class="exp-ic"><svg><use href="#i-zap"/></svg></span><span class="exp-name">Sales activities</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>Register an event, raise its marketing spend, then file the report that justifies it. No further budget is released while a report is outstanding.</p></div><button type="button" aria-expanded="false" class="exp-item" data-in="revenue" data-name="Sale commissions" data-famlabel="Revenue and CRM" data-tier="ent"><span class="exp-ic"><svg><use href="#i-chart"/></svg></span><span class="exp-name">Sale commissions</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>A won lead becomes a commission request that walks its own approval chain to the CFO for payment. Rates are configuration, changed once and applied everywhere.</p></div><button type="button" aria-expanded="false" class="exp-item" data-in="revenue" data-name="Client portfolios" data-famlabel="Revenue and CRM" data-tier="ent"><span class="exp-ic"><svg><use href="#i-db"/></svg></span><span class="exp-name">Client portfolios</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>What each client bought, what they have paid and what is still outstanding, with handover and title documents on the same record.</p></div></div><div class="exp-group" data-in="ops"><h6>Operations</h6><button type="button" aria-expanded="false" class="exp-item" data-in="ops" data-name="Work reports" data-famlabel="Operations" data-tier="core"><span class="exp-ic"><svg><use href="#i-doc"/></svg></span><span class="exp-name">Work reports</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>Daily and weekly reports route to the supervisor and escalate when late. Weekly rolls into monthly, quarterly and yearly without re entering a line.</p></div><button type="button" aria-expanded="false" class="exp-item" data-in="ops" data-name="Monthly performance" data-famlabel="Operations" data-tier="ops"><span class="exp-ic"><svg><use href="#i-layers"/></svg></span><span class="exp-name">Monthly performance</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>Heads of department declare projections, blockers and the support they need. An unresolved blocker carries forward into next month automatically.</p></div><button type="button" aria-expanded="false" class="exp-item" data-in="ops" data-name="IT devices and CUG lines" data-famlabel="Operations" data-tier="ops"><span class="exp-ic"><svg><use href="#i-laptop"/></svg></span><span class="exp-name">IT devices and CUG lines</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>Assignment, acknowledgement, maintenance history and closed user group control. An unacknowledged device stays flagged until the holder signs for it.</p></div><button type="button" aria-expanded="false" class="exp-item" data-in="ops" data-name="Pool car booking" data-famlabel="Operations" data-tier="ops"><span class="exp-ic"><svg><use href="#i-car"/></svg></span><span class="exp-name">Pool car booking</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>Book a vehicle and driver against a trip. Mileage and fuel close out on return, so a trip cannot be quietly left open.</p></div><button type="button" aria-expanded="false" class="exp-item" data-in="ops" data-name="Management meeting" data-famlabel="Operations" data-tier="ent"><span class="exp-ic"><svg><use href="#i-screen"/></svg></span><span class="exp-name">Management meeting</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>Any format uploaded becomes one uniform deck, presented in a synchronised boardroom where every screen follows the chair.</p></div></div><div class="exp-group" data-in="gov"><h6>Governance</h6><button type="button" aria-expanded="false" class="exp-item" data-in="gov" data-name="Audit log" data-famlabel="Governance" data-tier="core"><span class="exp-ic"><svg><use href="#i-shield"/></svg></span><span class="exp-name">Audit log</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>Every view, decision and override in one immutable trail. Page views are logged as well as actions, so who looked is answerable too.</p></div><button type="button" aria-expanded="false" class="exp-item" data-in="gov" data-name="Root console" data-famlabel="Governance" data-tier="ent"><span class="exp-ic"><svg><use href="#i-lock"/></svg></span><span class="exp-name">Root console</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>Break glass administration behind a PIN, rate limited and logged against itself. Anything that writes needs confirmation typed by hand.</p></div><button type="button" aria-expanded="false" class="exp-item" data-in="gov" data-name="Oversight analytics" data-famlabel="Governance" data-tier="ops"><span class="exp-ic"><svg><use href="#i-eye"/></svg></span><span class="exp-name">Oversight analytics</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>Read only cross department reporting for the Executive Director and Managing Director. Leadership reads everything and approves nothing here.</p></div><button type="button" aria-expanded="false" class="exp-item" data-in="gov" data-name="Social media monitor" data-famlabel="Governance" data-tier="ent"><span class="exp-ic"><svg><use href="#i-share"/></svg></span><span class="exp-name">Social media monitor</span><svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="exp-body"><p>Connected business accounts, reach and engagement in one view, with access tokens encrypted at rest and never readable off the server.</p></div></div></div>
+  <div class="exp-side">
+    <div class="shot exp-shot">
+      <div class="shot-bar"><div class="shot-dots"><i></i><i></i><i></i></div>
+        <span class="exp-crumb" id="expCrumb">Spend and approvals</span></div>
+      <div class="shot-in">
+        <h4 class="exp-title" id="expTitle">Requisitions</h4>
+        <div class="exp-tiers"><span class="tp-l">Included from</span><span class="tp" data-t="core">Core</span><span class="tp" data-t="ops">Operations</span><span class="tp" data-t="ent">Enterprise</span></div>
+        <div class="exp-mocks"><div class="exp-mock" data-fam="spend">
+  <div class="app-h"><h5>Signature chain</h5><span class="badge b-warn">CFO review</span></div>
+  <table class="t"><tbody>
+   <tr><td class="n">Raised</td><td>Adaeze Nwankwo</td><td><span class="badge b-ok">Signed</span></td></tr>
+   <tr><td class="n">Supervisor</td><td>Bayo Fashola</td><td><span class="badge b-ok">Signed</span></td></tr>
+   <tr><td class="n">Executive Director</td><td>Chiamaka Eze</td><td><span class="badge b-ok">Signed</span></td></tr>
+   <tr><td class="n">CFO</td><td>Damilola Ajayi</td><td><span class="badge b-warn">Reviewing</span></td></tr>
+  </tbody></table></div><div class="exp-mock" data-fam="people">
+  <div class="app-h"><h5>Team</h5><span class="badge b-info">4 on leave</span></div>
+  <table class="t"><tbody>
+   <tr><td class="n">Adaeze Nwankwo</td><td>Sales</td><td><span class="badge b-ok">Confirmed</span></td></tr>
+   <tr><td class="n">Bayo Fashola</td><td>Sales</td><td><span class="badge b-info">On leave</span></td></tr>
+   <tr><td class="n">Ifeoma Balogun</td><td>Finance</td><td><span class="badge b-warn">Probation</span></td></tr>
+   <tr><td class="n">Uche Madu</td><td>Projects</td><td><span class="badge b-ok">Confirmed</span></td></tr>
+  </tbody></table></div><div class="exp-mock" data-fam="revenue">
+  <div class="app-h"><h5>Pipeline</h5><span class="badge b-ok">22% win rate</span></div>
+  <div class="mini"><div><b>146</b><span>Open</span></div><div><b>&#8358;318m</b><span>Weighted</span></div><div><b>18</b><span>To call</span></div></div>
+  <table class="t"><tbody>
+   <tr><td class="n">Sade Martins</td><td class="m">&#8358;68,000,000</td><td><span class="badge b-ok">Negotiation</span></td></tr>
+   <tr><td class="n">Tari Georgewill</td><td class="m">&#8358;45,000,000</td><td><span class="badge b-warn">Qualified</span></td></tr>
+  </tbody></table></div><div class="exp-mock" data-fam="ops">
+  <div class="app-h"><h5>This week</h5><span class="badge b-warn">2 late</span></div>
+  <table class="t"><tbody>
+   <tr><td class="n">Weekly report</td><td>Projects</td><td><span class="badge b-ok">Filed</span></td></tr>
+   <tr><td class="n">Weekly report</td><td>Facilities</td><td><span class="badge b-err">Escalated</span></td></tr>
+   <tr><td class="n">Device handover</td><td>IT</td><td><span class="badge b-warn">Unsigned</span></td></tr>
+   <tr><td class="n">Pool car, Lagos run</td><td>Admin</td><td><span class="badge b-ok">Closed out</span></td></tr>
+  </tbody></table></div><div class="exp-mock" data-fam="gov">
+  <div class="app-h"><h5>Audit trail</h5><span class="badge b-mute">Immutable</span></div>
+  <table class="t"><tbody>
+   <tr><td class="n">Viewed</td><td>REQ-2026-0412</td><td>Chiamaka Eze</td></tr>
+   <tr><td class="n">Approved</td><td>REQ-2026-0412</td><td>Damilola Ajayi</td></tr>
+   <tr><td class="n">Override</td><td>Budget ceiling</td><td><span class="badge b-warn">Flagged</span></td></tr>
+   <tr><td class="n">Exported</td><td>Payroll summary</td><td>Ikenna Obi</td></tr>
+  </tbody></table></div></div>
       </div>
     </div>
+  </div>
+</div>
   </div>
 </section>
 
@@ -3053,10 +2994,49 @@ html,body{max-width:100%;}
     }
   }
 
+  /* ── Module explorer ────────────────────────────────────────────────
+     One module open at a time, with the frame on the right following the
+     selection. Everything it needs is on the button's data attributes, so
+     there is no module list duplicated in JavaScript. */
+  var exp=document.getElementById("explorer");
+  if(exp){
+    var expTitle=document.getElementById("expTitle");
+    var expCrumb=document.getElementById("expCrumb");
+    var pills=exp.querySelectorAll(".tp");
+    var mocks=exp.querySelectorAll(".exp-mock");
+    var order=["core","ops","ent"];
+
+    function pick(btn){
+      exp.querySelectorAll(".exp-item").forEach(function(b){
+        var on=(b===btn);
+        b.classList.toggle("on",on);
+        b.setAttribute("aria-expanded",on?"true":"false");
+      });
+      expTitle.textContent=btn.getAttribute("data-name");
+      expCrumb.textContent=btn.getAttribute("data-famlabel");
+
+      var lo=order.indexOf(btn.getAttribute("data-tier"));
+      pills.forEach(function(p){
+        p.classList.toggle("in", order.indexOf(p.getAttribute("data-t"))>=lo);
+      });
+
+      var fam=btn.getAttribute("data-in");
+      mocks.forEach(function(m){
+        m.classList.toggle("on", m.getAttribute("data-fam")===fam);
+      });
+    }
+
+    exp.querySelectorAll(".exp-item").forEach(function(b){
+      b.addEventListener("click",function(){ pick(b); });
+    });
+    var first=exp.querySelector(".exp-item.on")||exp.querySelector(".exp-item");
+    if(first) pick(first);
+  }
+
   /* ── Module family filter ───────────────────────────────────────────
      Hiding with a class rather than an inline style keeps the transition,
      and the note above the grid explains the family you just picked. */
-  var chips=document.querySelectorAll("[data-fam]");
+  var chips=document.querySelectorAll(".chip[data-fam]");
   var note=document.getElementById("famNote");
   if(chips.length){
     chips.forEach(function(c){
@@ -3064,11 +3044,18 @@ html,body{max-width:100%;}
         var f=c.getAttribute("data-fam");
         chips.forEach(function(x){x.classList.toggle("on",x===c);});
 
-        document.querySelectorAll("[data-in]").forEach(function(card){
-          var show=(f==="all"||card.getAttribute("data-in")===f);
-          card.classList.toggle("hide",!show);
-          if(show && !card.classList.contains("in")) card.classList.add("in");
+        document.querySelectorAll(".exp-group").forEach(function(g){
+          g.classList.toggle("hide", !(f==="all"||g.getAttribute("data-in")===f));
         });
+        /* If the filter hid whatever was open, open the first one still showing
+           so the frame never describes a module you can no longer see. */
+        if(exp){
+          var cur=exp.querySelector(".exp-item.on");
+          if(!cur||cur.closest(".exp-group").classList.contains("hide")){
+            var next=exp.querySelector(".exp-group:not(.hide) .exp-item");
+            if(next) next.click();
+          }
+        }
 
         if(note){
           var txt=note.getAttribute("data-"+f);

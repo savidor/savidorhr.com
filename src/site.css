@@ -1036,6 +1036,7 @@ html,body{max-width:100%;}
 .mod-grid .mod-card{transition:opacity .26s ease, transform .26s ease,
   box-shadow .25s, border-color .2s;}
 .mod-grid .mod-card.hide{display:none;}
+.exp-group.hide{display:none;}
 
 /* Motion is decoration here, never information: it all reads the same
    standing still. */
@@ -1044,4 +1045,94 @@ html,body{max-width:100%;}
   .flow-step{border-color:var(--line-2);}
   .flow-pulse{display:none;}
   .reveal, .reveal.in{opacity:1; transform:none; transition:none;}
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Module explorer. Replaces the twenty eight card grid: one description is
+   open at a time on the left, and a frame on the right follows the choice.
+   ═══════════════════════════════════════════════════════════════════════ */
+.exp-grid{display:grid; grid-template-columns:1fr 1.05fr; gap:52px; align-items:start;}
+
+.exp-group{margin-bottom:26px;}
+.exp-group:last-child{margin-bottom:0;}
+.exp-group h6{
+  font-size:.7rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--ink-4); margin-bottom:8px; padding-left:2px;
+}
+.exp-item{
+  display:flex; align-items:center; gap:12px; width:100%; cursor:pointer;
+  background:none; border:0; border-bottom:1px solid var(--line);
+  padding:14px 2px; text-align:left; font-family:inherit;
+  font-size:1.02rem; font-weight:600; color:var(--ink-3);
+  transition:color .16s;
+}
+.exp-item:hover{color:var(--brand);}
+.exp-item.on{color:var(--ink); border-bottom-color:transparent;}
+.exp-ic{
+  width:34px; height:34px; border-radius:9px; flex:0 0 auto;
+  background:var(--bg-2); border:1px solid var(--line);
+  display:grid; place-items:center; transition:background .18s, border-color .18s;
+}
+.exp-ic svg{width:17px; height:17px; color:var(--ink-3); transition:color .18s;}
+.exp-item.on .exp-ic{background:var(--brand); border-color:var(--brand);}
+.exp-item.on .exp-ic svg{color:#fff;}
+.exp-name{flex:1; min-width:0;}
+.exp-ch{width:17px; height:17px; flex:0 0 auto; color:var(--ink-4); transition:transform .22s;}
+.exp-item.on .exp-ch{transform:rotate(-90deg); color:var(--brand);}
+
+.exp-body{
+  display:grid; grid-template-rows:0fr; overflow:hidden;
+  transition:grid-template-rows .28s cubic-bezier(.4,0,.2,1);
+  border-bottom:1px solid var(--line);
+}
+.exp-body > p{
+  min-height:0; overflow:hidden;
+  font-size:.95rem; line-height:1.62; color:var(--ink-2);
+}
+.exp-item.on + .exp-body{grid-template-rows:1fr;}
+.exp-item.on + .exp-body > p{
+  background:var(--brand-50); border:1px solid var(--brand-100);
+  border-radius:var(--r); padding:16px 18px; margin:0 0 16px;
+}
+
+/* The frame follows you down the list rather than scrolling away. */
+.exp-side{position:sticky; top:92px;}
+.exp-shot{overflow:hidden;}
+.exp-crumb{
+  margin-left:auto; font-size:.72rem; font-weight:600; letter-spacing:.03em;
+  color:var(--ink-4); text-transform:uppercase;
+}
+.exp-title{
+  font-family:var(--f-d); font-size:1.3rem; font-weight:800; color:var(--ink);
+  letter-spacing:-.02em; margin-bottom:12px;
+}
+.exp-tiers{
+  display:flex; align-items:center; flex-wrap:wrap; gap:7px;
+  padding-bottom:18px; margin-bottom:18px; border-bottom:1px solid var(--line);
+}
+.tp-l{font-size:.72rem; font-weight:600; color:var(--ink-4);
+  text-transform:uppercase; letter-spacing:.05em; margin-right:3px;}
+.tp{
+  font-size:.74rem; font-weight:600; padding:4px 11px; border-radius:99px;
+  background:var(--bg-3); color:var(--ink-4); border:1px solid transparent;
+  transition:background .18s, color .18s, border-color .18s;
+}
+.tp.in{background:var(--ok-bg); color:var(--ok); border-color:var(--ok-line);}
+
+.exp-mocks{position:relative;}
+.exp-mock{display:none;}
+.exp-mock.on{display:block; animation:mockIn .3s ease;}
+@keyframes mockIn{from{opacity:0; transform:translateY(7px);} to{opacity:1; transform:none;}}
+.exp-mock table.t{width:100%;}
+
+@media (max-width:980px){
+  .exp-grid{grid-template-columns:1fr; gap:30px;}
+  /* The frame leads on a phone: you see what it looks like, then read. */
+  .exp-side{position:static; order:-1;}
+}
+@media (prefers-reduced-motion: reduce){
+  .exp-body{transition:none;}
+  .exp-mock.on{animation:none;}
+  .exp-ch{transition:none;}
 }

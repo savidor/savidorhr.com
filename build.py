@@ -16,6 +16,7 @@ client-side switching, so the whole site can be previewed from one link.
 
 Run:  python3 marketing/build.py
 """
+import collections
 import hashlib
 import re
 import pathlib
@@ -156,12 +157,9 @@ CARET = ('<svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColo
 
 
 def modules_by_family():
-    """The single source of truth for what modules exist: the cards themselves."""
-    src = (SRC / "pages" / "modules.html").read_text(encoding="utf-8")
-    cards = re.findall(r'<div class="mod-card[^"]*" data-in="(\w+)">.*?<h4>(.*?)</h4>', src, re.S)
     by_fam = {}
-    for fam, name in cards:
-        by_fam.setdefault(fam, []).append(name.strip())
+    for m in MODULES:
+        by_fam.setdefault(m.fam, []).append(m.name)
     return by_fam
 
 
@@ -392,10 +390,49 @@ SCRIPT = """
     }
   }
 
+  /* ── Module explorer ────────────────────────────────────────────────
+     One module open at a time, with the frame on the right following the
+     selection. Everything it needs is on the button's data attributes, so
+     there is no module list duplicated in JavaScript. */
+  var exp=document.getElementById("explorer");
+  if(exp){
+    var expTitle=document.getElementById("expTitle");
+    var expCrumb=document.getElementById("expCrumb");
+    var pills=exp.querySelectorAll(".tp");
+    var mocks=exp.querySelectorAll(".exp-mock");
+    var order=["core","ops","ent"];
+
+    function pick(btn){
+      exp.querySelectorAll(".exp-item").forEach(function(b){
+        var on=(b===btn);
+        b.classList.toggle("on",on);
+        b.setAttribute("aria-expanded",on?"true":"false");
+      });
+      expTitle.textContent=btn.getAttribute("data-name");
+      expCrumb.textContent=btn.getAttribute("data-famlabel");
+
+      var lo=order.indexOf(btn.getAttribute("data-tier"));
+      pills.forEach(function(p){
+        p.classList.toggle("in", order.indexOf(p.getAttribute("data-t"))>=lo);
+      });
+
+      var fam=btn.getAttribute("data-in");
+      mocks.forEach(function(m){
+        m.classList.toggle("on", m.getAttribute("data-fam")===fam);
+      });
+    }
+
+    exp.querySelectorAll(".exp-item").forEach(function(b){
+      b.addEventListener("click",function(){ pick(b); });
+    });
+    var first=exp.querySelector(".exp-item.on")||exp.querySelector(".exp-item");
+    if(first) pick(first);
+  }
+
   /* ── Module family filter ───────────────────────────────────────────
      Hiding with a class rather than an inline style keeps the transition,
      and the note above the grid explains the family you just picked. */
-  var chips=document.querySelectorAll("[data-fam]");
+  var chips=document.querySelectorAll(".chip[data-fam]");
   var note=document.getElementById("famNote");
   if(chips.length){
     chips.forEach(function(c){
@@ -403,11 +440,18 @@ SCRIPT = """
         var f=c.getAttribute("data-fam");
         chips.forEach(function(x){x.classList.toggle("on",x===c);});
 
-        document.querySelectorAll("[data-in]").forEach(function(card){
-          var show=(f==="all"||card.getAttribute("data-in")===f);
-          card.classList.toggle("hide",!show);
-          if(show && !card.classList.contains("in")) card.classList.add("in");
+        document.querySelectorAll(".exp-group").forEach(function(g){
+          g.classList.toggle("hide", !(f==="all"||g.getAttribute("data-in")===f));
         });
+        /* If the filter hid whatever was open, open the first one still showing
+           so the frame never describes a module you can no longer see. */
+        if(exp){
+          var cur=exp.querySelector(".exp-item.on");
+          if(!cur||cur.closest(".exp-group").classList.contains("hide")){
+            var next=exp.querySelector(".exp-group:not(.hide) .exp-item");
+            if(next) next.click();
+          }
+        }
 
         if(note){
           var txt=note.getAttribute("data-"+f);
@@ -473,61 +517,185 @@ def module_options():
     return "\n                ".join(out)
 
 
-# The lowest tier each module is included in. Everything above inherits it.
-# Keys must match the module card headings exactly; build fails loudly if not.
-TIER_MIN = {
-    "Requisitions": "core", "Procurement and vendor quotes": "ops",
-    "Site budgets": "ops", "Implementation tracking": "ops",
-    "Leave": "core", "Employee lifecycle": "ops", "Appraisals": "core",
-    "Attendance and policies": "ops", "Recruitment and job portal": "ent",
-    "Offer letters": "ent", "Staff broadcasts": "ops",
-    "CRM and leads": "ent", "Guided calling": "ent", "Deals and pipeline": "ent",
-    "Market demand": "ent", "Revenue outlook": "ent", "Sales activities": "ent",
-    "Sale commissions": "ent", "Client portfolios": "ent",
-    "Work reports": "core", "Monthly performance": "ops",
-    "IT devices and CUG lines": "ops", "Pool car booking": "ops",
-    "Management meeting": "ent",
-    "Audit log": "core", "Root console": "ent", "Oversight analytics": "ops",
-    "Social media monitor": "ent",
-}
+# ── The module catalogue ──────────────────────────────────────────────────────
+# The single source of truth. The Modules page, the mega menu, the contact
+# form's dropdown and the pricing comparison all read from here, so a module
+# added once shows up in all four. This data used to be scraped back out of
+# the page markup with a regex, which broke the moment a card gained a class.
+M = collections.namedtuple("M", "fam icon name tier desc")
+
+MODULES = [
+    M("spend", "doc", "Requisitions", "core",
+      "Every request carries its site, its budget line and its full signature history. Returned requests carry the reason back to the raiser, never a silent rejection."),
+    M("spend", "cart", "Procurement and vendor quotes", "ops",
+      "Where a site's chain includes a Procurement Officer, a line item with fewer than two vendor quotes blocks the whole requisition from advancing."),
+    M("spend", "wallet", "Site budgets", "ops",
+      "Approved spend commits against its site before money moves. Approving past a ceiling is allowed, but it notifies the Managing Director automatically."),
+    M("spend", "build", "Implementation tracking", "ops",
+      "Opens the moment the CFO releases payment. A milestone needs photographic or documentary evidence, and a rejected one reopens the original spend."),
+    M("people", "cal", "Leave", "core",
+      "Nightly accrual, live balances and a two stage approval that stops at the Executive Director. HR sees every application read only, by policy."),
+    M("people", "users", "Employee lifecycle", "ops",
+      "Onboarding to exit with documents, confirmation, disciplinary record and deactivation. Account status stays separate from employment status."),
+    M("people", "award", "Appraisals", "core",
+      "Self assessment, supervisor scoring and a Managing Director verdict on one form, covering confirmation, promotion and salary increment."),
+    M("people", "clock", "Attendance and policies", "ops",
+      "Daily presence against the published holiday calendar. Leave is resolved first, so a person on approved absence is never marked absent."),
+    M("people", "case", "Recruitment and job portal", "ent",
+      "Publish a role, collect applications on a public portal, shortlist and interview in one place. Everything after the application stays inside your permissions."),
+    M("people", "mail", "Offer letters", "ent",
+      "Generated from the approved role and grade, issued for signature and tracked to acceptance. An accepted offer creates the employee record automatically."),
+    M("people", "mega", "Staff broadcasts", "ops",
+      "HR notices, policy nuggets and company announcements by email, push and in app sticker, with delivery tracked per person."),
+    M("revenue", "target", "CRM and leads", "ent",
+      "Capture, qualify and convert with duplicate detection on the full international phone number. Leads from paid social arrive by signed webhook and route themselves."),
+    M("revenue", "mega", "Guided calling", "ent",
+      "The queue serves one lead at a time and the script branches on what the person actually said. No call can end without a dated next step."),
+    M("revenue", "layers", "Deals and pipeline", "ent",
+      "Stages carry their own odds and every move is kept, so stuck deals and slow stages are visible. A deal lost always records why."),
+    M("revenue", "case", "Market demand", "ent",
+      "Locations, property types and budgets captured during calls, ranked against what you have available. Demand you cannot meet is counted too."),
+    M("revenue", "wallet", "Revenue outlook", "ent",
+      "Signed money with real instalment dates, kept separate from weighted forecast. Leadership reads both and the two are never added together."),
+    M("revenue", "zap", "Sales activities", "ent",
+      "Register an event, raise its marketing spend, then file the report that justifies it. No further budget is released while a report is outstanding."),
+    M("revenue", "chart", "Sale commissions", "ent",
+      "A won lead becomes a commission request that walks its own approval chain to the CFO for payment. Rates are configuration, changed once and applied everywhere."),
+    M("revenue", "db", "Client portfolios", "ent",
+      "What each client bought, what they have paid and what is still outstanding, with handover and title documents on the same record."),
+    M("ops", "doc", "Work reports", "core",
+      "Daily and weekly reports route to the supervisor and escalate when late. Weekly rolls into monthly, quarterly and yearly without re entering a line."),
+    M("ops", "layers", "Monthly performance", "ops",
+      "Heads of department declare projections, blockers and the support they need. An unresolved blocker carries forward into next month automatically."),
+    M("ops", "laptop", "IT devices and CUG lines", "ops",
+      "Assignment, acknowledgement, maintenance history and closed user group control. An unacknowledged device stays flagged until the holder signs for it."),
+    M("ops", "car", "Pool car booking", "ops",
+      "Book a vehicle and driver against a trip. Mileage and fuel close out on return, so a trip cannot be quietly left open."),
+    M("ops", "screen", "Management meeting", "ent",
+      "Any format uploaded becomes one uniform deck, presented in a synchronised boardroom where every screen follows the chair."),
+    M("gov", "shield", "Audit log", "core",
+      "Every view, decision and override in one immutable trail. Page views are logged as well as actions, so who looked is answerable too."),
+    M("gov", "lock", "Root console", "ent",
+      "Break glass administration behind a PIN, rate limited and logged against itself. Anything that writes needs confirmation typed by hand."),
+    M("gov", "eye", "Oversight analytics", "ops",
+      "Read only cross department reporting for the Executive Director and Managing Director. Leadership reads everything and approves nothing here."),
+    M("gov", "share", "Social media monitor", "ent",
+      "Connected business accounts, reach and engagement in one view, with access tokens encrypted at rest and never readable off the server."),
+]
+
 TIER_ORDER = ["core", "ops", "ent"]
 FAM_TITLES = {"spend": "Spend and approvals", "people": "People",
               "revenue": "Revenue and CRM", "ops": "Operations", "gov": "Governance"}
 
 
 def tier_table():
-    """One accordion per family, with a tick per tier. Generated from the module
-    cards and TIER_MIN together, so the table cannot list a module that does not
-    exist or quietly omit a new one."""
-    by_fam = modules_by_family()
-    known = {n for names in by_fam.values() for n in names}
-    missing = known - set(TIER_MIN)
-    if missing:
-        raise SystemExit(f"  ! TIER_MIN is missing: {sorted(missing)}")
-    stale = set(TIER_MIN) - known
-    if stale:
-        raise SystemExit(f"  ! TIER_MIN names modules that no longer exist: {sorted(stale)}")
-
+    """One accordion per family, with a tick per tier, straight from MODULES."""
     tick = '<svg class="tk"><use href="#i-check"/></svg>'
     out = []
     for fam, title in FAM_TITLES.items():
-        names = by_fam.get(fam, [])
-        if not names:
+        mods = [m for m in MODULES if m.fam == fam]
+        if not mods:
             continue
         rows = ""
-        for n in names:
-            lo = TIER_ORDER.index(TIER_MIN[n])
+        for m in mods:
+            lo = TIER_ORDER.index(m.tier)
             cells = "".join(
                 f"<td>{tick}</td>" if i >= lo else '<td class="no">Add on</td>'
                 for i in range(3))
-            rows += f"<tr><td><b>{n}</b></td>{cells}</tr>"
+            rows += f"<tr><td><b>{m.name}</b></td>{cells}</tr>"
         out.append(
             f'<details class="cmp-group"{" open" if fam == "spend" else ""}>'
-            f"<summary>{title} <span>{len(names)} modules</span></summary>"
+            f"<summary>{title} <span>{len(mods)} modules</span></summary>"
             f'<div class="cmp-scroll"><table class="cmp">'
             f"<thead><tr><th></th><th>Core</th><th>Operations</th><th>Enterprise</th></tr></thead>"
             f"<tbody>{rows}</tbody></table></div></details>")
     return "\n".join(out)
+
+
+# One illustrative frame per family, not per module: the shape of the work is
+# what differs between families. Every name and figure in them is invented.
+FAM_MOCK = {
+ "spend": """
+  <div class="app-h"><h5>Signature chain</h5><span class="badge b-warn">CFO review</span></div>
+  <table class="t"><tbody>
+   <tr><td class="n">Raised</td><td>Adaeze Nwankwo</td><td><span class="badge b-ok">Signed</span></td></tr>
+   <tr><td class="n">Supervisor</td><td>Bayo Fashola</td><td><span class="badge b-ok">Signed</span></td></tr>
+   <tr><td class="n">Executive Director</td><td>Chiamaka Eze</td><td><span class="badge b-ok">Signed</span></td></tr>
+   <tr><td class="n">CFO</td><td>Damilola Ajayi</td><td><span class="badge b-warn">Reviewing</span></td></tr>
+  </tbody></table>""",
+ "people": """
+  <div class="app-h"><h5>Team</h5><span class="badge b-info">4 on leave</span></div>
+  <table class="t"><tbody>
+   <tr><td class="n">Adaeze Nwankwo</td><td>Sales</td><td><span class="badge b-ok">Confirmed</span></td></tr>
+   <tr><td class="n">Bayo Fashola</td><td>Sales</td><td><span class="badge b-info">On leave</span></td></tr>
+   <tr><td class="n">Ifeoma Balogun</td><td>Finance</td><td><span class="badge b-warn">Probation</span></td></tr>
+   <tr><td class="n">Uche Madu</td><td>Projects</td><td><span class="badge b-ok">Confirmed</span></td></tr>
+  </tbody></table>""",
+ "revenue": """
+  <div class="app-h"><h5>Pipeline</h5><span class="badge b-ok">22% win rate</span></div>
+  <div class="mini"><div><b>146</b><span>Open</span></div><div><b>&#8358;318m</b><span>Weighted</span></div><div><b>18</b><span>To call</span></div></div>
+  <table class="t"><tbody>
+   <tr><td class="n">Sade Martins</td><td class="m">&#8358;68,000,000</td><td><span class="badge b-ok">Negotiation</span></td></tr>
+   <tr><td class="n">Tari Georgewill</td><td class="m">&#8358;45,000,000</td><td><span class="badge b-warn">Qualified</span></td></tr>
+  </tbody></table>""",
+ "ops": """
+  <div class="app-h"><h5>This week</h5><span class="badge b-warn">2 late</span></div>
+  <table class="t"><tbody>
+   <tr><td class="n">Weekly report</td><td>Projects</td><td><span class="badge b-ok">Filed</span></td></tr>
+   <tr><td class="n">Weekly report</td><td>Facilities</td><td><span class="badge b-err">Escalated</span></td></tr>
+   <tr><td class="n">Device handover</td><td>IT</td><td><span class="badge b-warn">Unsigned</span></td></tr>
+   <tr><td class="n">Pool car, Lagos run</td><td>Admin</td><td><span class="badge b-ok">Closed out</span></td></tr>
+  </tbody></table>""",
+ "gov": """
+  <div class="app-h"><h5>Audit trail</h5><span class="badge b-mute">Immutable</span></div>
+  <table class="t"><tbody>
+   <tr><td class="n">Viewed</td><td>REQ-2026-0412</td><td>Chiamaka Eze</td></tr>
+   <tr><td class="n">Approved</td><td>REQ-2026-0412</td><td>Damilola Ajayi</td></tr>
+   <tr><td class="n">Override</td><td>Budget ceiling</td><td><span class="badge b-warn">Flagged</span></td></tr>
+   <tr><td class="n">Exported</td><td>Payroll summary</td><td>Ikenna Obi</td></tr>
+  </tbody></table>""",
+}
+TIER_LABEL = {"core": "Core", "ops": "Operations", "ent": "Enterprise"}
+
+
+def module_explorer():
+    """Left: every module as an accordion row, grouped by family and filtered by
+    the chips. Right: a frame that follows the selection. One description is
+    visible at a time instead of twenty eight stacked on top of each other."""
+    items = ""
+    for fam, title in FAM_TITLES.items():
+        mods = [m for m in MODULES if m.fam == fam]
+        items += f'<div class="exp-group" data-in="{fam}"><h6>{title}</h6>'
+        for m in mods:
+            first = ' aria-expanded="true" class="exp-item on"' if not items.count("exp-item") else ' aria-expanded="false" class="exp-item"'
+            items += (
+                f'<button type="button"{first} data-in="{m.fam}" '
+                f'data-name="{m.name}" data-famlabel="{title}" data-tier="{m.tier}">'
+                f'<span class="exp-ic"><svg><use href="#i-{m.icon}"/></svg></span>'
+                f'<span class="exp-name">{m.name}</span>'
+                f'<svg class="exp-ch" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+                f'stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">'
+                f'<polyline points="6 9 12 15 18 9"/></svg></button>'
+                f'<div class="exp-body"><p>{m.desc}</p></div>')
+        items += "</div>"
+
+    pills = "".join(f'<span class="tp" data-t="{k}">{v}</span>' for k, v in TIER_LABEL.items())
+    mocks = "".join(f'<div class="exp-mock" data-fam="{k}">{v}</div>'
+                    for k, v in FAM_MOCK.items())
+    return f"""<div class="exp-grid" id="explorer">
+  <div class="exp-list">{items}</div>
+  <div class="exp-side">
+    <div class="shot exp-shot">
+      <div class="shot-bar"><div class="shot-dots"><i></i><i></i><i></i></div>
+        <span class="exp-crumb" id="expCrumb">Spend and approvals</span></div>
+      <div class="shot-in">
+        <h4 class="exp-title" id="expTitle">Requisitions</h4>
+        <div class="exp-tiers"><span class="tp-l">Included from</span>{pills}</div>
+        <div class="exp-mocks">{mocks}</div>
+      </div>
+    </div>
+  </div>
+</div>"""
 
 
 def parse(path):
@@ -613,6 +781,7 @@ def main():
         meta, body = parse(p)
         body = body.replace("<!--MODULE_OPTIONS-->", module_options())
         body = body.replace("<!--TIER_TABLE-->", tier_table())
+        body = body.replace("<!--MODULE_EXPLORER-->", module_explorer())
         frags[slug] = (meta, body)
         (OUT / f"{slug}.html").write_text(document(meta, body, slug), encoding="utf-8")
         print(f"  wrote site/{slug}.html")
