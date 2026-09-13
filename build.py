@@ -36,6 +36,7 @@ UNLISTED = {"thanks"}
 NAV = [
     ("product", "Product", "product.html"),
     ("modules", "Modules", "modules.html"),
+    ("crm", "CRM", "crm.html"),
     ("pricing", "Pricing", "pricing.html"),
     ("investors", "Investors", "investors.html"),
 ]
@@ -153,7 +154,8 @@ def footer(preview):
 
     prod = "".join([
         a("product", "How it works", "product.html"),
-        a("modules", "All 24 modules", "modules.html"),
+        a("modules", "All 28 modules", "modules.html"),
+        a("crm", "CRM and calling", "crm.html"),
         a("pricing", "Pricing", "pricing.html"),
     ])
     comp = "".join([
@@ -173,7 +175,7 @@ def footer(preview):
       <div><h5>Modules</h5><ul>
         <li><a {'href="#" data-page="modules"' if preview else 'href="modules.html"'}>Spend and approvals</a></li>
         <li><a {'href="#" data-page="modules"' if preview else 'href="modules.html"'}>People</a></li>
-        <li><a {'href="#" data-page="modules"' if preview else 'href="modules.html"'}>Revenue</a></li>
+        <li><a {'href="#" data-page="crm"' if preview else 'href="crm.html"'}>Revenue and CRM</a></li>
         <li><a {'href="#" data-page="modules"' if preview else 'href="modules.html"'}>Governance</a></li>
       </ul></div>
       <div><h5>Company</h5><ul>{comp}</ul></div>
@@ -337,8 +339,8 @@ def main():
     (OUT / "favicon.svg").write_text(
         (SRC / "favicon.svg").read_text(encoding="utf-8"), encoding="utf-8")
 
-    order = ["index", "product", "modules", "pricing", "investors", "contact",
-             "thanks"]
+    order = ["index", "product", "modules", "crm", "pricing", "investors",
+             "contact", "thanks"]
     frags = {}
     for slug in order:
         p = SRC / "pages" / f"{slug}.html"
