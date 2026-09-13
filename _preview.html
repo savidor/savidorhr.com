@@ -1,0 +1,2357 @@
+<title>SavidorHR</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════════════════
+   SavidorHR marketing site
+   Enterprise SaaS conventions: white ground, soft cards, generous space,
+   rust reserved for action. Committed to a light theme, as marketing sites
+   in this category are, so every colour is painted explicitly.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root{
+  --brand:#A24212;
+  --brand-700:#8B380F;
+  --brand-100:#F7E4D9;
+  --brand-50:#FDF5F0;
+
+  --ink:#101828;
+  --ink-2:#475467;
+  --ink-3:#667085;
+  --ink-4:#98A2B3;
+
+  --bg:#FFFFFF;
+  --bg-2:#F9FAFB;
+  --bg-3:#F2F4F7;
+  --line:#E4E7EC;
+  --line-2:#D0D5DD;
+
+  --ok:#067647;      --ok-bg:#ECFDF3;   --ok-line:#ABEFC6;
+  --warn:#B54708;    --warn-bg:#FFFAEB; --warn-line:#FEDF89;
+  --err:#B42318;     --err-bg:#FEF3F2;  --err-line:#FECDCA;
+  --info:#175CD3;    --info-bg:#EFF8FF; --info-line:#B2DDFF;
+
+  --r-sm:8px; --r:12px; --r-lg:16px; --r-xl:24px;
+  --sh-sm:0 1px 2px rgba(16,24,40,.05);
+  --sh:0 4px 8px -2px rgba(16,24,40,.08), 0 2px 4px -2px rgba(16,24,40,.04);
+  --sh-lg:0 12px 16px -4px rgba(16,24,40,.08), 0 4px 6px -2px rgba(16,24,40,.03);
+  --sh-xl:0 24px 48px -12px rgba(16,24,40,.18);
+
+  --shell:1216px;
+  --f:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --f-d:"Plus Jakarta Sans","Inter",-apple-system,"Segoe UI",sans-serif;
+  --f-m:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+
+*{box-sizing:border-box;}
+
+/* Netlify Forms honeypot. Real people never see it; bots fill it in. */
+.hp{position:absolute!important; left:-9999px; width:1px; height:1px; overflow:hidden;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--f); font-size:16px; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,h5{font-family:var(--f-d); margin:0; line-height:1.16;
+  letter-spacing:-.021em; text-wrap:balance; font-weight:800;}
+p{margin:0;}
+img,svg{display:block; max-width:100%;}
+a{color:inherit; text-decoration:none;}
+:focus-visible{outline:2px solid var(--brand); outline-offset:2px; border-radius:4px;}
+
+.wrap{max-width:var(--shell); margin:0 auto; padding:0 24px;}
+@media (max-width:640px){ .wrap{padding:0 18px;} }
+
+/* ── Type scale ────────────────────────────────────────────────────── */
+.h1{font-size:clamp(2.4rem,4.6vw,3.65rem); line-height:1.08; letter-spacing:-.03em;}
+.h2{font-size:clamp(1.85rem,3.2vw,2.7rem); letter-spacing:-.026em;}
+.h3{font-size:clamp(1.3rem,2vw,1.6rem); letter-spacing:-.02em;}
+.h4{font-size:1.12rem; letter-spacing:-.014em;}
+.lead{font-size:1.14rem; color:var(--ink-2); line-height:1.62;}
+.small{font-size:.92rem; color:var(--ink-2);}
+.tiny{font-size:.82rem; color:var(--ink-3);}
+.measure{max-width:44ch;} .measure-w{max-width:60ch;}
+
+.eyebrow{
+  display:inline-block; font-size:.78rem; font-weight:700; letter-spacing:.04em;
+  color:var(--brand); text-transform:uppercase; margin-bottom:14px;
+}
+.center{text-align:center;} .center .measure-w{margin-left:auto; margin-right:auto;}
+
+/* ── Buttons ───────────────────────────────────────────────────────── */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  font-family:var(--f); font-size:.94rem; font-weight:600; padding:11px 20px;
+  border-radius:var(--r-sm); border:1px solid transparent; cursor:pointer;
+  transition:background .15s, border-color .15s, color .15s, box-shadow .15s;
+  white-space:nowrap;
+}
+.btn-p{background:var(--brand); color:#fff; box-shadow:var(--sh-sm);}
+.btn-p:hover{background:var(--brand-700);}
+.btn-s{background:#fff; color:var(--ink); border-color:var(--line-2); box-shadow:var(--sh-sm);}
+.btn-s:hover{background:var(--bg-2); border-color:var(--ink-4);}
+.btn-g{background:transparent; color:var(--brand);}
+.btn-g:hover{background:var(--brand-50);}
+.btn-lg{padding:13px 24px; font-size:1rem;}
+.btn-w{background:#fff; color:var(--brand);}
+.btn-w:hover{background:var(--brand-50);}
+.btn-o{background:transparent; color:#fff; border-color:rgba(255,255,255,.45);}
+.btn-o:hover{background:rgba(255,255,255,.12); border-color:#fff;}
+.btn-row{display:flex; gap:12px; flex-wrap:wrap;}
+.center .btn-row{justify-content:center;}
+
+/* ── Header ────────────────────────────────────────────────────────── */
+.hdr{position:sticky; top:0; z-index:100; background:rgba(255,255,255,.9);
+  backdrop-filter:saturate(180%) blur(10px); border-bottom:1px solid var(--line);}
+.hdr-in{display:flex; align-items:center; gap:32px; height:68px;}
+.logo{display:flex; align-items:center; gap:9px; font-family:var(--f-d);
+  font-weight:800; font-size:1.16rem; letter-spacing:-.028em; color:var(--ink);}
+.logo-m{width:30px; height:30px; border-radius:7px; background:var(--brand);
+  display:grid; place-items:center; flex:0 0 auto; box-shadow:var(--sh-sm);}
+.logo-m svg{width:17px; height:17px; color:#fff;}
+.logo i{font-style:normal; color:var(--brand);}
+.nav{display:flex; gap:4px; margin-left:8px;}
+.nav a{padding:8px 13px; border-radius:var(--r-sm); font-size:.94rem;
+  font-weight:500; color:var(--ink-2); transition:background .15s,color .15s;}
+.nav a:hover{background:var(--bg-2); color:var(--ink);}
+.nav a.on{color:var(--brand); background:var(--brand-50);}
+.hdr-cta{display:flex; gap:10px; align-items:center; margin-left:auto;}
+.burger{display:none; width:40px; height:40px; border:1px solid var(--line-2);
+  border-radius:var(--r-sm); background:#fff; cursor:pointer; align-items:center;
+  justify-content:center; margin-left:auto;}
+.burger svg{width:20px; height:20px; color:var(--ink);}
+@media (max-width:940px){
+  .nav,.hdr-cta{display:none;}
+  .burger{display:flex;}
+  .hdr-in{gap:0;}
+}
+.mnav{display:none; border-bottom:1px solid var(--line); background:#fff; padding:10px 0 18px;}
+.mnav.open{display:block;}
+.mnav a{display:block; padding:11px 0; font-size:1rem; font-weight:500;
+  color:var(--ink); border-bottom:1px solid var(--line);}
+.mnav .btn{width:100%; margin-top:14px;}
+
+/* ── Sections ──────────────────────────────────────────────────────── */
+.sec{padding:88px 0;}
+.sec-sm{padding:60px 0;}
+.tint{background:var(--bg-2);}
+.sec-head{margin-bottom:52px;}
+.sec-head .h2{margin-bottom:16px;}
+
+/* ── Hero ──────────────────────────────────────────────────────────── */
+.hero{padding:76px 0 0; background:
+  radial-gradient(900px 400px at 78% -8%, var(--brand-50), transparent 70%),
+  linear-gradient(180deg,#fff 0%, var(--bg-2) 100%);
+  border-bottom:1px solid var(--line);}
+.hero-grid{display:grid; grid-template-columns:1.02fr .98fr; gap:56px; align-items:center;}
+@media (max-width:1000px){ .hero-grid{grid-template-columns:1fr; gap:44px;} }
+.pill{display:inline-flex; align-items:center; gap:8px; padding:5px 12px 5px 6px;
+  background:#fff; border:1px solid var(--line); border-radius:99px;
+  font-size:.83rem; font-weight:500; color:var(--ink-2); box-shadow:var(--sh-sm);
+  margin-bottom:22px;}
+.pill b{background:var(--brand-100); color:var(--brand); font-weight:700;
+  font-size:.74rem; padding:3px 9px; border-radius:99px;}
+.hero .lead{margin-top:20px; font-size:1.19rem;}
+.hero .btn-row{margin-top:30px;}
+.hero-note{margin-top:16px; font-size:.86rem; color:var(--ink-3);}
+
+/* ── Logo strip ────────────────────────────────────────────────────── */
+.logos{padding:34px 0 42px;}
+.logos p{text-align:center; font-size:.82rem; font-weight:600; color:var(--ink-4);
+  letter-spacing:.06em; text-transform:uppercase; margin-bottom:22px;}
+.logo-row{display:flex; justify-content:center; align-items:center; gap:44px; flex-wrap:wrap;}
+.logo-ph{font-family:var(--f-d); font-weight:800; font-size:1.05rem; color:var(--ink-4);
+  letter-spacing:-.02em; display:flex; align-items:center; gap:8px;}
+.logo-ph svg{width:20px; height:20px;}
+
+/* ── Product mockup chrome ─────────────────────────────────────────── */
+.shot{background:#fff; border:1px solid var(--line); border-radius:var(--r-lg);
+  box-shadow:var(--sh-xl); overflow:hidden;}
+.shot-bar{display:flex; align-items:center; gap:8px; padding:11px 14px;
+  background:var(--bg-2); border-bottom:1px solid var(--line);}
+.shot-dots{display:flex; gap:5px;}
+.shot-dots i{width:9px; height:9px; border-radius:50%; background:var(--line-2); display:block;}
+.shot-url{flex:1; background:#fff; border:1px solid var(--line); border-radius:6px;
+  padding:3px 10px; font-size:.72rem; color:var(--ink-3); text-align:center;
+  max-width:280px; margin:0 auto;}
+.shot-in{padding:18px;}
+
+/* app frame: sidebar + content, the way the product actually looks */
+.app{display:grid; grid-template-columns:168px 1fr; min-height:340px;}
+@media (max-width:560px){ .app{grid-template-columns:1fr;} .app-side{display:none;} }
+.app-side{background:var(--bg-2); border-right:1px solid var(--line); padding:14px 10px;}
+.app-side .s-t{font-size:.66rem; font-weight:700; color:var(--ink-4);
+  letter-spacing:.07em; text-transform:uppercase; padding:0 8px; margin-bottom:9px;}
+.app-nav{display:flex; align-items:center; gap:9px; padding:7px 8px; border-radius:6px;
+  font-size:.82rem; font-weight:500; color:var(--ink-2); margin-bottom:1px;}
+.app-nav svg{width:15px; height:15px; flex:0 0 auto; color:var(--ink-4);}
+.app-nav.on{background:#fff; color:var(--brand); font-weight:600; box-shadow:var(--sh-sm);}
+.app-nav.on svg{color:var(--brand);}
+.app-main{padding:16px 18px;}
+.app-h{display:flex; align-items:center; gap:12px; margin-bottom:14px;}
+.app-h h5{font-family:var(--f-d); font-size:1rem; font-weight:700;}
+.app-h .btn{margin-left:auto; padding:6px 12px; font-size:.78rem;}
+
+.mini{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:14px;}
+.mini > div{background:var(--bg-2); border:1px solid var(--line); border-radius:var(--r-sm);
+  padding:10px 12px;}
+.mini b{display:block; font-family:var(--f-d); font-size:1.16rem; font-weight:800;
+  letter-spacing:-.02em; font-variant-numeric:tabular-nums;}
+.mini span{display:block; font-size:.7rem; color:var(--ink-3); margin-top:2px;}
+
+table.t{width:100%; border-collapse:collapse; font-size:.8rem;}
+table.t th{text-align:left; font-size:.68rem; font-weight:600; color:var(--ink-3);
+  text-transform:uppercase; letter-spacing:.05em; padding:0 10px 8px 0;
+  border-bottom:1px solid var(--line);}
+table.t td{padding:9px 10px 9px 0; border-bottom:1px solid var(--line); color:var(--ink-2);}
+table.t tr:last-child td{border-bottom:none;}
+table.t .n{font-weight:600; color:var(--ink);}
+table.t .m{font-family:var(--f-m); font-size:.74rem; font-variant-numeric:tabular-nums;}
+.t-scroll{overflow-x:auto;}
+.t-scroll table.t{min-width:460px;}
+
+.badge{display:inline-flex; align-items:center; gap:5px; font-size:.7rem; font-weight:600;
+  padding:2px 9px; border-radius:99px; border:1px solid; white-space:nowrap;}
+.badge::before{content:""; width:5px; height:5px; border-radius:50%; background:currentColor;}
+.b-ok{color:var(--ok); background:var(--ok-bg); border-color:var(--ok-line);}
+.b-warn{color:var(--warn); background:var(--warn-bg); border-color:var(--warn-line);}
+.b-err{color:var(--err); background:var(--err-bg); border-color:var(--err-line);}
+.b-info{color:var(--info); background:var(--info-bg); border-color:var(--info-line);}
+.b-mute{color:var(--ink-3); background:var(--bg-3); border-color:var(--line-2);}
+
+/* ── Stats band ────────────────────────────────────────────────────── */
+.stats{display:grid; grid-template-columns:repeat(4,1fr); gap:32px;}
+@media (max-width:820px){ .stats{grid-template-columns:repeat(2,1fr); gap:26px;} }
+.stat b{display:block; font-family:var(--f-d); font-size:2.5rem; font-weight:800;
+  letter-spacing:-.032em; color:var(--brand); line-height:1;}
+.stat span{display:block; margin-top:8px; font-size:.92rem; color:var(--ink-2); font-weight:500;}
+
+/* ── Cards ─────────────────────────────────────────────────────────── */
+.cards{display:grid; gap:20px;}
+.c3{grid-template-columns:repeat(3,1fr);}
+.c4{grid-template-columns:repeat(4,1fr);}
+.c2{grid-template-columns:repeat(2,1fr);}
+@media (max-width:1000px){ .c4{grid-template-columns:repeat(2,1fr);} }
+@media (max-width:860px){ .c3{grid-template-columns:1fr;} .c2{grid-template-columns:1fr;} }
+@media (max-width:560px){ .c4{grid-template-columns:1fr;} }
+.card{background:#fff; border:1px solid var(--line); border-radius:var(--r-lg);
+  padding:26px; box-shadow:var(--sh-sm); transition:box-shadow .18s, transform .18s,
+  border-color .18s;}
+.card:hover{box-shadow:var(--sh-lg); transform:translateY(-2px); border-color:var(--line-2);}
+.card .h4{margin-bottom:9px;}
+.card p{color:var(--ink-2); font-size:.95rem;}
+.ic{width:44px; height:44px; border-radius:10px; background:var(--brand-50);
+  border:1px solid var(--brand-100); display:grid; place-items:center; margin-bottom:18px;}
+.ic svg{width:21px; height:21px; color:var(--brand);}
+
+/* ── Alternating feature rows ──────────────────────────────────────── */
+.feat{display:grid; grid-template-columns:1fr 1.08fr; gap:60px; align-items:center;}
+.feat + .feat{margin-top:96px;}
+.feat.rev .feat-t{order:2;}
+@media (max-width:940px){
+  .feat{grid-template-columns:1fr; gap:36px;}
+  .feat.rev .feat-t{order:0;}
+  .feat + .feat{margin-top:64px;}
+}
+.feat-t .h2{margin-bottom:16px;}
+.ticks{list-style:none; margin:24px 0 0; padding:0; display:flex;
+  flex-direction:column; gap:13px;}
+.ticks li{display:grid; grid-template-columns:20px 1fr; gap:12px; align-items:start;
+  font-size:.97rem; color:var(--ink-2);}
+.ticks svg{width:20px; height:20px; color:var(--ok); margin-top:2px;}
+.ticks b{color:var(--ink); font-weight:600;}
+
+/* ── Module index ──────────────────────────────────────────────────── */
+.fam-bar{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:34px;}
+.chip{padding:8px 15px; border-radius:99px; border:1px solid var(--line-2);
+  background:#fff; font-size:.88rem; font-weight:600; color:var(--ink-2);
+  cursor:pointer; font-family:var(--f); transition:all .15s;}
+.chip:hover{border-color:var(--brand); color:var(--brand);}
+.chip.on{background:var(--brand); border-color:var(--brand); color:#fff;}
+.mod-card{background:#fff; border:1px solid var(--line); border-radius:var(--r);
+  padding:22px; box-shadow:var(--sh-sm); transition:box-shadow .18s, transform .18s;}
+.mod-card:hover{box-shadow:var(--sh-lg); transform:translateY(-2px);}
+.mod-card .ic{width:38px; height:38px; border-radius:9px; margin-bottom:14px;}
+.mod-card .ic svg{width:18px; height:18px;}
+.mod-card h4{font-family:var(--f-d); font-size:1.02rem; font-weight:700; margin-bottom:6px;}
+.mod-card p{font-size:.9rem; color:var(--ink-2); line-height:1.55;}
+.mod-card .fam-t{display:inline-block; margin-top:14px; font-size:.72rem; font-weight:600;
+  color:var(--ink-3); background:var(--bg-3); padding:3px 9px; border-radius:99px;}
+
+/* ── Quote ─────────────────────────────────────────────────────────── */
+.quote{background:var(--ink); color:#fff; border-radius:var(--r-xl); padding:56px;}
+@media (max-width:720px){ .quote{padding:34px 26px;} }
+.quote .h3{color:#fff; font-weight:700; line-height:1.36; letter-spacing:-.018em;}
+.quote-by{display:flex; align-items:center; gap:14px; margin-top:28px;}
+.quote-av{width:46px; height:46px; border-radius:50%; background:var(--brand);
+  display:grid; place-items:center; font-family:var(--f-d); font-weight:800;
+  font-size:1.02rem; color:#fff; flex:0 0 auto;}
+.quote-by b{display:block; font-size:.95rem; font-weight:600;}
+.quote-by span{display:block; font-size:.86rem; color:rgba(255,255,255,.62);}
+
+/* ── Pricing ───────────────────────────────────────────────────────── */
+.tiers{display:grid; grid-template-columns:repeat(3,1fr); gap:22px; align-items:start;}
+@media (max-width:940px){ .tiers{grid-template-columns:1fr; max-width:460px; margin:0 auto;} }
+.tier{background:#fff; border:1px solid var(--line); border-radius:var(--r-lg);
+  padding:30px; box-shadow:var(--sh-sm); display:flex; flex-direction:column;}
+.tier.best{border:2px solid var(--brand); box-shadow:var(--sh-xl); position:relative;}
+.tier-tag{position:absolute; top:-13px; left:50%; transform:translateX(-50%);
+  background:var(--brand); color:#fff; font-size:.72rem; font-weight:700;
+  padding:5px 14px; border-radius:99px; letter-spacing:.03em; white-space:nowrap;}
+.tier h3{font-family:var(--f-d); font-size:1.22rem; font-weight:800;}
+.tier .who{font-size:.88rem; color:var(--ink-3); margin-top:6px;}
+.price{margin:22px 0 4px; font-family:var(--f-d); font-size:2.35rem; font-weight:800;
+  letter-spacing:-.032em; font-variant-numeric:tabular-nums;}
+.price small{font-size:.92rem; font-weight:600; color:var(--ink-3); letter-spacing:0;}
+.setup{font-size:.86rem; color:var(--ink-3); padding-bottom:22px;
+  border-bottom:1px solid var(--line); margin-bottom:22px;}
+.tier ul{list-style:none; margin:0 0 26px; padding:0; display:flex;
+  flex-direction:column; gap:11px; flex:1;}
+.tier li{display:grid; grid-template-columns:18px 1fr; gap:11px; align-items:start;
+  font-size:.93rem; color:var(--ink-2);}
+.tier li svg{width:18px; height:18px; color:var(--ok); margin-top:3px;}
+
+table.cmp{width:100%; border-collapse:collapse; font-size:.93rem;}
+table.cmp th{text-align:left; padding:14px 16px; background:var(--bg-2);
+  font-size:.82rem; font-weight:700; color:var(--ink); border-bottom:1px solid var(--line);}
+table.cmp th:not(:first-child),table.cmp td:not(:first-child){text-align:center; width:15%;}
+table.cmp td{padding:13px 16px; border-bottom:1px solid var(--line); color:var(--ink-2);}
+table.cmp tr:last-child td{border-bottom:none;}
+table.cmp svg{width:18px; height:18px; color:var(--ok); margin:0 auto;}
+table.cmp .no{color:var(--ink-4);}
+.cmp-wrap{border:1px solid var(--line); border-radius:var(--r-lg); overflow:hidden;
+  box-shadow:var(--sh-sm); background:#fff;}
+.cmp-scroll{overflow-x:auto;}
+.cmp-scroll table.cmp{min-width:640px;}
+
+/* ── FAQ ───────────────────────────────────────────────────────────── */
+.faq{border-top:1px solid var(--line);}
+.faq details{border-bottom:1px solid var(--line);}
+.faq summary{padding:22px 0; font-family:var(--f-d); font-size:1.05rem; font-weight:700;
+  cursor:pointer; list-style:none; display:flex; align-items:center; gap:16px;}
+.faq summary::-webkit-details-marker{display:none;}
+.faq summary::after{content:"+"; margin-left:auto; font-size:1.5rem; font-weight:400;
+  color:var(--ink-3); line-height:1;}
+.faq details[open] summary::after{content:"\2212";}
+.faq p{padding:0 0 22px; color:var(--ink-2); max-width:70ch;}
+
+/* ── Investor slots ────────────────────────────────────────────────── */
+.slots{display:grid; grid-template-columns:repeat(4,1fr); gap:18px;}
+@media (max-width:820px){ .slots{grid-template-columns:repeat(2,1fr);} }
+.slot{border:2px dashed var(--line-2); border-radius:var(--r); padding:22px;
+  background:var(--bg-2); text-align:center;}
+.slot b{display:block; font-family:var(--f-d); font-size:1.6rem; font-weight:800;
+  color:var(--ink-4); letter-spacing:.06em;}
+.slot span{display:block; font-size:.84rem; color:var(--ink-3); margin-top:8px; font-weight:500;}
+
+/* ── Form ──────────────────────────────────────────────────────────── */
+.form-card{background:#fff; border:1px solid var(--line); border-radius:var(--r-lg);
+  padding:32px; box-shadow:var(--sh-lg);}
+.fld{margin-bottom:18px;}
+.fld label{display:block; font-size:.88rem; font-weight:600; margin-bottom:7px;}
+.fld input,.fld select,.fld textarea{
+  width:100%; padding:11px 13px; border:1px solid var(--line-2); border-radius:var(--r-sm);
+  font-family:var(--f); font-size:.95rem; color:var(--ink); background:#fff;
+  transition:border-color .15s, box-shadow .15s;
+}
+.fld input:focus,.fld select:focus,.fld textarea:focus{
+  outline:none; border-color:var(--brand); box-shadow:0 0 0 3px var(--brand-100);
+}
+.fld textarea{resize:vertical; min-height:104px;}
+.f2{display:grid; grid-template-columns:1fr 1fr; gap:0 16px;}
+@media (max-width:560px){ .f2{grid-template-columns:1fr;} }
+
+/* ── CTA band ──────────────────────────────────────────────────────── */
+.cta{background:linear-gradient(135deg,var(--brand-700),var(--brand)); color:#fff;
+  border-radius:var(--r-xl); padding:60px; text-align:center;}
+@media (max-width:720px){ .cta{padding:40px 26px;} }
+.cta .h2{color:#fff; margin-bottom:14px;}
+.cta p{color:rgba(255,255,255,.86); font-size:1.08rem; max-width:52ch; margin:0 auto 28px;}
+
+/* ── Footer ────────────────────────────────────────────────────────── */
+.ftr{background:var(--bg-2); border-top:1px solid var(--line); padding:60px 0 30px;}
+.ftr-grid{display:grid; grid-template-columns:1.6fr repeat(4,1fr); gap:40px;}
+@media (max-width:940px){ .ftr-grid{grid-template-columns:1fr 1fr; gap:32px;} }
+@media (max-width:560px){ .ftr-grid{grid-template-columns:1fr;} }
+.ftr h5{font-family:var(--f-d); font-size:.84rem; font-weight:700; margin-bottom:16px;
+  color:var(--ink);}
+.ftr ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:11px;}
+.ftr a{font-size:.92rem; color:var(--ink-2);}
+.ftr a:hover{color:var(--brand);}
+.ftr-about p{font-size:.92rem; color:var(--ink-2); margin-top:16px; max-width:32ch;}
+.ftr-btm{margin-top:46px; padding-top:24px; border-top:1px solid var(--line);
+  display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  font-size:.86rem; color:var(--ink-3);}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto;}
+  *,*::before,*::after{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   POLISH AND RESPONSIVE
+   Appended so the base system above stays readable. Later rules of equal
+   specificity win, which is how the phone pass overrides desktop spacing.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Family accents ───────────────────────────────────────────────────
+   Rust stays the action colour, but icon tiles get their own family hue so
+   a wall of 24 modules reads as five groups instead of one orange block. */
+:root{
+  --f1:#A24212; --f1-bg:#FDF0E8; --f1-ln:#F6D8C5;   /* spend    */
+  --f2:#0B7A5A; --f2-bg:#E9F7F1; --f2-ln:#C2EADA;   /* people   */
+  --f3:#6435C9; --f3-bg:#F2EDFC; --f3-ln:#DBCDF7;   /* revenue  */
+  --f4:#1A56DB; --f4-bg:#EAF2FE; --f4-ln:#C7DCFB;   /* ops      */
+  --f5:#3A3FBF; --f5-bg:#EDEEFB; --f5-ln:#D1D4F5;   /* govern.  */
+}
+.mod-card[data-in="spend"]   .ic{background:var(--f1-bg); border-color:var(--f1-ln);}
+.mod-card[data-in="spend"]   .ic svg{color:var(--f1);}
+.mod-card[data-in="people"]  .ic{background:var(--f2-bg); border-color:var(--f2-ln);}
+.mod-card[data-in="people"]  .ic svg{color:var(--f2);}
+.mod-card[data-in="revenue"] .ic{background:var(--f3-bg); border-color:var(--f3-ln);}
+.mod-card[data-in="revenue"] .ic svg{color:var(--f3);}
+.mod-card[data-in="ops"]     .ic{background:var(--f4-bg); border-color:var(--f4-ln);}
+.mod-card[data-in="ops"]     .ic svg{color:var(--f4);}
+.mod-card[data-in="gov"]     .ic{background:var(--f5-bg); border-color:var(--f5-ln);}
+.mod-card[data-in="gov"]     .ic svg{color:var(--f5);}
+
+/* Generic card grids cycle through the same five, so no grid is monotone. */
+.cards .card:nth-child(5n+2) .ic{background:var(--f2-bg); border-color:var(--f2-ln);}
+.cards .card:nth-child(5n+2) .ic svg{color:var(--f2);}
+.cards .card:nth-child(5n+3) .ic{background:var(--f3-bg); border-color:var(--f3-ln);}
+.cards .card:nth-child(5n+3) .ic svg{color:var(--f3);}
+.cards .card:nth-child(5n+4) .ic{background:var(--f4-bg); border-color:var(--f4-ln);}
+.cards .card:nth-child(5n+4) .ic svg{color:var(--f4);}
+.cards .card:nth-child(5n+5) .ic{background:var(--f5-bg); border-color:var(--f5-ln);}
+.cards .card:nth-child(5n+5) .ic svg{color:var(--f5);}
+
+/* ── Softer, friendlier shapes ────────────────────────────────────── */
+.card,.mod-card{border-radius:18px;}
+.ic{border-radius:13px; transition:transform .28s cubic-bezier(.34,1.4,.5,1), background .2s;}
+.card:hover .ic,.mod-card:hover .ic{transform:scale(1.09) rotate(-5deg);}
+.shot{border-radius:18px;}
+.btn{border-radius:10px;}
+.tier{border-radius:20px;}
+.form-card{border-radius:20px;}
+.quote,.cta{border-radius:26px;}
+
+/* ── Gradient headline accent ─────────────────────────────────────── */
+.grad{color:var(--brand);}
+@supports (-webkit-background-clip:text) or (background-clip:text){
+  .grad{
+    background:linear-gradient(100deg,#C25016 0%,#A24212 45%,#7A3009 100%);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:transparent;
+  }
+}
+.stat b{
+  background:linear-gradient(135deg,#C25016,#A24212 60%,#7A3009);
+  -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+/* ── Ambient hero shapes ──────────────────────────────────────────── */
+.hero{position:relative; overflow:hidden;}
+.hero > *{position:relative; z-index:1;}
+.hero::before,.hero::after{
+  content:""; position:absolute; border-radius:50%; pointer-events:none;
+  filter:blur(70px); opacity:.5; z-index:0;
+}
+.hero::before{width:460px; height:460px; top:-170px; right:-110px;
+  background:radial-gradient(circle,#F6C9A8,transparent 68%); animation:float1 17s ease-in-out infinite;}
+.hero::after{width:380px; height:380px; bottom:40px; left:-150px;
+  background:radial-gradient(circle,#CBDCF8,transparent 68%); animation:float2 21s ease-in-out infinite;}
+@keyframes float1{0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(-26px,30px) scale(1.07);}}
+@keyframes float2{0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(30px,-24px) scale(1.09);}}
+
+/* ── Live dot on the announcement pill ────────────────────────────── */
+.pill b{position:relative;}
+.pill{transition:transform .2s, box-shadow .2s;}
+.pill:hover{transform:translateY(-1px); box-shadow:var(--sh);}
+
+/* ── Buttons with a little life ───────────────────────────────────── */
+.btn{position:relative;}
+.btn-p{box-shadow:0 1px 2px rgba(16,24,40,.06), 0 4px 12px -3px rgba(162,66,18,.34);}
+.btn-p:hover{transform:translateY(-1px); box-shadow:0 2px 4px rgba(16,24,40,.07), 0 8px 20px -4px rgba(162,66,18,.42);}
+.btn-p:active,.btn-s:active{transform:translateY(0);}
+.btn-s:hover{transform:translateY(-1px);}
+.btn svg{transition:transform .2s;}
+.btn:hover svg{transform:translateX(3px);}
+
+/* ── Screenshots feel like objects, not flat images ───────────────── */
+.shot{transition:transform .35s ease, box-shadow .35s ease;}
+.feat .shot:hover{transform:translateY(-5px);
+  box-shadow:0 32px 60px -14px rgba(16,24,40,.22);}
+.app-nav{transition:background .16s, color .16s;}
+.badge{transition:transform .18s;}
+tr:hover .badge{transform:scale(1.04);}
+
+/* Family chips */
+.chip{transition:transform .16s, background .16s, border-color .16s, color .16s;}
+.chip:hover{transform:translateY(-1px);}
+.chip.on{box-shadow:0 4px 12px -3px rgba(162,66,18,.4);}
+
+/* Tier card lift */
+.tier{transition:transform .25s, box-shadow .25s;}
+.tier:hover{transform:translateY(-4px); box-shadow:var(--sh-lg);}
+.tier.best:hover{box-shadow:0 28px 56px -14px rgba(162,66,18,.28);}
+
+/* Footer and FAQ warmth */
+.ftr a{transition:color .15s, transform .15s; display:inline-block;}
+.ftr a:hover{transform:translateX(2px);}
+.faq summary{transition:color .16s;}
+.faq summary:hover{color:var(--brand);}
+.faq details[open] summary{color:var(--brand);}
+
+/* Sector strip */
+.logo-ph{transition:color .18s, transform .18s;}
+.logo-ph:hover{color:var(--brand); transform:translateY(-2px);}
+
+/* ═══════════════════════════════════════════════════════════════════
+   PHONE AND TABLET
+   The layout breakpoints above already reflow the grids. This pass
+   tightens spacing, type and touch targets so it feels designed for a
+   phone rather than merely fitting on one.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Do NOT use overflow-x:hidden here. It makes the document a scroll container,
+   and position:sticky sticks to its nearest scrolling ancestor, which silently
+   kills the sticky header. `clip` does the same clipping without becoming a
+   scroll container. The real overflow cause is fixed above with min-width:0 on
+   grid children, so this is only a safety net. */
+html,body{max-width:100%;}
+@supports (overflow:clip){ html,body{overflow-x:clip;} }
+
+@media (max-width:900px){
+  .sec{padding:66px 0;}
+  .sec-head{margin-bottom:38px;}
+  .feat + .feat{margin-top:56px;}
+}
+
+@media (max-width:640px){
+  .sec{padding:52px 0;}
+  .sec-sm{padding:34px 0;}
+  .sec-head{margin-bottom:30px;}
+
+  /* Type comes down a step so headlines do not run to five lines. */
+  .h1{font-size:2.15rem; line-height:1.12; letter-spacing:-.026em;}
+  .h2{font-size:1.62rem;}
+  .h3{font-size:1.22rem;}
+  .lead,.hero .lead{font-size:1.02rem;}
+  .measure,.measure-w{max-width:100%;}
+
+  .hero{padding-top:44px;}
+  .hero .btn-row{margin-top:24px;}
+  .hero::before{width:280px; height:280px; top:-110px; right:-90px;}
+  .hero::after{display:none;}
+
+  /* Full width buttons read as tappable targets, not as inline links. */
+  .btn-row{gap:10px;}
+  .btn-row .btn-lg{width:100%;}
+  .btn{min-height:46px;}
+
+  .pill{font-size:.78rem; margin-bottom:18px;}
+  .card{padding:22px; border-radius:16px;}
+  .mod-card{padding:19px; border-radius:16px;}
+  .ic{width:40px; height:40px;}
+  .ic svg{width:19px; height:19px;}
+
+  .stats{gap:22px 18px;}
+  .stat b{font-size:2rem;}
+  .stat span{font-size:.86rem;}
+
+  /* Mockups: shrink the chrome, keep the content legible. */
+  .shot{border-radius:14px;}
+  .shot-in,.app-main{padding:14px;}
+  .shot-url{font-size:.66rem; padding:3px 8px;}
+  .mini{gap:8px;}
+  .mini > div{padding:9px 10px;}
+  .mini b{font-size:1rem;}
+  .mini span{font-size:.64rem;}
+  table.t{font-size:.76rem;}
+  table.t th{font-size:.62rem;}
+
+  /* Chips scroll sideways rather than stacking into four rows. */
+  .fam-bar{flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch;
+    padding:2px 18px 8px; margin:0 -18px 26px; scrollbar-width:none;}
+  .fam-bar::-webkit-scrollbar{display:none;}
+  .chip{flex:0 0 auto; padding:8px 14px; font-size:.84rem;}
+
+  .logo-row{gap:16px 22px;}
+  .logo-ph{font-size:.92rem;}
+  .logos{padding:26px 0 34px;}
+
+  .quote{padding:28px 22px; border-radius:20px;}
+  .quote .h3{font-size:1.08rem; line-height:1.45;}
+  .quote-by{margin-top:22px;}
+
+  .tier{padding:24px; border-radius:18px;}
+  .price{font-size:2rem; margin-top:18px;}
+  .tiers{gap:18px;}
+  .tier.best{margin-top:8px;}
+
+  .form-card{padding:22px; border-radius:18px;}
+  .fld input,.fld select,.fld textarea{font-size:16px;}  /* stops iOS zooming on focus */
+
+  .cta{padding:34px 22px; border-radius:20px;}
+  .cta p{font-size:1rem; margin-bottom:22px;}
+
+  .faq summary{padding:18px 0; font-size:.99rem; gap:12px;}
+  .faq p{padding-bottom:18px; font-size:.95rem;}
+
+  .slots{gap:12px;}
+  .slot{padding:18px 14px;}
+  .slot b{font-size:1.3rem;}
+
+  .ftr{padding:44px 0 26px;}
+  .ftr-grid{gap:28px;}
+  .ftr-btm{margin-top:32px;}
+
+  .ticks li{font-size:.94rem; gap:10px;}
+}
+
+@media (max-width:420px){
+  .wrap{padding:0 15px;}
+  .h1{font-size:1.92rem;}
+  .h2{font-size:1.45rem;}
+  .mini{grid-template-columns:1fr 1fr;}
+  .mini > div:nth-child(3){grid-column:1 / -1;}
+  .shot-url{display:none;}
+  .stats{grid-template-columns:1fr 1fr;}
+  .hdr-in{height:60px;}
+  .logo{font-size:1.05rem;}
+  .fam-bar{padding-left:15px; padding-right:15px; margin-left:-15px; margin-right:-15px;}
+}
+
+/* Touch devices get no hover transforms, which otherwise stick after a tap. */
+@media (hover:none){
+  .card:hover,.mod-card:hover,.tier:hover,.feat .shot:hover,
+  .btn:hover,.chip:hover,.pill:hover{transform:none;}
+  .card:hover .ic,.mod-card:hover .ic{transform:none;}
+  .ftr a:hover{transform:none;}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .hero::before,.hero::after{animation:none;}
+}
+
+/* ── Floating approval notice over the hero mockup ────────────────────
+   Visible from first paint. It bobs gently rather than animating in, so a
+   screenshot or a reader arriving mid scroll never catches it missing. */
+.shot-stack{position:relative;}
+.float-note{
+  position:absolute; left:-20px; bottom:-24px; z-index:2;
+  display:flex; align-items:center; gap:11px; max-width:280px;
+  background:#fff; border:1px solid var(--line); border-radius:15px;
+  padding:11px 15px 11px 12px; box-shadow:0 18px 36px -10px rgba(16,24,40,.22);
+  animation:bob 5s ease-in-out infinite;
+}
+.float-note b{display:block; font-size:.88rem; font-weight:600; line-height:1.3;}
+.float-note span{display:block; font-size:.76rem; color:var(--ink-3); margin-top:2px;}
+.fn-ic{width:32px; height:32px; border-radius:50%; background:var(--ok-bg);
+  border:1px solid var(--ok-line); display:grid; place-items:center; flex:0 0 auto;}
+.fn-ic svg{width:17px; height:17px; color:var(--ok);}
+@keyframes bob{0%,100%{transform:translateY(0);} 50%{transform:translateY(-7px);}}
+
+@media (max-width:1000px){ .float-note{left:auto; right:-8px; bottom:-20px;} }
+@media (max-width:640px){ .float-note{display:none;} }
+
+/* ── A live dot on the announcement pill ──────────────────────────── */
+.pill b::after{
+  content:""; display:inline-block; width:5px; height:5px; border-radius:50%;
+  background:var(--brand); margin-left:6px; vertical-align:middle;
+  animation:blip 2.4s ease-in-out infinite;
+}
+@keyframes blip{0%,100%{opacity:1; transform:scale(1);} 50%{opacity:.35; transform:scale(.75);}}
+
+/* Gradient headlines need the fallback colour on the span, not the parent. */
+.h1 .grad{display:inline-block;}
+
+@media (prefers-reduced-motion:reduce){
+  .float-note,.pill b::after{animation:none;}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   FIXES: horizontal overflow, and the mobile menu
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Stop a long child widening its track ─────────────────────────────
+   Grid and flex children default to min-width:auto, so an item that will
+   not wrap (the announcement pill, a long table cell) can push its track
+   wider than the viewport. The page then renders at that width and gets
+   clipped, which reads as text cut off at the right edge. Giving every
+   track child min-width:0 lets it shrink and wrap instead. */
+.hero-grid > *, .feat > *, .cards > *, .stats > *, .tiers > *,
+.ftr-grid > *, .f2 > *, .two > *, .app > *, .mini > *, .slots > *,
+.briefs > *, .a-grid > *, .fam-bar > *, .logo-row > *{min-width:0;}
+
+/* The pill is the specific offender: inline-flex with a full sentence in it. */
+.pill{flex-wrap:wrap; max-width:100%; text-align:left;}
+.pill b{flex:0 0 auto;}
+
+/* Long words and reference codes must break rather than widen the page. */
+.lead, .hero-note, .card p, .mod-card p, .ticks li, .brief p{overflow-wrap:break-word;}
+
+/* Buttons stop forcing their own width once they are full width on a phone. */
+@media (max-width:640px){
+  .btn{white-space:normal; text-align:center;}
+}
+
+/* ── Mobile menu ──────────────────────────────────────────────────────
+   `.mnav a` (0,1,1) outranks `.btn` (0,1,0), so the buttons inside the menu
+   were inheriting display:block and losing their centring and padding.
+   These rules are scoped tighter so the buttons win it back. */
+.mnav{padding:8px 0 20px;}
+.mnav a{
+  display:block; padding:14px 4px; font-size:1.02rem; font-weight:600;
+  color:var(--ink); border-bottom:1px solid var(--line); border-radius:8px;
+  transition:color .15s, background .15s, padding-left .15s;
+}
+.mnav a:last-of-type{border-bottom:none;}
+.mnav a:hover, .mnav a:active{color:var(--brand); background:var(--bg-2); padding-left:10px;}
+.mnav a.on{color:var(--brand); position:relative;}
+.mnav a.on::before{
+  content:""; position:absolute; left:-4px; top:50%; transform:translateY(-50%);
+  width:3px; height:18px; border-radius:2px; background:var(--brand);
+}
+
+.mnav-cta{display:flex; flex-direction:column; gap:10px; margin-top:18px;
+  padding-top:18px; border-top:1px solid var(--line);}
+.mnav .mnav-cta .btn{
+  display:flex; align-items:center; justify-content:center;
+  width:100%; min-height:48px; padding:13px 20px;
+  border-bottom:none; border-radius:10px; font-size:.98rem; font-weight:600;
+}
+.mnav .mnav-cta .btn-p{background:var(--brand); color:#fff; border-color:var(--brand);}
+.mnav .mnav-cta .btn-p:hover{background:var(--brand-700); color:#fff; padding-left:20px;}
+.mnav .mnav-cta .btn-s{background:#fff; color:var(--ink); border-color:var(--line-2);}
+.mnav .mnav-cta .btn-s:hover{background:var(--bg-2); color:var(--ink); padding-left:20px;}
+
+/* The burger turns into a close control while the menu is open. */
+.burger{transition:background .15s, border-color .15s;}
+.burger.x{background:var(--ink); border-color:var(--ink);}
+.burger.x svg{color:#fff; transform:rotate(90deg);}
+.burger svg{transition:transform .2s, color .15s;}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Blurred mockup URL, and the header on scroll
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* An internal settings path is shown as a redacted screenshot would show it.
+   The text stays in the DOM for layout but is aria-hidden, since a blurred
+   string is decorative and reads as noise to a screen reader. */
+.shot-url.blur{
+  filter:blur(3.5px);
+  user-select:none; -webkit-user-select:none; pointer-events:none;
+  color:var(--ink-2);
+}
+
+/* ── Header: compact, retract, progress ──────────────────────────────
+   Sticky already; this adds the depth cue. It compacts and casts a shadow
+   once you leave the top, retracts on the way down so the page has room,
+   and returns immediately on the way up. */
+.hdr{
+  /* No will-change here. It is a known trigger for sticky failing in some
+     Safari builds, and one header transition does not need the layer hint. */
+  transition:box-shadow .25s ease, background .25s ease, transform .32s cubic-bezier(.4,0,.2,1);
+}
+.hdr-in{transition:height .25s ease;}
+.hdr.scrolled{
+  background:rgba(255,255,255,.94);
+  box-shadow:0 4px 20px -6px rgba(16,24,40,.13);
+  border-bottom-color:transparent;
+}
+.hdr.scrolled .hdr-in{height:58px;}
+.hdr.scrolled .logo-m{width:27px; height:27px;}
+.hdr.scrolled .logo-m svg{width:15px; height:15px;}
+.logo-m{transition:width .25s ease, height .25s ease;}
+.logo-m svg{transition:width .25s ease, height .25s ease;}
+
+/* Retracted. Transform beats the sticky offset, so it slides fully clear. */
+.hdr.up{transform:translateY(-100%);}
+
+/* How far through the page you are. */
+.hdr-bar{
+  position:absolute; left:0; right:0; bottom:-1px; height:2px;
+  background:linear-gradient(90deg,#C25016,var(--brand) 60%,#7A3009);
+  transform:scaleX(0); transform-origin:0 50%;
+  transition:transform .1s linear;
+  pointer-events:none;
+}
+
+@media (max-width:640px){
+  .hdr.scrolled .hdr-in{height:54px;}
+}
+
+/* The retract is motion for its own sake, so it is dropped entirely here.
+   The compact state and the progress bar stay, since they carry information. */
+@media (prefers-reduced-motion:reduce){
+  .hdr{transition:none;}
+  .hdr.up{transform:none;}
+  .hdr-bar{transition:none;}
+}
+
+/* ── Investor figures, once they hold a real number ───────────────────
+   The dashed treatment marks a slot as unfilled. A filled one gets a solid
+   edge and the brand colour, so the two states are never confused. */
+.slot.filled{
+  border-style:solid; border-color:var(--line); background:#fff;
+  box-shadow:var(--sh-sm);
+}
+.slot.filled b{color:var(--brand); letter-spacing:-.028em; font-size:1.85rem;}
+.slot.filled span{color:var(--ink-2);}
+/* "On request" is words, not a figure, so it does not shout like one. */
+.slot.soft b{font-size:1.16rem; color:var(--ink-2); letter-spacing:-.01em;}
+@media (max-width:640px){
+  .slot.filled b{font-size:1.5rem;}
+  .slot.soft b{font-size:1rem;}
+}
+
+</style>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol><symbol id="i-check-c" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="16 10 11 15 8 12"/></symbol><symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></symbol><symbol id="i-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></symbol><symbol id="i-wallet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></symbol><symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></symbol><symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol><symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol><symbol id="i-award" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5 17 22l-5-3-5 3 1.5-8.5"/></symbol><symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol><symbol id="i-case" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol><symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22 6 12 13 2 6"/></symbol><symbol id="i-mega" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1z"/><path d="M16 8a5 5 0 0 1 0 8"/><path d="M19 5a9 9 0 0 1 0 14"/></symbol><symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol><symbol id="i-laptop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><line x1="2" y1="20" x2="22" y2="20"/></symbol><symbol id="i-car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3v-5l2-5h14l2 5v5h-2"/><circle cx="7.5" cy="17" r="2"/><circle cx="16.5" cy="17" r="2"/><line x1="9.5" y1="17" x2="14.5" y2="17"/></symbol><symbol id="i-screen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></symbol><symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></symbol><symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol><symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol><symbol id="i-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></symbol><symbol id="i-db" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.7-4 3-9 3s-9-1.3-9-3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/></symbol><symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol><symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></symbol><symbol id="i-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol><symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol><symbol id="i-route" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"/><circle cx="18" cy="5" r="3"/><path d="M9 19h4a4 4 0 0 0 4-4V9"/></symbol><symbol id="i-build" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 1 5 5L8.5 22.5 2 24l1.5-6.5z"/><line x1="12" y1="9" x2="18" y2="15"/></symbol></svg>
+
+<header class="hdr">
+  <div class="wrap hdr-in">
+    <a class="logo" href="#" data-page="index"><span class="logo-m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="5 12.5 10 17.5 19 7.5"/></svg></span>Savidor<i>HR</i></a>
+    <nav class="nav"><a href="#" data-page="product">Product</a><a href="#" data-page="modules">Modules</a><a href="#" data-page="pricing">Pricing</a><a href="#" data-page="investors">Investors</a></nav>
+    <div class="hdr-cta">
+      <a class="btn btn-s" href="#" data-page="contact">Contact sales</a>
+      <a class="btn btn-p" href="#" data-page="contact">Book a demo</a>
+    </div>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
+      <svg><use href="#i-menu"/></svg>
+    </button>
+  </div>
+  <div class="hdr-bar" id="hdrBar"></div>
+  <div class="wrap"><div class="mnav" id="mnav"><a href="#" data-page="product">Product</a><a href="#" data-page="modules">Modules</a><a href="#" data-page="pricing">Pricing</a><a href="#" data-page="investors">Investors</a>
+    <div class="mnav-cta">
+      <a class="btn btn-p" href="#" data-page="contact">Book a demo</a>
+      <a class="btn btn-s" href="#" data-page="contact">Contact sales</a>
+    </div>
+  </div></div>
+</header>
+<div class="page" id="page-index"><main><section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="pill"><b>New</b> Procurement and vendor quotes now included in Operations</div>
+      <h1 class="h1">HR and approvals,<br><span class="grad">finally on one system.</span></h1>
+      <p class="lead measure">
+        SavidorHR runs requisitions, leave, appraisals, sales and payments through the
+        approval chain your company already uses. Every decision is recorded, in order,
+        by the person who made it.
+      </p>
+      <div class="btn-row">
+        <a class="btn btn-p btn-lg" href="contact.html" data-page="contact">Book a demo</a>
+        <a class="btn btn-s btn-lg" href="modules.html" data-page="modules">Explore 24 modules</a>
+      </div>
+      <p class="hero-note">Deployed in weeks, not quarters. No dedicated IT team required.</p>
+    </div>
+
+    <div class="shot-stack">
+    <div class="shot">
+      <div class="shot-bar">
+        <div class="shot-dots"><i></i><i></i><i></i></div>
+        <div class="shot-url">app.savidorhr.com.ng/requisitions</div>
+      </div>
+      <div class="app">
+        <div class="app-side">
+          <div class="s-t">Meridian Group</div>
+          <div class="app-nav on"><svg><use href="#i-doc"/></svg>Requisitions</div>
+          <div class="app-nav"><svg><use href="#i-cal"/></svg>Leave</div>
+          <div class="app-nav"><svg><use href="#i-users"/></svg>People</div>
+          <div class="app-nav"><svg><use href="#i-target"/></svg>Leads</div>
+          <div class="app-nav"><svg><use href="#i-chart"/></svg>Reports</div>
+          <div class="app-nav"><svg><use href="#i-shield"/></svg>Audit</div>
+        </div>
+        <div class="app-main">
+          <div class="app-h">
+            <h5>Awaiting your approval</h5>
+            <span class="badge b-warn">18 pending</span>
+          </div>
+          <div class="mini">
+            <div><b>18</b><span>Awaiting you</span></div>
+            <div><b>&#8358;42.8m</b><span>In flight</span></div>
+            <div><b>3.2d</b><span>Median close</span></div>
+          </div>
+          <div class="t-scroll">
+            <table class="t">
+              <thead><tr><th>Request</th><th>Site</th><th>Amount</th><th>Stage</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td class="n">Perimeter fencing</td><td>Harmattan Heights</td>
+                  <td class="m">&#8358;4,850,000</td><td><span class="badge b-warn">CFO review</span></td>
+                </tr>
+                <tr>
+                  <td class="n">Diesel, Q1 top up</td><td>Cedarline Court</td>
+                  <td class="m">&#8358;1,240,000</td><td><span class="badge b-ok">Approved</span></td>
+                </tr>
+                <tr>
+                  <td class="n">Survey drone</td><td>Meridian Motors</td>
+                  <td class="m">&#8358;2,100,000</td><td><span class="badge b-info">Quotes 1 of 2</span></td>
+                </tr>
+                <tr>
+                  <td class="n">Generator overhaul</td><td>Harmattan Heights</td>
+                  <td class="m">&#8358;6,700,000</td><td><span class="badge b-err">Returned</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="float-note">
+        <span class="fn-ic"><svg><use href="#i-check-c"/></svg></span>
+        <div>
+          <b>Approved by Chiamaka Eze</b>
+          <span>Executive Director, 2 minutes ago</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap logos">
+    <p>Built for multi arm groups</p>
+    <div class="logo-row">
+      <span class="logo-ph"><svg><use href="#i-case"/></svg>Property</span>
+      <span class="logo-ph"><svg><use href="#i-car"/></svg>Automobile</span>
+      <span class="logo-ph"><svg><use href="#i-build"/></svg>Facilities</span>
+      <span class="logo-ph"><svg><use href="#i-layers"/></svg>Projects</span>
+      <span class="logo-ph"><svg><use href="#i-cart"/></svg>Retail</span>
+    </div>
+  </div>
+</section>
+
+<section class="sec-sm">
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat"><b>24</b><span>Modules in production today</span></div>
+      <div class="stat"><b>19</b><span>Distinct role permissions</span></div>
+      <div class="stat"><b>187</b><span>Screens already shipped</span></div>
+      <div class="stat"><b>1</b><span>Permission model across all of it</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec tint">
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="eyebrow">Why teams switch</span>
+      <h2 class="h2">Stop approving four million naira in a chat thread</h2>
+      <p class="lead measure-w">
+        Most mid sized companies already have a process. What they lack is a system that
+        enforces it and remembers it. That is the entire job of SavidorHR.
+      </p>
+    </div>
+    <div class="cards c4">
+      <div class="card">
+        <div class="ic"><svg><use href="#i-route"/></svg></div>
+        <h3 class="h4">Routing you configure</h3>
+        <p>Approval chains are settings, not code. Change who signs for what per site,
+          per category and per threshold without a developer.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg><use href="#i-shield"/></svg></div>
+        <h3 class="h4">An answer six months later</h3>
+        <p>Every view, decision and override is written to one immutable log, so an
+          audit question has a factual answer instead of a search through inboxes.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg><use href="#i-zap"/></svg></div>
+        <h3 class="h4">Live in weeks</h3>
+        <p>Role mapping, data migration and training are a fixed one time engagement.
+          No multi year rollout and no dedicated IT function.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg><use href="#i-bell"/></svg></div>
+        <h3 class="h4">Nobody has to chase</h3>
+        <p>Email and push notification the moment something needs a signature, and
+          automatic escalation when a stage goes quiet.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="feat">
+      <div class="feat-t">
+        <span class="eyebrow">Spend and approvals</span>
+        <h2 class="h2">Requests route themselves to the right signature</h2>
+        <p class="lead">
+          The person raising a request never picks their approver. The chain resolves from
+          their role, their department, the site, the category and the amount.
+        </p>
+        <ul class="ticks">
+          <li><svg><use href="#i-check-c"/></svg><span><b>Thresholds extend the chain.</b>
+            Under the limit a supervisor closes it. Over it, the same request continues to
+            the ED, the CFO, then the MD.</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><b>Procurement inserts itself.</b>
+            Add a Procurement Officer to a site and its requests need two vendor quotes per
+            line item before they can move.</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><b>Budgets check themselves.</b>
+            Approved spend commits against the site before money moves, and going past a
+            ceiling notifies the MD.</span></li>
+        </ul>
+        <div class="btn-row" style="margin-top:28px;">
+          <a class="btn btn-g" href="product.html" data-page="product">See how routing works
+            <svg style="width:16px;height:16px"><use href="#i-arrow"/></svg></a>
+        </div>
+      </div>
+      <div class="shot">
+        <div class="shot-bar">
+          <div class="shot-dots"><i></i><i></i><i></i></div>
+          <div class="shot-url">app.savidorhr.com.ng/requisitions/REQ-2026-0412</div>
+        </div>
+        <div class="shot-in">
+          <div class="app-h"><h5>Signature chain</h5>
+            <span class="badge b-ok">Approved</span></div>
+          <div class="t-scroll">
+            <table class="t">
+              <tbody>
+                <tr><td class="n">Raised</td><td>Adaeze Nwankwo, Sales Consultant</td>
+                  <td><span class="badge b-ok">Submitted</span></td></tr>
+                <tr><td class="n">Supervisor</td><td>Bayo Fashola, Sales Manager</td>
+                  <td><span class="badge b-ok">Signed</span></td></tr>
+                <tr><td class="n">Executive Director</td><td>Chiamaka Eze</td>
+                  <td><span class="badge b-ok">Signed</span></td></tr>
+                <tr><td class="n">CFO, approval</td><td>Damilola Ajayi</td>
+                  <td><span class="badge b-ok">Signed</span></td></tr>
+                <tr><td class="n">Managing Director</td><td>Ikenna Obi</td>
+                  <td><span class="badge b-ok">Signed</span></td></tr>
+                <tr><td class="n">CFO, payment</td><td>Damilola Ajayi</td>
+                  <td><span class="badge b-warn">Releasing</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feat rev">
+      <div class="feat-t">
+        <span class="eyebrow">People</span>
+        <h2 class="h2">One employee record, from offer letter to exit</h2>
+        <p class="lead">
+          Leave, attendance, appraisals, documents and discipline hang off the same person,
+          so nothing is retyped and nothing goes missing when someone leaves.
+        </p>
+        <ul class="ticks">
+          <li><svg><use href="#i-check-c"/></svg><span><b>Leave that calculates itself.</b>
+            Balances accrue nightly and an approved absence is never counted as a day off.</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><b>Appraisals with a verdict.</b>
+            Self assessment, supervisor score and the MD decision on confirmation, promotion
+            and increment sit on one form.</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><b>An accepted offer becomes a record.</b>
+            Hiring flows straight into the employee file with the grade already set.</span></li>
+        </ul>
+        <div class="btn-row" style="margin-top:28px;">
+          <a class="btn btn-g" href="modules.html" data-page="modules">Browse the people modules
+            <svg style="width:16px;height:16px"><use href="#i-arrow"/></svg></a>
+        </div>
+      </div>
+      <div class="shot">
+        <div class="shot-bar">
+          <div class="shot-dots"><i></i><i></i><i></i></div>
+          <div class="shot-url">app.savidorhr.com.ng/leave</div>
+        </div>
+        <div class="shot-in">
+          <div class="app-h"><h5>Leave requests</h5>
+            <span class="badge b-warn">12 pending</span></div>
+          <div class="mini">
+            <div><b>12</b><span>Pending</span></div>
+            <div><b>4</b><span>Out today</span></div>
+            <div><b>68%</b><span>Entitlement used</span></div>
+          </div>
+          <div class="t-scroll">
+            <table class="t">
+              <thead><tr><th>Staff</th><th>Type</th><th>Days</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td class="n">Funmi Adebayo</td><td>Annual</td><td class="m">10</td>
+                  <td><span class="badge b-warn">With ED</span></td></tr>
+                <tr><td class="n">Gbenga Salami</td><td>Compassionate</td><td class="m">3</td>
+                  <td><span class="badge b-ok">Approved</span></td></tr>
+                <tr><td class="n">Halima Yusuf</td><td>Maternity</td><td class="m">84</td>
+                  <td><span class="badge b-ok">Approved</span></td></tr>
+                <tr><td class="n">Jumoke Alabi</td><td>Annual</td><td class="m">5</td>
+                  <td><span class="badge b-mute">Supervisor</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feat">
+      <div class="feat-t">
+        <span class="eyebrow">Revenue</span>
+        <h2 class="h2">Follow a lead all the way to a paid commission</h2>
+        <p class="lead">
+          Leads, sales activities, commissions and client portfolios share one pipeline, so
+          the company can finally say what a site earned and what it cost.
+        </p>
+        <ul class="ticks">
+          <li><svg><use href="#i-check-c"/></svg><span><b>Duplicate detection built in.</b>
+            Leads are matched on phone number and email before they reach a consultant.</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><b>A won lead raises its own commission.</b>
+            Which then walks its own approval chain to the CFO for payment.</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><b>Activity budgets stay honest.</b>
+            No further event spend is released while a previous event report is outstanding.</span></li>
+        </ul>
+        <div class="btn-row" style="margin-top:28px;">
+          <a class="btn btn-g" href="modules.html" data-page="modules">Browse the revenue modules
+            <svg style="width:16px;height:16px"><use href="#i-arrow"/></svg></a>
+        </div>
+      </div>
+      <div class="shot">
+        <div class="shot-bar">
+          <div class="shot-dots"><i></i><i></i><i></i></div>
+          <div class="shot-url">app.savidorhr.com.ng/crm/leads</div>
+        </div>
+        <div class="shot-in">
+          <div class="app-h"><h5>Lead pipeline</h5>
+            <span class="badge b-ok">22% win rate</span></div>
+          <div class="mini">
+            <div><b>146</b><span>Open leads</span></div>
+            <div><b>&#8358;318m</b><span>Pipeline</span></div>
+            <div><b>61</b><span>From events</span></div>
+          </div>
+          <div class="t-scroll">
+            <table class="t">
+              <thead><tr><th>Lead</th><th>Interest</th><th>Value</th><th>Stage</th></tr></thead>
+              <tbody>
+                <tr><td class="n">Sade Martins</td><td>Harmattan Heights, 3 bed</td>
+                  <td class="m">&#8358;68,000,000</td><td><span class="badge b-ok">Negotiation</span></td></tr>
+                <tr><td class="n">Tari Georgewill</td><td>Cedarline Court, 2 bed</td>
+                  <td class="m">&#8358;45,000,000</td><td><span class="badge b-warn">Qualified</span></td></tr>
+                <tr><td class="n">Northgate Ltd</td><td>Land, 2 plots</td>
+                  <td class="m">&#8358;120,000,000</td><td><span class="badge b-warn">Proposal</span></td></tr>
+                <tr><td class="n">Uche Madu</td><td>Meridian Motors, fleet</td>
+                  <td class="m">&#8358;34,000,000</td><td><span class="badge b-mute">New</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec tint">
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="eyebrow">The full system</span>
+      <h2 class="h2">Twenty four modules, five families</h2>
+      <p class="lead measure-w">
+        Start with the workflow spine and switch modules on as you grow into them. Everything
+        shares one permission model, so a role means the same thing everywhere.
+      </p>
+    </div>
+    <div class="cards c3">
+      <a class="card" href="modules.html" data-page="modules">
+        <div class="ic"><svg><use href="#i-wallet"/></svg></div>
+        <h3 class="h4">Spend and approvals</h3>
+        <p>Requisitions, procurement and vendor quotes, site budgets, implementation tracking.</p>
+        <p class="tiny" style="margin-top:12px;">4 modules</p>
+      </a>
+      <a class="card" href="modules.html" data-page="modules">
+        <div class="ic"><svg><use href="#i-users"/></svg></div>
+        <h3 class="h4">People</h3>
+        <p>Leave, employee lifecycle, appraisals, attendance, recruitment, offers, broadcasts.</p>
+        <p class="tiny" style="margin-top:12px;">7 modules</p>
+      </a>
+      <a class="card" href="modules.html" data-page="modules">
+        <div class="ic"><svg><use href="#i-target"/></svg></div>
+        <h3 class="h4">Revenue</h3>
+        <p>CRM and leads, sales activities, commissions, client portfolios.</p>
+        <p class="tiny" style="margin-top:12px;">4 modules</p>
+      </a>
+      <a class="card" href="modules.html" data-page="modules">
+        <div class="ic"><svg><use href="#i-layers"/></svg></div>
+        <h3 class="h4">Operations</h3>
+        <p>Work reports, monthly performance, IT devices and CUG lines, pool cars, management meeting.</p>
+        <p class="tiny" style="margin-top:12px;">5 modules</p>
+      </a>
+      <a class="card" href="modules.html" data-page="modules">
+        <div class="ic"><svg><use href="#i-shield"/></svg></div>
+        <h3 class="h4">Governance</h3>
+        <p>Audit log, root console, oversight analytics, social media monitor.</p>
+        <p class="tiny" style="margin-top:12px;">4 modules</p>
+      </a>
+      <a class="card" href="pricing.html" data-page="pricing"
+         style="background:var(--ink); border-color:var(--ink);">
+        <div class="ic" style="background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.2);">
+          <svg style="color:#fff"><use href="#i-arrow"/></svg></div>
+        <h3 class="h4" style="color:#fff">See what each tier includes</h3>
+        <p style="color:rgba(255,255,255,.7)">One setup fee, one annual licence by headcount,
+          premium modules on top.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="quote">
+      <p class="h3 measure-w">
+        "The change was not the software. It was that nobody could approve anything without
+        it being written down. Our month end went from a week of reconciliation to an
+        afternoon."
+      </p>
+      <div class="quote-by">
+        <div class="quote-av">CE</div>
+        <div>
+          <b>Illustrative customer quote</b>
+          <span>Replace with a real, attributed reference before launch</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec-sm">
+  <div class="wrap">
+    <div class="cards c3">
+      <div class="card">
+        <div class="ic"><svg><use href="#i-lock"/></svg></div>
+        <h3 class="h4">Encrypted at rest</h3>
+        <p>Third party access tokens are stored with AES-GCM encryption and never leave the
+          server in readable form.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg><use href="#i-eye"/></svg></div>
+        <h3 class="h4">Views are logged too</h3>
+        <p>The audit trail records who looked at a record, not only who changed it, so access
+          questions have answers.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg><use href="#i-db"/></svg></div>
+        <h3 class="h4">Your data stays yours</h3>
+        <p>Full export on request, and a break glass console that snapshots any table before
+          a destructive operation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="cta">
+      <h2 class="h2">See it run against your own approval chain</h2>
+      <p>
+        A walkthrough takes forty minutes. Bring the messiest process you have, the one with
+        the exception everybody works around, and we will configure it live.
+      </p>
+      <div class="btn-row">
+        <a class="btn btn-w btn-lg" href="contact.html" data-page="contact">Book a demo</a>
+        <a class="btn btn-o btn-lg" href="pricing.html" data-page="pricing">See pricing</a>
+      </div>
+    </div>
+  </div>
+</section></main></div>
+<div class="page" id="page-product" hidden><main><section class="sec-sm" style="padding-top:64px;">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:0;">
+      <span class="eyebrow">How it works</span>
+      <h1 class="h1" style="max-width:17ch;">Your approval chain, stored as settings</h1>
+      <p class="lead measure-w" style="margin-top:18px;">
+        Most workflow tools hard code one approval path and make every company bend to it.
+        SavidorHR keeps the chain as data, so you change who signs for what without anyone
+        touching the software.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="sec-sm">
+  <div class="wrap">
+    <div class="cards c4">
+      <div class="card">
+        <div class="ic"><svg><use href="#i-doc"/></svg></div>
+        <p class="tiny" style="font-weight:700;color:var(--brand);margin-bottom:6px;">STEP 1</p>
+        <h3 class="h4">Someone raises a request</h3>
+        <p>They fill in what they need and what it costs. They never choose an approver,
+          because that is not theirs to decide.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg><use href="#i-route"/></svg></div>
+        <p class="tiny" style="font-weight:700;color:var(--brand);margin-bottom:6px;">STEP 2</p>
+        <h3 class="h4">The chain resolves itself</h3>
+        <p>Role, department, site, category and amount decide the signature path, and the
+          first approver is notified immediately.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg><use href="#i-check-c"/></svg></div>
+        <p class="tiny" style="font-weight:700;color:var(--brand);margin-bottom:6px;">STEP 3</p>
+        <h3 class="h4">Each stage signs or returns</h3>
+        <p>A return carries its reason back to the raiser. Silence escalates, so nothing
+          sits waiting on somebody's inbox.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg><use href="#i-shield"/></svg></div>
+        <p class="tiny" style="font-weight:700;color:var(--brand);margin-bottom:6px;">STEP 4</p>
+        <h3 class="h4">Everything is written down</h3>
+        <p>Payment closes the request and opens delivery tracking. The whole path lands in
+          an immutable audit trail.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec tint">
+  <div class="wrap">
+    <div class="feat">
+      <div class="feat-t">
+        <span class="eyebrow">The routing engine</span>
+        <h2 class="h2">Different rules per site, without a developer</h2>
+        <p class="lead">
+          A property under a joint venture may need the Managing Director on every request.
+          A workshop may need two vendor quotes over a quarter million naira. Both are rows
+          in a table your IT manager edits.
+        </p>
+        <ul class="ticks">
+          <li><svg><use href="#i-check-c"/></svg><span><b>First approver overrides.</b>
+            Replace the raiser's own supervisor for a specific site or category.</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><b>Ordered approval flow.</b>
+            Insert or remove a stage and every future request follows the new path.</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><b>Visibility rules.</b>
+            Control which departments can even see a site in the request form.</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><b>Price hiding.</b>
+            Decide whether staff price their own items or procurement sources them.</span></li>
+        </ul>
+      </div>
+      <div class="shot">
+        <div class="shot-bar">
+          <div class="shot-dots"><i></i><i></i><i></i></div>
+          <div class="shot-url blur" aria-hidden="true">app.savidorhr.com.ng/settings/routing</div>
+        </div>
+        <div class="shot-in">
+          <div class="app-h"><h5>Routing rules</h5>
+            <span class="btn btn-s" style="padding:6px 12px;font-size:.78rem;">Add site</span></div>
+          <div class="t-scroll">
+            <table class="t">
+              <thead><tr><th>Site</th><th>Approval flow</th><th>Threshold</th></tr></thead>
+              <tbody>
+                <tr><td class="n">Harmattan Heights</td><td>Office of the MD</td>
+                  <td class="m">&#8358;0+</td></tr>
+                <tr><td class="n">Cedarline Court</td><td>Supervisor, ED, CFO</td>
+                  <td class="m">&#8358;500k+</td></tr>
+                <tr><td class="n">Meridian Motors</td><td>Procurement Officer, ED</td>
+                  <td class="m">&#8358;250k+</td></tr>
+                <tr><td class="n">Osprey Gardens</td><td>Sales Mgr, Marketing Mgr, ED</td>
+                  <td class="m">&#8358;0+</td></tr>
+                <tr><td class="n">Ridgeway Terraces</td><td>Snr Project Mgr, ED, MD</td>
+                  <td class="m">&#8358;1m+</td></tr>
+                <tr><td class="n">All sites</td><td>CFO payment, always last</td>
+                  <td class="m">&#8358;0+</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head center">
+      <span class="eyebrow">Built in</span>
+      <h2 class="h2">The parts nobody remembers to ask for</h2>
+      <p class="lead measure-w">
+        These are the things that decide whether a rollout survives its first quarter.
+        They ship as standard, not as a paid add on.
+      </p>
+    </div>
+    <div class="cards c3">
+      <div class="card">
+        <div class="ic"><svg><use href="#i-users"/></svg></div>
+        <h3 class="h4">Nineteen real roles</h3>
+        <p>From Team Member to Managing Director, with Office of the MD, CFO, Executive
+          Director, HR, IT and Procurement as first class roles rather than permission
+          checkboxes bolted on afterwards.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg><use href="#i-bell"/></svg></div>
+        <h3 class="h4">Email and push, not just a badge</h3>
+        <p>Approvers are notified on their phone the moment something needs them, and
+          overdue stages escalate on their own to the level above.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg><use href="#i-eye"/></svg></div>
+        <h3 class="h4">Views are audited too</h3>
+        <p>Most systems log changes. SavidorHR also records who opened a record, which is
+          usually the question that actually gets asked.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg><use href="#i-laptop"/></svg></div>
+        <h3 class="h4">Works on the phone in the field</h3>
+        <p>Installable as an app, usable on a site visit, and every screen is built to be
+          approved from a phone rather than only from a desk.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg><use href="#i-lock"/></svg></div>
+        <h3 class="h4">Break glass, safely</h3>
+        <p>Emergency administration sits behind a PIN, is rate limited, snapshots any table
+          before a destructive operation, and logs itself.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg><use href="#i-db"/></svg></div>
+        <h3 class="h4">Migration from what you have</h3>
+        <p>Staff lists, leave balances, open requests and client records are brought across
+          during setup, so day one is not a blank system.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec tint">
+  <div class="wrap">
+    <div class="feat rev">
+      <div class="feat-t">
+        <span class="eyebrow">Deployment</span>
+        <h2 class="h2">Live in weeks, and we do the mapping</h2>
+        <p class="lead">
+          Setup is a fixed one time engagement. We sit with your team, write down how
+          approvals actually work today, and configure that rather than asking you to
+          adopt somebody else's process.
+        </p>
+        <ul class="ticks">
+          <li><svg><use href="#i-check-c"/></svg><span><b>Week 1.</b> Role and chain mapping
+            with the people who actually sign.</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><b>Week 2.</b> Data migration and a
+            parallel run on real requests.</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><b>Week 3.</b> Training by role, then
+            go live with support on the line.</span></li>
+        </ul>
+      </div>
+      <div class="shot">
+        <div class="shot-bar">
+          <div class="shot-dots"><i></i><i></i><i></i></div>
+          <div class="shot-url">app.savidorhr.com.ng/audit</div>
+        </div>
+        <div class="shot-in">
+          <div class="app-h"><h5>Audit trail</h5>
+            <span class="badge b-mute">MD access only</span></div>
+          <div class="t-scroll">
+            <table class="t">
+              <thead><tr><th>Time</th><th>Actor</th><th>Action</th><th>Entity</th></tr></thead>
+              <tbody>
+                <tr><td class="m">16:55:03</td><td class="n">Ikenna Obi, MD</td><td>Approved</td>
+                  <td class="m">REQ-2026-0412</td></tr>
+                <tr><td class="m">16:54:41</td><td class="n">Ikenna Obi, MD</td><td>Viewed</td>
+                  <td class="m">REQ-2026-0412</td></tr>
+                <tr><td class="m">14:20:18</td><td class="n">Damilola Ajayi, CFO</td><td>Verified quotes</td>
+                  <td class="m">REQ-2026-0412</td></tr>
+                <tr><td class="m">11:02:57</td><td class="n">Chiamaka Eze, ED</td><td>Approved</td>
+                  <td class="m">REQ-2026-0412</td></tr>
+                <tr><td class="m">09:41:12</td><td class="n">Bayo Fashola, Mgr</td><td>Approved</td>
+                  <td class="m">REQ-2026-0412</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="cta">
+      <h2 class="h2">Bring us your worst process</h2>
+      <p>The one with the exception everybody works around. We will configure it live on the
+        call and you can decide from there.</p>
+      <div class="btn-row">
+        <a class="btn btn-w btn-lg" href="contact.html" data-page="contact">Book a demo</a>
+        <a class="btn btn-o btn-lg" href="modules.html" data-page="modules">See all modules</a>
+      </div>
+    </div>
+  </div>
+</section></main></div>
+<div class="page" id="page-modules" hidden><main><section class="sec-sm" style="padding-top:64px;">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:34px;">
+      <span class="eyebrow">The full system</span>
+      <h1 class="h1" style="max-width:16ch;">Twenty four modules. One permission model.</h1>
+      <p class="lead measure-w" style="margin-top:18px;">
+        This is not a roadmap. Every module listed here is running in production today.
+        Switch on what you need now and add the rest as the company grows into them.
+      </p>
+    </div>
+
+    <div class="fam-bar">
+      <button class="chip on" data-fam="all">All 24</button>
+      <button class="chip" data-fam="spend">Spend and approvals</button>
+      <button class="chip" data-fam="people">People</button>
+      <button class="chip" data-fam="revenue">Revenue</button>
+      <button class="chip" data-fam="ops">Operations</button>
+      <button class="chip" data-fam="gov">Governance</button>
+    </div>
+
+    <div class="cards c3">
+
+      <!-- ── Spend and approvals ── -->
+      <div class="mod-card" data-in="spend">
+        <div class="ic"><svg><use href="#i-doc"/></svg></div>
+        <h4>Requisitions</h4>
+        <p>Every request carries its site, its budget line and its full signature history.
+          Returned requests carry the reason back to the raiser, never a silent rejection.</p>
+        <span class="fam-t">Spend and approvals</span>
+      </div>
+      <div class="mod-card" data-in="spend">
+        <div class="ic"><svg><use href="#i-cart"/></svg></div>
+        <h4>Procurement and vendor quotes</h4>
+        <p>Where a site's chain includes a Procurement Officer, a line item with fewer than
+          two vendor quotes blocks the whole requisition from advancing.</p>
+        <span class="fam-t">Spend and approvals</span>
+      </div>
+      <div class="mod-card" data-in="spend">
+        <div class="ic"><svg><use href="#i-wallet"/></svg></div>
+        <h4>Site budgets</h4>
+        <p>Approved spend commits against its site before money moves. Approving past a
+          ceiling is allowed, but it notifies the Managing Director automatically.</p>
+        <span class="fam-t">Spend and approvals</span>
+      </div>
+      <div class="mod-card" data-in="spend">
+        <div class="ic"><svg><use href="#i-build"/></svg></div>
+        <h4>Implementation tracking</h4>
+        <p>Opens the moment the CFO releases payment. A milestone needs photographic or
+          documentary evidence, and a rejected one reopens the original spend.</p>
+        <span class="fam-t">Spend and approvals</span>
+      </div>
+
+      <!-- ── People ── -->
+      <div class="mod-card" data-in="people">
+        <div class="ic"><svg><use href="#i-cal"/></svg></div>
+        <h4>Leave</h4>
+        <p>Nightly accrual, live balances and a two stage approval that stops at the
+          Executive Director. HR sees every application read only, by policy.</p>
+        <span class="fam-t">People</span>
+      </div>
+      <div class="mod-card" data-in="people">
+        <div class="ic"><svg><use href="#i-users"/></svg></div>
+        <h4>Employee lifecycle</h4>
+        <p>Onboarding to exit with documents, confirmation, disciplinary record and
+          deactivation. Account status stays separate from employment status.</p>
+        <span class="fam-t">People</span>
+      </div>
+      <div class="mod-card" data-in="people">
+        <div class="ic"><svg><use href="#i-award"/></svg></div>
+        <h4>Appraisals</h4>
+        <p>Self assessment, supervisor scoring and a Managing Director verdict on one form,
+          covering confirmation, promotion and salary increment.</p>
+        <span class="fam-t">People</span>
+      </div>
+      <div class="mod-card" data-in="people">
+        <div class="ic"><svg><use href="#i-clock"/></svg></div>
+        <h4>Attendance and policies</h4>
+        <p>Daily presence against the published holiday calendar. Leave is resolved first,
+          so a person on approved absence is never marked absent.</p>
+        <span class="fam-t">People</span>
+      </div>
+      <div class="mod-card" data-in="people">
+        <div class="ic"><svg><use href="#i-case"/></svg></div>
+        <h4>Recruitment and job portal</h4>
+        <p>Publish a role, collect applications on a public portal, shortlist and interview
+          in one place. Everything after the application stays inside your permissions.</p>
+        <span class="fam-t">People</span>
+      </div>
+      <div class="mod-card" data-in="people">
+        <div class="ic"><svg><use href="#i-mail"/></svg></div>
+        <h4>Offer letters</h4>
+        <p>Generated from the approved role and grade, issued for signature and tracked to
+          acceptance. An accepted offer creates the employee record automatically.</p>
+        <span class="fam-t">People</span>
+      </div>
+      <div class="mod-card" data-in="people">
+        <div class="ic"><svg><use href="#i-mega"/></svg></div>
+        <h4>Staff broadcasts</h4>
+        <p>HR notices, policy nuggets and company announcements by email, push and in app
+          sticker, with delivery tracked per person.</p>
+        <span class="fam-t">People</span>
+      </div>
+
+      <!-- ── Revenue ── -->
+      <div class="mod-card" data-in="revenue">
+        <div class="ic"><svg><use href="#i-target"/></svg></div>
+        <h4>CRM and leads</h4>
+        <p>Capture, qualify and convert with duplicate detection on phone number and email.
+          Leads from paid social arrive by signed webhook and assign themselves.</p>
+        <span class="fam-t">Revenue</span>
+      </div>
+      <div class="mod-card" data-in="revenue">
+        <div class="ic"><svg><use href="#i-zap"/></svg></div>
+        <h4>Sales activities</h4>
+        <p>Register an event, raise its marketing spend, then file the report that justifies
+          it. No further budget is released while a report is outstanding.</p>
+        <span class="fam-t">Revenue</span>
+      </div>
+      <div class="mod-card" data-in="revenue">
+        <div class="ic"><svg><use href="#i-chart"/></svg></div>
+        <h4>Sale commissions</h4>
+        <p>A won lead becomes a commission request that walks its own approval chain to the
+          CFO for payment. Rates are configuration, changed once and applied everywhere.</p>
+        <span class="fam-t">Revenue</span>
+      </div>
+      <div class="mod-card" data-in="revenue">
+        <div class="ic"><svg><use href="#i-db"/></svg></div>
+        <h4>Client portfolios</h4>
+        <p>What each client bought, what they have paid and what is still outstanding, with
+          handover and title documents on the same record.</p>
+        <span class="fam-t">Revenue</span>
+      </div>
+
+      <!-- ── Operations ── -->
+      <div class="mod-card" data-in="ops">
+        <div class="ic"><svg><use href="#i-doc"/></svg></div>
+        <h4>Work reports</h4>
+        <p>Daily and weekly reports route to the supervisor and escalate when late. Weekly
+          rolls into monthly, quarterly and yearly without re entering a line.</p>
+        <span class="fam-t">Operations</span>
+      </div>
+      <div class="mod-card" data-in="ops">
+        <div class="ic"><svg><use href="#i-layers"/></svg></div>
+        <h4>Monthly performance</h4>
+        <p>Heads of department declare projections, blockers and the support they need. An
+          unresolved blocker carries forward into next month automatically.</p>
+        <span class="fam-t">Operations</span>
+      </div>
+      <div class="mod-card" data-in="ops">
+        <div class="ic"><svg><use href="#i-laptop"/></svg></div>
+        <h4>IT devices and CUG lines</h4>
+        <p>Assignment, acknowledgement, maintenance history and closed user group control.
+          An unacknowledged device stays flagged until the holder signs for it.</p>
+        <span class="fam-t">Operations</span>
+      </div>
+      <div class="mod-card" data-in="ops">
+        <div class="ic"><svg><use href="#i-car"/></svg></div>
+        <h4>Pool car booking</h4>
+        <p>Book a vehicle and driver against a trip. Mileage and fuel close out on return,
+          so a trip cannot be quietly left open.</p>
+        <span class="fam-t">Operations</span>
+      </div>
+      <div class="mod-card" data-in="ops">
+        <div class="ic"><svg><use href="#i-screen"/></svg></div>
+        <h4>Management meeting</h4>
+        <p>Any format uploaded becomes one uniform deck, presented in a synchronised
+          boardroom where every screen follows the chair.</p>
+        <span class="fam-t">Operations</span>
+      </div>
+
+      <!-- ── Governance ── -->
+      <div class="mod-card" data-in="gov">
+        <div class="ic"><svg><use href="#i-shield"/></svg></div>
+        <h4>Audit log</h4>
+        <p>Every view, decision and override in one immutable trail. Page views are logged
+          as well as actions, so who looked is answerable too.</p>
+        <span class="fam-t">Governance</span>
+      </div>
+      <div class="mod-card" data-in="gov">
+        <div class="ic"><svg><use href="#i-lock"/></svg></div>
+        <h4>Root console</h4>
+        <p>Break glass administration behind a PIN, rate limited and logged against itself.
+          Anything that writes needs confirmation typed by hand.</p>
+        <span class="fam-t">Governance</span>
+      </div>
+      <div class="mod-card" data-in="gov">
+        <div class="ic"><svg><use href="#i-eye"/></svg></div>
+        <h4>Oversight analytics</h4>
+        <p>Read only cross department reporting for the Executive Director and Managing
+          Director. Leadership reads everything and approves nothing here.</p>
+        <span class="fam-t">Governance</span>
+      </div>
+      <div class="mod-card" data-in="gov">
+        <div class="ic"><svg><use href="#i-share"/></svg></div>
+        <h4>Social media monitor</h4>
+        <p>Connected business accounts, reach and engagement in one view, with access tokens
+          encrypted at rest and never readable off the server.</p>
+        <span class="fam-t">Governance</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="cta">
+      <h2 class="h2">Not sure which modules you need?</h2>
+      <p>Tell us how your company approves things today and we will map it to a tier on the
+        call, with the modules you would actually switch on first.</p>
+      <div class="btn-row">
+        <a class="btn btn-w btn-lg" href="contact.html" data-page="contact">Book a demo</a>
+        <a class="btn btn-o btn-lg" href="pricing.html" data-page="pricing">Compare tiers</a>
+      </div>
+    </div>
+  </div>
+</section></main></div>
+<div class="page" id="page-pricing" hidden><main><section class="sec-sm" style="padding-top:64px;">
+  <div class="wrap">
+    <div class="sec-head center" style="margin-bottom:44px;">
+      <span class="eyebrow">Pricing</span>
+      <h1 class="h1" style="max-width:18ch;margin:0 auto;">Simple to budget for, once a year</h1>
+      <p class="lead measure-w" style="margin-top:18px;">
+        A one time deployment engagement covers role mapping, data migration and training.
+        After that you pay a single annual licence by headcount band, and add premium
+        modules only when you need them.
+      </p>
+    </div>
+
+    <div class="tiers">
+      <div class="tier">
+        <h3>Core</h3>
+        <div class="who">Up to 50 staff</div>
+        <div class="price">&#8358;1.8m <small>/ year</small></div>
+        <div class="setup">Plus &#8358;2,500,000 one time setup</div>
+        <ul>
+          <li><svg><use href="#i-check"/></svg>Requisitions and approval chains</li>
+          <li><svg><use href="#i-check"/></svg>Leave and entitlement accrual</li>
+          <li><svg><use href="#i-check"/></svg>Work reports with escalation</li>
+          <li><svg><use href="#i-check"/></svg>Appraisals</li>
+          <li><svg><use href="#i-check"/></svg>Audit log</li>
+          <li><svg><use href="#i-check"/></svg>Email and push notification</li>
+          <li><svg><use href="#i-check"/></svg>Email support</li>
+        </ul>
+        <a class="btn btn-s btn-lg" href="contact.html" data-page="contact">Talk to sales</a>
+      </div>
+
+      <div class="tier best">
+        <span class="tier-tag">Most chosen</span>
+        <h3>Operations</h3>
+        <div class="who">Up to 250 staff</div>
+        <div class="price">&#8358;4.2m <small>/ year</small></div>
+        <div class="setup">Plus &#8358;4,000,000 one time setup</div>
+        <ul>
+          <li><svg><use href="#i-check"/></svg>Everything in Core</li>
+          <li><svg><use href="#i-check"/></svg>HR suite and employee lifecycle</li>
+          <li><svg><use href="#i-check"/></svg>Procurement and vendor quotes</li>
+          <li><svg><use href="#i-check"/></svg>Site budgets and commitment tracking</li>
+          <li><svg><use href="#i-check"/></svg>IT devices and CUG lines</li>
+          <li><svg><use href="#i-check"/></svg>Implementation tracking</li>
+          <li><svg><use href="#i-check"/></svg>Monthly performance reviews</li>
+          <li><svg><use href="#i-check"/></svg>Oversight analytics for ED and MD</li>
+        </ul>
+        <a class="btn btn-p btn-lg" href="contact.html" data-page="contact">Book a demo</a>
+      </div>
+
+      <div class="tier">
+        <h3>Enterprise</h3>
+        <div class="who">Unlimited staff</div>
+        <div class="price">&#8358;8.5m <small>/ year</small></div>
+        <div class="setup">Setup quoted on scope</div>
+        <ul>
+          <li><svg><use href="#i-check"/></svg>Everything in Operations</li>
+          <li><svg><use href="#i-check"/></svg>CRM and lead pipeline</li>
+          <li><svg><use href="#i-check"/></svg>Sales activities and commissions</li>
+          <li><svg><use href="#i-check"/></svg>Client portfolios</li>
+          <li><svg><use href="#i-check"/></svg>Management meeting boardroom</li>
+          <li><svg><use href="#i-check"/></svg>Recruitment and job portal</li>
+          <li><svg><use href="#i-check"/></svg>Root console and break glass admin</li>
+          <li><svg><use href="#i-check"/></svg>Dedicated support line</li>
+        </ul>
+        <a class="btn btn-s btn-lg" href="contact.html" data-page="contact">Talk to sales</a>
+      </div>
+    </div>
+
+    <p class="tiny center" style="margin-top:26px;">
+      Prices are indicative and shown in naira, excluding VAT. Multi year and group wide
+      agreements are quoted separately.
+    </p>
+  </div>
+</section>
+
+<section class="sec tint">
+  <div class="wrap">
+    <div class="sec-head center">
+      <h2 class="h2">What each tier includes</h2>
+      <p class="lead measure-w">Every module below is in production. The tier decides which
+        are switched on for your organisation.</p>
+    </div>
+    <div class="cmp-wrap">
+      <div class="cmp-scroll">
+        <table class="cmp">
+          <thead>
+            <tr><th>Module</th><th>Core</th><th>Operations</th><th>Enterprise</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><b>Requisitions and approvals</b></td>
+              <td><svg><use href="#i-check"/></svg></td><td><svg><use href="#i-check"/></svg></td>
+              <td><svg><use href="#i-check"/></svg></td></tr>
+            <tr><td><b>Leave</b></td>
+              <td><svg><use href="#i-check"/></svg></td><td><svg><use href="#i-check"/></svg></td>
+              <td><svg><use href="#i-check"/></svg></td></tr>
+            <tr><td><b>Work reports</b></td>
+              <td><svg><use href="#i-check"/></svg></td><td><svg><use href="#i-check"/></svg></td>
+              <td><svg><use href="#i-check"/></svg></td></tr>
+            <tr><td><b>Appraisals</b></td>
+              <td><svg><use href="#i-check"/></svg></td><td><svg><use href="#i-check"/></svg></td>
+              <td><svg><use href="#i-check"/></svg></td></tr>
+            <tr><td><b>Audit log</b></td>
+              <td><svg><use href="#i-check"/></svg></td><td><svg><use href="#i-check"/></svg></td>
+              <td><svg><use href="#i-check"/></svg></td></tr>
+            <tr><td><b>Employee lifecycle and HR suite</b></td>
+              <td class="no">Add on</td><td><svg><use href="#i-check"/></svg></td>
+              <td><svg><use href="#i-check"/></svg></td></tr>
+            <tr><td><b>Procurement and vendor quotes</b></td>
+              <td class="no">Add on</td><td><svg><use href="#i-check"/></svg></td>
+              <td><svg><use href="#i-check"/></svg></td></tr>
+            <tr><td><b>Site budgets</b></td>
+              <td class="no">Add on</td><td><svg><use href="#i-check"/></svg></td>
+              <td><svg><use href="#i-check"/></svg></td></tr>
+            <tr><td><b>IT devices and CUG lines</b></td>
+              <td class="no">Add on</td><td><svg><use href="#i-check"/></svg></td>
+              <td><svg><use href="#i-check"/></svg></td></tr>
+            <tr><td><b>Implementation tracking</b></td>
+              <td class="no">Add on</td><td><svg><use href="#i-check"/></svg></td>
+              <td><svg><use href="#i-check"/></svg></td></tr>
+            <tr><td><b>Monthly performance</b></td>
+              <td class="no">Add on</td><td><svg><use href="#i-check"/></svg></td>
+              <td><svg><use href="#i-check"/></svg></td></tr>
+            <tr><td><b>CRM and leads</b></td>
+              <td class="no">Add on</td><td class="no">Add on</td>
+              <td><svg><use href="#i-check"/></svg></td></tr>
+            <tr><td><b>Sales activities and commissions</b></td>
+              <td class="no">Add on</td><td class="no">Add on</td>
+              <td><svg><use href="#i-check"/></svg></td></tr>
+            <tr><td><b>Recruitment and offer letters</b></td>
+              <td class="no">Add on</td><td class="no">Add on</td>
+              <td><svg><use href="#i-check"/></svg></td></tr>
+            <tr><td><b>Management meeting</b></td>
+              <td class="no">Add on</td><td class="no">Add on</td>
+              <td><svg><use href="#i-check"/></svg></td></tr>
+            <tr><td><b>Root console</b></td>
+              <td class="no">No</td><td class="no">No</td>
+              <td><svg><use href="#i-check"/></svg></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="margin-top:44px;">
+      <h3 class="h3" style="margin-bottom:20px;">Premium modules, added to any tier</h3>
+      <div class="cards c4">
+        <div class="card" style="padding:20px;">
+          <h4 class="h4">CRM and leads</h4>
+          <p class="tiny" style="margin-top:6px;">&#8358;1,200,000 per year</p></div>
+        <div class="card" style="padding:20px;">
+          <h4 class="h4">Sales commissions</h4>
+          <p class="tiny" style="margin-top:6px;">&#8358;900,000 per year</p></div>
+        <div class="card" style="padding:20px;">
+          <h4 class="h4">IT device management</h4>
+          <p class="tiny" style="margin-top:6px;">&#8358;750,000 per year</p></div>
+        <div class="card" style="padding:20px;">
+          <h4 class="h4">Implementation tracking</h4>
+          <p class="tiny" style="margin-top:6px;">&#8358;650,000 per year</p></div>
+        <div class="card" style="padding:20px;">
+          <h4 class="h4">Management meeting</h4>
+          <p class="tiny" style="margin-top:6px;">&#8358;600,000 per year</p></div>
+        <div class="card" style="padding:20px;">
+          <h4 class="h4">Monthly performance</h4>
+          <p class="tiny" style="margin-top:6px;">&#8358;500,000 per year</p></div>
+        <div class="card" style="padding:20px;">
+          <h4 class="h4">Recruitment portal</h4>
+          <p class="tiny" style="margin-top:6px;">&#8358;450,000 per year</p></div>
+        <div class="card" style="padding:20px;">
+          <h4 class="h4">Social media monitor</h4>
+          <p class="tiny" style="margin-top:6px;">&#8358;450,000 per year</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap" style="max-width:820px;">
+    <div class="sec-head center"><h2 class="h2">Common questions</h2></div>
+    <div class="faq">
+      <details open>
+        <summary>What does the setup fee actually cover?</summary>
+        <p>Mapping your real approval chains with the people who sign them, migrating staff
+          lists, leave balances, open requests and client records, configuring roles and
+          routing rules, and training by role. It ends when you are live, not when a
+          contract is signed.</p>
+      </details>
+      <details>
+        <summary>How long does deployment take?</summary>
+        <p>Three weeks is typical for Core and Operations. Enterprise depends on how many
+          arms of the group are coming on at once and how clean the existing records are.
+          We run in parallel with your current process before switching over.</p>
+      </details>
+      <details>
+        <summary>What happens if we go over our headcount band?</summary>
+        <p>Nothing breaks and nobody is locked out. We reconcile at renewal and you move to
+          the next band from that date. We do not charge retroactively or per seat mid year.</p>
+      </details>
+      <details>
+        <summary>Can we start with Core and add modules later?</summary>
+        <p>Yes, and most companies do. Premium modules can be switched on at any point in
+          the year and are billed pro rata to your renewal date, so your renewal stays a
+          single annual event.</p>
+      </details>
+      <details>
+        <summary>Where is our data hosted, and can we export it?</summary>
+        <p>Hosting location is agreed at setup and can be in country where a policy requires
+          it. You can request a full export of your data at any time, in a standard format,
+          without a support ticket or a fee.</p>
+      </details>
+      <details>
+        <summary>Do you charge for support?</summary>
+        <p>Email support is included in every tier. Enterprise adds a dedicated line with a
+          named contact. Configuration changes, such as changing an approval chain, are
+          something your own IT manager does without involving us.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="sec-sm" style="padding-bottom:88px;">
+  <div class="wrap">
+    <div class="cta">
+      <h2 class="h2">Get a quote for your headcount</h2>
+      <p>Tell us your staff numbers and which arms of the group are in scope, and we will
+        come back with a firm figure rather than a range.</p>
+      <div class="btn-row">
+        <a class="btn btn-w btn-lg" href="contact.html" data-page="contact">Request a quote</a>
+      </div>
+    </div>
+  </div>
+</section></main></div>
+<div class="page" id="page-investors" hidden><main><section class="sec-sm" style="padding-top:64px;">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:0;">
+      <span class="eyebrow">Investor overview</span>
+      <h1 class="h1" style="max-width:15ch;">A working product, not a deck</h1>
+      <p class="lead measure-w" style="margin-top:18px;">
+        SavidorHR is in daily production use across a multi arm property and automobile
+        group. Twenty four modules, nineteen role permissions and 187 screens are shipped
+        and in use, not planned.
+      </p>
+      <div class="btn-row" style="margin-top:28px;">
+        <a class="btn btn-p btn-lg" href="mailto:invest@savidorhr.com.ng">Request the deck</a>
+        <a class="btn btn-s btn-lg" href="product.html" data-page="product">See the product</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec-sm">
+  <div class="wrap">
+    <div class="slots">
+      <div class="slot filled"><b>&#8358;2bn+</b><span>Value routed to date</span></div>
+      <div class="slot filled"><b>45</b><span>Staff on the platform</span></div>
+      <div class="slot filled"><b>1</b><span>Company live in production</span></div>
+      <div class="slot filled"><b>&#8358;50m</b><span>Currently raising</span></div>
+    </div>
+    <p class="tiny" style="margin-top:18px;max-width:78ch;">
+      <b style="color:var(--ink);">How these are counted.</b>
+      Value routed is the total naira value of requisitions and payments that have passed
+      through an approval chain in the system to date. Staff on the platform counts people
+      with an active account and an assigned role. Both figures are reconcilable from the
+      audit log and are evidenced on request.
+    </p>
+  </div>
+</section>
+
+<section class="sec tint">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">The opportunity</span>
+      <h2 class="h2">Software the incumbents will not sell to</h2>
+    </div>
+    <div class="cards c3">
+      <div class="card">
+        <div class="ic"><svg><use href="#i-target"/></svg></div>
+        <h3 class="h4">The market</h3>
+        <p>African firms of 50 to 1,000 staff are numerous, formalising quickly, and
+          structurally underserved. Global ERP vendors price and scope for organisations
+          with a dedicated IT function, which these companies do not have.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg><use href="#i-clock"/></svg></div>
+        <h3 class="h4">Why now</h3>
+        <p>Lender and regulatory pressure is pushing mid market firms toward auditable
+          record keeping, while cheap cloud hosting and near universal smartphone ownership
+          have removed the last infrastructure barrier.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg><use href="#i-route"/></svg></div>
+        <h3 class="h4">The moat</h3>
+        <p>The routing engine. Competitors ship one fixed approval path. Every company
+          onboarded here deepens the library of approval patterns the product ships with,
+          so each deployment is faster than the last.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg><use href="#i-wallet"/></svg></div>
+        <h3 class="h4">The model</h3>
+        <p>High margin one time setup fees fund acquisition. Annual licences by headcount
+          band compound. Premium modules expand revenue inside an existing account with no
+          additional sales effort.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg><use href="#i-layers"/></svg></div>
+        <h3 class="h4">Use of funds</h3>
+        <p>Multi tenancy and self service onboarding to remove the services bottleneck, a
+          commercial team for the Lagos and Abuja mid market, and the security controls
+          needed to clear procurement review at larger accounts.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg><use href="#i-check-c"/></svg></div>
+        <h3 class="h4">What exists today</h3>
+        <p>A complete, deployed system with audit logging, push notification, email delivery
+          and a configurable routing engine already in production, rather than a prototype
+          seeking validation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="feat">
+      <div class="feat-t">
+        <span class="eyebrow">Why it defends itself</span>
+        <h2 class="h2">Approval infrastructure is hard to rip out</h2>
+        <p class="lead">
+          Once a company's real approval chains, budgets and audit history live in one
+          system, replacing it means re documenting how the business makes decisions.
+          That is a far higher switching cost than a departmental tool.
+        </p>
+        <ul class="ticks">
+          <li><svg><use href="#i-check-c"/></svg><span><b>It sits across departments.</b>
+            Finance, HR, sales and operations all depend on the same records, so no single
+            department can remove it.</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><b>The audit trail accumulates.</b>
+            Its value grows with age, and it cannot be migrated to a competitor without
+            losing the history.</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><b>Expansion is natural.</b>
+            Companies start with requisitions, then add HR, then revenue, without a new
+            procurement cycle.</span></li>
+        </ul>
+      </div>
+      <div class="shot">
+        <div class="shot-bar">
+          <div class="shot-dots"><i></i><i></i><i></i></div>
+          <div class="shot-url">app.savidorhr.com.ng/oversight</div>
+        </div>
+        <div class="shot-in">
+          <div class="app-h"><h5>Group oversight</h5>
+            <span class="badge b-mute">Read only</span></div>
+          <div class="mini">
+            <div><b>24</b><span>Modules live</span></div>
+            <div><b>19</b><span>Roles</span></div>
+            <div><b>1.2m</b><span>Audit entries</span></div>
+          </div>
+          <div class="t-scroll">
+            <table class="t">
+              <thead><tr><th>Department</th><th>Projection</th><th>Achieved</th><th>State</th></tr></thead>
+              <tbody>
+                <tr><td class="n">Sales and Mktg</td><td class="m">&#8358;180m</td>
+                  <td class="m">&#8358;206m</td><td><span class="badge b-ok">Above</span></td></tr>
+                <tr><td class="n">Facilities</td><td class="m">&#8358;24m</td>
+                  <td class="m">&#8358;19m</td><td><span class="badge b-warn">Below</span></td></tr>
+                <tr><td class="n">Operations</td><td class="m">&#8358;52m</td>
+                  <td class="m">&#8358;52m</td><td><span class="badge b-ok">On track</span></td></tr>
+                <tr><td class="n">Projects</td><td class="m">&#8358;96m</td>
+                  <td class="m">&#8358;71m</td><td><span class="badge b-err">At risk</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec tint">
+  <div class="wrap" style="max-width:820px;">
+    <div class="sec-head center"><h2 class="h2">Questions we expect</h2></div>
+    <div class="faq">
+      <details open>
+        <summary>Is this a product or a services business today?</summary>
+        <p>Today revenue mixes a one time deployment engagement with an annual licence. The
+          use of funds is explicitly aimed at shifting that mix toward licence revenue by
+          building multi tenancy and self service onboarding, which is what removes the
+          services bottleneck on growth.</p>
+      </details>
+      <details>
+        <summary>What stops a global vendor moving down market?</summary>
+        <p>Price and process. Serving a 200 person Nigerian group profitably requires a
+          deployment model measured in weeks and priced in naira. That is a different
+          business from an enterprise ERP sale, and incumbents have repeatedly chosen not
+          to build it.</p>
+      </details>
+      <details>
+        <summary>How defensible is a workflow product technically?</summary>
+        <p>The code is not the moat. The accumulated library of real approval patterns is,
+          alongside the switching cost of a live audit history that spans every department
+          in a company.</p>
+      </details>
+      <details>
+        <summary>What is the concentration risk?</summary>
+        <p>Real and acknowledged. The product is proven inside one multi arm group, which is
+          a strong reference but a single one. Broadening the customer base is the primary
+          objective of this round.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="cta">
+      <h2 class="h2">Request the deck and the data room</h2>
+      <p>We will send the deck, the metrics with their definitions, and a guided walkthrough
+        of the live system rather than a recorded demo.</p>
+      <div class="btn-row">
+        <a class="btn btn-w btn-lg" href="mailto:invest@savidorhr.com.ng">invest@savidorhr.com.ng</a>
+        <a class="btn btn-o btn-lg" href="contact.html" data-page="contact">Arrange a call</a>
+      </div>
+    </div>
+  </div>
+</section></main></div>
+<div class="page" id="page-contact" hidden><main><section class="sec-sm" style="padding-top:64px;">
+  <div class="wrap">
+    <div class="feat" style="align-items:start;">
+      <div class="feat-t">
+        <span class="eyebrow">Book a demo</span>
+        <h1 class="h1" style="max-width:14ch;">Forty minutes, on your own process</h1>
+        <p class="lead" style="margin-top:18px;">
+          We do not run a recorded demo. Bring the approval process that causes you the most
+          trouble and we will configure it live, then you can decide whether it is worth
+          continuing.
+        </p>
+
+        <ul class="ticks" style="margin-top:28px;">
+          <li><svg><use href="#i-check-c"/></svg><span><b>No preparation needed.</b>
+            Bring the process in your head. We will write it down on the call.</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><b>A firm number, not a range.</b>
+            Tell us your headcount and which arms are in scope and we will quote properly.</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><b>Talk to whoever signs.</b>
+            The call works best with the person who actually approves spend in the room.</span></li>
+        </ul>
+
+        <div style="margin-top:36px;padding-top:28px;border-top:1px solid var(--line);">
+          <div class="cards c2" style="gap:16px;">
+            <div>
+              <h4 class="h4" style="margin-bottom:6px;">Sales and demos</h4>
+              <p class="small"><a href="mailto:hello@savidorhr.com.ng"
+                style="color:var(--brand);font-weight:600;">hello@savidorhr.com.ng</a></p>
+            </div>
+            <div>
+              <h4 class="h4" style="margin-bottom:6px;">Investors</h4>
+              <p class="small"><a href="mailto:invest@savidorhr.com.ng"
+                style="color:var(--brand);font-weight:600;">invest@savidorhr.com.ng</a></p>
+            </div>
+            <div>
+              <h4 class="h4" style="margin-bottom:6px;">Phone</h4>
+              <p class="small"><a href="tel:+2340000000000"
+                style="color:var(--brand);font-weight:600;">+234 000 000 0000</a></p>
+            </div>
+            <div>
+              <h4 class="h4" style="margin-bottom:6px;">Office</h4>
+              <p class="small">Lagos, Nigeria</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <h3 class="h3" style="margin-bottom:6px;">Request a walkthrough</h3>
+        <p class="small" style="margin-bottom:26px;">We reply within one working day.</p>
+
+        <!-- Netlify Forms. Submissions are stored in the Netlify dashboard and
+             netlify/functions/submission-created.mjs emails a formatted copy. -->
+        <form name="walkthrough" method="POST" action="/thanks.html"
+              data-netlify="true" data-netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="walkthrough">
+          <p class="hp" aria-hidden="true">
+            <label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off"></label>
+          </p>
+          <div class="f2">
+            <div class="fld">
+              <label for="fn">First name</label>
+              <input id="fn" name="first_name" type="text" required placeholder="Adaeze">
+            </div>
+            <div class="fld">
+              <label for="ln">Last name</label>
+              <input id="ln" name="last_name" type="text" required placeholder="Nwankwo">
+            </div>
+          </div>
+          <div class="fld">
+            <label for="em">Work email</label>
+            <input id="em" name="email" type="email" required placeholder="you@company.com">
+          </div>
+          <div class="fld">
+            <label for="co">Company</label>
+            <input id="co" name="company" type="text" required placeholder="Your company name">
+          </div>
+          <div class="f2">
+            <div class="fld">
+              <label for="hc">Headcount</label>
+              <select id="hc" name="headcount">
+                <option>Under 50</option>
+                <option selected>50 to 250</option>
+                <option>250 to 1,000</option>
+                <option>Over 1,000</option>
+              </select>
+            </div>
+            <div class="fld">
+              <label for="iv">Interested in</label>
+              <select id="iv" name="interest">
+                <option>Requisitions and approvals</option>
+                <option>HR and leave</option>
+                <option>Sales and commissions</option>
+                <option selected>The whole system</option>
+              </select>
+            </div>
+          </div>
+          <div class="fld">
+            <label for="ms">What process gives you the most trouble?</label>
+            <textarea id="ms" name="message"
+              placeholder="For example: approvals over five million naira need three signatures and they sit for a week."></textarea>
+          </div>
+          <button class="btn btn-p btn-lg" type="submit" style="width:100%;">Request a walkthrough</button>
+          <p class="tiny" style="margin-top:14px;text-align:center;">
+            We will only use these details to contact you about SavidorHR.
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec-sm tint" style="margin-top:40px;">
+  <div class="wrap">
+    <div class="cards c3">
+      <div class="card">
+        <div class="ic"><svg><use href="#i-zap"/></svg></div>
+        <h3 class="h4">Already decided?</h3>
+        <p>If you know the tier you want, say so in the message and we will send a quote and
+          a deployment date instead of booking a demo.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg><use href="#i-users"/></svg></div>
+        <h3 class="h4">Bringing a group?</h3>
+        <p>Multi arm groups are quoted once across all entities. Tell us which arms are in
+          scope and we will price the whole thing together.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg><use href="#i-chart"/></svg></div>
+        <h3 class="h4">Investing rather than buying?</h3>
+        <p>Write to the investor address and we will send the deck and arrange a live
+          walkthrough of the production system.</p>
+      </div>
+    </div>
+  </div>
+</section></main></div>
+
+<footer class="ftr">
+  <div class="wrap">
+    <div class="ftr-grid">
+      <div class="ftr-about">
+        <a class="logo" href="#"><span class="logo-m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="5 12.5 10 17.5 19 7.5"/></svg></span>Savidor<i>HR</i></a>
+        <p>Workforce and approval infrastructure for African enterprise. Built in Lagos.</p>
+      </div>
+      <div><h5>Product</h5><ul><li><a href="#" data-page="product">How it works</a></li><li><a href="#" data-page="modules">All 24 modules</a></li><li><a href="#" data-page="pricing">Pricing</a></li></ul></div>
+      <div><h5>Modules</h5><ul>
+        <li><a href="#" data-page="modules">Spend and approvals</a></li>
+        <li><a href="#" data-page="modules">People</a></li>
+        <li><a href="#" data-page="modules">Revenue</a></li>
+        <li><a href="#" data-page="modules">Governance</a></li>
+      </ul></div>
+      <div><h5>Company</h5><ul><li><a href="#" data-page="investors">Investors</a></li><li><a href="#" data-page="contact">Contact</a></li><li><a href="mailto:hello@savidorhr.com.ng">Support</a></li></ul></div>
+      <div><h5>Get in touch</h5><ul>
+        <li><a href="mailto:hello@savidorhr.com.ng">hello@savidorhr.com.ng</a></li>
+        <li><a href="mailto:invest@savidorhr.com.ng">invest@savidorhr.com.ng</a></li>
+        <li><a href="tel:+2340000000000">+234 000 000 0000</a></li>
+      </ul></div>
+    </div>
+    <div class="ftr-btm">
+      <div>&copy; 2026 SavidorHR. All rights reserved.</div>
+      <div>Lagos, Nigeria</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var b=document.getElementById("burger"), m=document.getElementById("mnav");
+  if(b&&m){b.addEventListener("click",function(){
+    var o=m.classList.toggle("open");
+    b.classList.toggle("x",o);
+    b.setAttribute("aria-expanded",o?"true":"false");
+    b.setAttribute("aria-label",o?"Close menu":"Open menu");
+  });}
+
+  /* ── Header on scroll ───────────────────────────────────────────────
+     Three behaviours: it compacts and gains a shadow once you leave the top,
+     it slides away when you scroll down and returns the moment you scroll up,
+     and a thin bar tracks how far through the page you are. */
+  var hdr=document.querySelector(".hdr"), bar=document.getElementById("hdrBar");
+  var last=0, ticking=false;
+  var still=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function onScroll(){
+    var y=window.pageYOffset||document.documentElement.scrollTop||0;
+    if(y<0) y=0;
+    hdr.classList.toggle("scrolled", y>16);
+
+    /* Never retract while the mobile menu is open, or the menu goes with it. */
+    var menuOpen = m && m.classList.contains("open");
+    if(!still && !menuOpen){
+      if(y>260 && y>last+5) hdr.classList.add("up");
+      else if(y<last-5 || y<=260) hdr.classList.remove("up");
+    } else {
+      hdr.classList.remove("up");
+    }
+
+    if(bar){
+      var d=document.documentElement;
+      var max=d.scrollHeight-d.clientHeight;
+      bar.style.transform="scaleX("+(max>0?Math.min(y/max,1):0)+")";
+    }
+    last=y; ticking=false;
+  }
+  if(hdr){
+    window.addEventListener("scroll",function(){
+      if(!ticking){ ticking=true; window.requestAnimationFrame(onScroll); }
+    },{passive:true});
+    window.addEventListener("resize",onScroll,{passive:true});
+    onScroll();
+  }
+
+  /* Module family filter, used on the modules page. */
+  var chips=document.querySelectorAll("[data-fam]");
+  if(chips.length){
+    chips.forEach(function(c){
+      c.addEventListener("click",function(){
+        var f=c.getAttribute("data-fam");
+        chips.forEach(function(x){x.classList.toggle("on",x===c);});
+        document.querySelectorAll("[data-in]").forEach(function(card){
+          card.style.display=(f==="all"||card.getAttribute("data-in")===f)?"":"none";
+        });
+      });
+    });
+  }
+})();
+</script>
+
+<script>
+(function(){
+  var pages=document.querySelectorAll(".page");
+  function go(slug){
+    pages.forEach(function(p){p.hidden = (p.id !== "page-"+slug);});
+    document.querySelectorAll("[data-page]").forEach(function(a){
+      a.classList.toggle("on", a.getAttribute("data-page")===slug && a.closest(".nav"));
+    });
+    window.scrollTo({top:0,behavior:"instant"});
+    var mn=document.getElementById("mnav"); if(mn) mn.classList.remove("open");
+  }
+  document.addEventListener("click",function(e){
+    var a=e.target.closest("[data-page]");
+    if(!a) return;
+    e.preventDefault();
+    go(a.getAttribute("data-page"));
+  });
+  go("index");
+})();
+</script>

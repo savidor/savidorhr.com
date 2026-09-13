@@ -1,0 +1,141 @@
+<!--
+title: Book a demo | SavidorHR
+desc: Book a forty minute walkthrough of SavidorHR against your own approval process, or contact sales for a quote based on your headcount.
+slug: contact
+-->
+
+<section class="sec-sm" style="padding-top:64px;">
+  <div class="wrap">
+    <div class="feat" style="align-items:start;">
+      <div class="feat-t">
+        <span class="eyebrow">Book a demo</span>
+        <h1 class="h1" style="max-width:14ch;">Forty minutes, on your own process</h1>
+        <p class="lead" style="margin-top:18px;">
+          We do not run a recorded demo. Bring the approval process that causes you the most
+          trouble and we will configure it live, then you can decide whether it is worth
+          continuing.
+        </p>
+
+        <ul class="ticks" style="margin-top:28px;">
+          <li><svg><use href="#i-check-c"/></svg><span><b>No preparation needed.</b>
+            Bring the process in your head. We will write it down on the call.</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><b>A firm number, not a range.</b>
+            Tell us your headcount and which arms are in scope and we will quote properly.</span></li>
+          <li><svg><use href="#i-check-c"/></svg><span><b>Talk to whoever signs.</b>
+            The call works best with the person who actually approves spend in the room.</span></li>
+        </ul>
+
+        <div style="margin-top:36px;padding-top:28px;border-top:1px solid var(--line);">
+          <div class="cards c2" style="gap:16px;">
+            <div>
+              <h4 class="h4" style="margin-bottom:6px;">Sales and demos</h4>
+              <p class="small"><a href="mailto:hello@savidorhr.com.ng"
+                style="color:var(--brand);font-weight:600;">hello@savidorhr.com.ng</a></p>
+            </div>
+            <div>
+              <h4 class="h4" style="margin-bottom:6px;">Investors</h4>
+              <p class="small"><a href="mailto:invest@savidorhr.com.ng"
+                style="color:var(--brand);font-weight:600;">invest@savidorhr.com.ng</a></p>
+            </div>
+            <div>
+              <h4 class="h4" style="margin-bottom:6px;">Phone</h4>
+              <p class="small"><a href="tel:+2340000000000"
+                style="color:var(--brand);font-weight:600;">+234 000 000 0000</a></p>
+            </div>
+            <div>
+              <h4 class="h4" style="margin-bottom:6px;">Office</h4>
+              <p class="small">Lagos, Nigeria</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <h3 class="h3" style="margin-bottom:6px;">Request a walkthrough</h3>
+        <p class="small" style="margin-bottom:26px;">We reply within one working day.</p>
+
+        <!-- Netlify Forms. Submissions are stored in the Netlify dashboard and
+             netlify/functions/submission-created.mjs emails a formatted copy. -->
+        <form name="walkthrough" method="POST" action="/thanks.html"
+              data-netlify="true" data-netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="walkthrough">
+          <p class="hp" aria-hidden="true">
+            <label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off"></label>
+          </p>
+          <div class="f2">
+            <div class="fld">
+              <label for="fn">First name</label>
+              <input id="fn" name="first_name" type="text" required placeholder="Adaeze">
+            </div>
+            <div class="fld">
+              <label for="ln">Last name</label>
+              <input id="ln" name="last_name" type="text" required placeholder="Nwankwo">
+            </div>
+          </div>
+          <div class="fld">
+            <label for="em">Work email</label>
+            <input id="em" name="email" type="email" required placeholder="you@company.com">
+          </div>
+          <div class="fld">
+            <label for="co">Company</label>
+            <input id="co" name="company" type="text" required placeholder="Your company name">
+          </div>
+          <div class="f2">
+            <div class="fld">
+              <label for="hc">Headcount</label>
+              <select id="hc" name="headcount">
+                <option>Under 50</option>
+                <option selected>50 to 250</option>
+                <option>250 to 1,000</option>
+                <option>Over 1,000</option>
+              </select>
+            </div>
+            <div class="fld">
+              <label for="iv">Interested in</label>
+              <select id="iv" name="interest">
+                <option>Requisitions and approvals</option>
+                <option>HR and leave</option>
+                <option>Sales and commissions</option>
+                <option selected>The whole system</option>
+              </select>
+            </div>
+          </div>
+          <div class="fld">
+            <label for="ms">What process gives you the most trouble?</label>
+            <textarea id="ms" name="message"
+              placeholder="For example: approvals over five million naira need three signatures and they sit for a week."></textarea>
+          </div>
+          <button class="btn btn-p btn-lg" type="submit" style="width:100%;">Request a walkthrough</button>
+          <p class="tiny" style="margin-top:14px;text-align:center;">
+            We will only use these details to contact you about SavidorHR.
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec-sm tint" style="margin-top:40px;">
+  <div class="wrap">
+    <div class="cards c3">
+      <div class="card">
+        <div class="ic"><svg><use href="#i-zap"/></svg></div>
+        <h3 class="h4">Already decided?</h3>
+        <p>If you know the tier you want, say so in the message and we will send a quote and
+          a deployment date instead of booking a demo.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg><use href="#i-users"/></svg></div>
+        <h3 class="h4">Bringing a group?</h3>
+        <p>Multi arm groups are quoted once across all entities. Tell us which arms are in
+          scope and we will price the whole thing together.</p>
+      </div>
+      <div class="card">
+        <div class="ic"><svg><use href="#i-chart"/></svg></div>
+        <h3 class="h4">Investing rather than buying?</h3>
+        <p>Write to the investor address and we will send the deck and arrange a live
+          walkthrough of the production system.</p>
+      </div>
+    </div>
+  </div>
+</section>

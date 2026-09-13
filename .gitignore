@@ -1,0 +1,8 @@
+node_modules/
+.netlify/
+.env
+.DS_Store
+__MACOSX/
+
+# Leftover diagnostic from an earlier hosting attempt, not part of the site.
+hosting-test.html
