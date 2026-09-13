@@ -279,6 +279,36 @@ PREVIEW_SCRIPT = """
 </script>"""
 
 
+# Family keys on the module cards, in the order they should appear in a form.
+FAMILIES = [
+    ("spend",   "Spend and approvals"),
+    ("people",  "People"),
+    ("revenue", "Revenue"),
+    ("ops",     "Operations"),
+    ("gov",     "Governance"),
+]
+
+
+def module_options():
+    """Build the contact form's module list from the module cards themselves,
+    so the form can never list a module the Modules page does not, or miss one."""
+    src = (SRC / "pages" / "modules.html").read_text(encoding="utf-8")
+    cards = re.findall(r'<div class="mod-card" data-in="(\w+)">.*?<h4>(.*?)</h4>', src, re.S)
+    by_fam = {}
+    for fam, name in cards:
+        by_fam.setdefault(fam, []).append(name.strip())
+
+    out = ['<option selected>The whole system</option>',
+           '<option>Not sure yet, please advise</option>']
+    for key, label in FAMILIES:
+        if key not in by_fam:
+            continue
+        out.append(f'<optgroup label="{label}">')
+        out += [f"<option>{n}</option>" for n in by_fam[key]]
+        out.append("</optgroup>")
+    return "\n                ".join(out)
+
+
 def parse(path):
     """Fragment header: <!-- title / desc / slug --> then the markup."""
     raw = path.read_text(encoding="utf-8")
@@ -347,6 +377,7 @@ def main():
             print(f"  ! missing {p}")
             continue
         meta, body = parse(p)
+        body = body.replace("<!--MODULE_OPTIONS-->", module_options())
         frags[slug] = (meta, body)
         (OUT / f"{slug}.html").write_text(document(meta, body, slug), encoding="utf-8")
         print(f"  wrote site/{slug}.html")
