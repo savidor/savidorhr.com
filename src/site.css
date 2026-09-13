@@ -826,10 +826,9 @@ html,body{max-width:100%;}
 .nav-item:hover .mega, .nav-item:focus-within .mega{
   opacity:1; visibility:visible; transform:translateY(0);
 }
-.mega-in{
-  display:grid; grid-template-columns:repeat(4,1fr) 300px;
-  gap:30px; padding:32px 24px 34px;
-}
+.mega-in{display:flex; gap:30px; padding:32px 24px 34px; align-items:flex-start;}
+.mega-col{flex:1 1 0; min-width:0;}
+.mega-feat{flex:0 0 300px;}
 .mega-col h6{
   font-size:.7rem; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
   color:var(--ink-4); margin-bottom:13px; min-height:2.5em;
@@ -874,7 +873,7 @@ html,body{max-width:100%;}
   font-weight:600; color:var(--brand);
 }
 
-@media (max-width:1180px){ .mega-in{grid-template-columns:repeat(4,1fr); } .mega-feat{display:none;} }
+@media (max-width:1180px){ .mega-feat{display:none;} }
 @media (max-width:940px){ .mega{display:none;} }
 
 
@@ -889,3 +888,160 @@ html,body{max-width:100%;}
 @media (max-width:1180px){ .fn-3{display:none;} }
 @media (max-width:1000px){ .fn-2{right:-8px; top:-18px;} }
 @media (max-width:640px){ .fn-2,.fn-3{display:none;} }
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Pricing: four tiers, no figures. The number comes from a conversation,
+   so every card ends in the same ask rather than a price.
+   ═══════════════════════════════════════════════════════════════════════ */
+.tiers.t4{grid-template-columns:repeat(4,1fr); gap:18px; align-items:stretch;}
+.tier{position:relative;}
+.tier{display:flex; flex-direction:column;}
+.tier > .btn{margin-top:auto;}
+.tier .small{color:var(--ink-2); margin-top:8px; line-height:1.55;}
+.tier-custom{background:var(--bg-2);}
+.tier-plus{margin-top:18px; font-size:.86rem; color:var(--ink-3);}
+.tier-plus b{color:var(--ink); font-weight:700;}
+.tk-list{margin-top:16px; gap:11px;}
+.tk-list li{font-size:.9rem; line-height:1.5;}
+.tk-list svg{width:17px; height:17px; margin-top:3px;}
+.tiers.t4 .ticks li{grid-template-columns:17px 1fr; gap:10px;}
+
+/* Comparison accordion. One open group at a time is not enforced; people
+   comparing tiers usually want two families side by side. */
+.cmp-group{border-bottom:1px solid var(--line); background:#fff;}
+.cmp-group:last-child{border-bottom:none;}
+.cmp-group summary{
+  display:flex; align-items:center; gap:12px; cursor:pointer; list-style:none;
+  padding:18px 20px; font-family:var(--f-d); font-size:1rem; font-weight:700;
+  color:var(--ink); transition:background .15s, color .15s;
+}
+.cmp-group summary::-webkit-details-marker{display:none;}
+.cmp-group summary span{
+  font-family:var(--f); font-size:.78rem; font-weight:500; color:var(--ink-3);
+}
+.cmp-group summary::after{
+  content:"+"; margin-left:auto; font-size:1.4rem; font-weight:400;
+  color:var(--ink-3); line-height:1;
+}
+.cmp-group[open] summary::after{content:"\2212";}
+.cmp-group summary:hover{background:var(--bg-2); color:var(--brand);}
+.cmp-group[open] summary{background:var(--brand-50); color:var(--brand);}
+.cmp-group table.cmp th{background:#fff;}
+
+@media (max-width:1100px){ .tiers.t4{grid-template-columns:repeat(2,1fr);} }
+@media (max-width:680px){ .tiers.t4{grid-template-columns:1fr;} }
+
+/* The Product panel has fewer, longer links than the Modules one. */
+.mega-col-wide a{white-space:normal;}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   The flow on the Modules page. The point is to show the shape of the
+   system before asking anyone to read a card grid, so it plays on its own.
+   One 10s cycle lights each of the five stages in turn.
+   ═══════════════════════════════════════════════════════════════════════ */
+.flow-sec{background:
+  radial-gradient(700px 300px at 50% 0%, var(--brand-50), transparent 70%), #fff;}
+.flow{position:relative; padding-top:38px;}
+
+/* Sits above the cards, not behind them: the cards are opaque, so a rail
+   underneath only ever showed through the gaps. 10% and 90% are the centres
+   of the first and last of five equal columns. */
+.flow-rail{
+  position:absolute; top:15px; left:10%; right:10%; height:2px;
+  background:linear-gradient(90deg,var(--line),var(--line-2),var(--line));
+  border-radius:2px;
+}
+.flow-pulse{
+  position:absolute; top:50%; width:10px; height:10px; margin-top:-5px; margin-left:-5px;
+  border-radius:50%; background:var(--brand);
+  box-shadow:0 0 0 5px rgba(162,66,18,.16), 0 0 14px rgba(162,66,18,.55);
+  animation:flowTravel 10s linear infinite;
+}
+@keyframes flowTravel{0%{left:0;} 100%{left:100%;}}
+
+.flow-steps{display:grid; grid-template-columns:repeat(5,1fr); gap:18px; position:relative;}
+.flow-step{
+  background:#fff; border:1px solid var(--line); border-radius:var(--r-lg);
+  padding:26px 20px 20px; text-align:center; position:relative;
+  animation:stepOn 10s ease-in-out infinite;
+  animation-delay:calc(var(--i) * 2s);
+}
+@keyframes stepOn{
+  0%, 6%    {border-color:var(--line); box-shadow:var(--sh-sm); transform:translateY(0);}
+  11%, 24%  {border-color:var(--brand); box-shadow:0 16px 34px -12px rgba(162,66,18,.32);
+             transform:translateY(-5px);}
+  30%, 100% {border-color:var(--line); box-shadow:var(--sh-sm); transform:translateY(0);}
+}
+.fs-n{
+  position:absolute; top:13px; left:16px; font-family:var(--f-m);
+  font-size:.68rem; font-weight:500; color:var(--ink-4); letter-spacing:.04em;
+}
+.fs-ic{
+  width:46px; height:46px; margin:4px auto 14px; border-radius:12px;
+  background:var(--bg-2); border:1px solid var(--line); display:grid; place-items:center;
+  animation:stepIc 10s ease-in-out infinite; animation-delay:calc(var(--i) * 2s);
+}
+.fs-ic svg{width:22px; height:22px; color:var(--ink-3);
+  animation:stepSvg 10s ease-in-out infinite; animation-delay:calc(var(--i) * 2s);}
+@keyframes stepIc{
+  0%, 6%   {background:var(--bg-2); border-color:var(--line);}
+  11%, 24% {background:var(--brand); border-color:var(--brand);}
+  30%,100% {background:var(--bg-2); border-color:var(--line);}
+}
+@keyframes stepSvg{
+  0%, 6%   {color:var(--ink-3);}
+  11%, 24% {color:#fff;}
+  30%,100% {color:var(--ink-3);}
+}
+.flow-step b{
+  display:block; font-family:var(--f-d); font-size:1.02rem; font-weight:700;
+  color:var(--ink); letter-spacing:-.012em; margin-bottom:7px;
+}
+.flow-step p{font-size:.86rem; color:var(--ink-2); line-height:1.55;}
+.fs-tag{
+  display:block; margin-top:13px; padding-top:11px; border-top:1px solid var(--line);
+  font-size:.72rem; font-weight:600; color:var(--ink-4); letter-spacing:.02em;
+}
+
+/* Hovering stops it, so anyone reading a stage is not fighting the animation. */
+.flow:hover .flow-step, .flow:hover .fs-ic, .flow:hover .fs-ic svg,
+.flow:hover .flow-pulse{animation-play-state:paused;}
+
+@media (max-width:1080px){
+  .flow-steps{grid-template-columns:repeat(2,1fr);}
+  .flow-rail{display:none;}
+}
+@media (max-width:560px){ .flow-steps{grid-template-columns:1fr;} }
+
+/* ── Catalogue: centred chips, a line of context per family, and cards that
+      arrive as you reach them rather than all at once. ── */
+.center-bar{justify-content:center;}
+/* Centring an overflowing scroller puts its first items out of reach, and the
+   chip bar becomes a sideways scroller on small screens. */
+@media (max-width:640px){ .center-bar{justify-content:flex-start;} }
+.fam-note{
+  text-align:center; max-width:62ch; margin:0 auto 30px;
+  font-size:.98rem; color:var(--ink-2); line-height:1.6; min-height:3.2em;
+  transition:opacity .22s ease;
+}
+.fam-note.swap{opacity:0;}
+
+.reveal{opacity:0; transform:translateY(16px);}
+.reveal.in{
+  opacity:1; transform:none;
+  transition:opacity .5s cubic-bezier(.4,0,.2,1), transform .5s cubic-bezier(.4,0,.2,1);
+}
+.mod-grid .mod-card{transition:opacity .26s ease, transform .26s ease,
+  box-shadow .25s, border-color .2s;}
+.mod-grid .mod-card.hide{display:none;}
+
+/* Motion is decoration here, never information: it all reads the same
+   standing still. */
+@media (prefers-reduced-motion: reduce){
+  .flow-step, .fs-ic, .fs-ic svg, .flow-pulse{animation:none;}
+  .flow-step{border-color:var(--line-2);}
+  .flow-pulse{display:none;}
+  .reveal, .reveal.in{opacity:1; transform:none; transition:none;}
+}

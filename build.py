@@ -36,8 +36,33 @@ UNLISTED = {"thanks"}
 NAV = [
     ("product", "Product", "product.html"),
     ("modules", "Modules", "modules.html"),
-    ("crm", "CRM", "crm.html"),
+    ("pricing", "Pricing", "pricing.html"),
     ("investors", "Investors", "investors.html"),
+]
+
+# Nav items that open a mega panel. CRM is deliberately absent from NAV: it is
+# the flagship card inside the Modules panel, so it is reachable without
+# spending a top-level slot on one module out of twenty eight.
+MEGA_ITEMS = {"product", "modules"}
+
+# The Product panel, in columns. Each entry is (label, href-with-anchor).
+PRODUCT_COLS = [
+    ("How it works", [
+        ("How a request moves", "product.html#how"),
+        ("The routing engine", "product.html#routing"),
+        ("Roles and permissions", "product.html#builtin"),
+    ]),
+    ("Built in", [
+        ("Audit trail on every view", "product.html#builtin"),
+        ("Email and push notification", "product.html#builtin"),
+        ("Works on the phone in the field", "product.html#builtin"),
+        ("Break glass administration", "product.html#builtin"),
+    ]),
+    ("Getting live", [
+        ("Deployment in weeks", "product.html#deploy"),
+        ("Migration from what you have", "product.html#builtin"),
+        ("Talk to an engineer", "contact.html"),
+    ]),
 ]
 
 # ── Icon sprite. Stroke icons at 24x24, currentColor, so one set restyles. ──
@@ -130,41 +155,72 @@ CARET = ('<svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColo
 def modules_by_family():
     """The single source of truth for what modules exist: the cards themselves."""
     src = (SRC / "pages" / "modules.html").read_text(encoding="utf-8")
-    cards = re.findall(r'<div class="mod-card" data-in="(\w+)">.*?<h4>(.*?)</h4>', src, re.S)
+    cards = re.findall(r'<div class="mod-card[^"]*" data-in="(\w+)">.*?<h4>(.*?)</h4>', src, re.S)
     by_fam = {}
     for fam, name in cards:
         by_fam.setdefault(fam, []).append(name.strip())
     return by_fam
 
 
-def mega(preview):
-    """The Modules mega panel. Built from the module cards, so a new module
-    appears in the navigation the moment its card is added."""
-    by_fam = modules_by_family()
-    href = 'href="#" data-page="modules"' if preview else 'href="modules.html"'
-    crm = 'href="#" data-page="crm"' if preview else 'href="crm.html"'
+def _mega_href(href, preview):
+    """In the single-file preview there are no separate pages, so every link
+    collapses to the page-switching attribute and anchors are dropped."""
+    slug = href.split("#")[0].replace(".html", "")
+    if slug == "index":
+        slug = "index"
+    return f'href="#" data-page="{slug}"' if preview else f'href="{href}"'
 
-    cols = []
+
+def mega_shell(cols, feat, foot):
+    return (f'<div class="mega"><div class="wrap mega-in">{cols}{feat}</div>'
+            f'<div class="mega-foot"><div class="wrap">{foot}</div></div></div>')
+
+
+def mega_modules(preview):
+    """Built from the module cards, so a new module appears in the navigation
+    the moment its card is added to the Modules page."""
+    by_fam = modules_by_family()
+    href = _mega_href("modules.html", preview)
+    crm = _mega_href("crm.html", preview)
+
+    cols = ""
     for title, keys in MEGA_COLS:
         names = [n for k in keys for n in by_fam.get(k, [])]
         links = "".join(f"<a {href}>{n}</a>" for n in names)
-        cols.append(f'<div class="mega-col"><h6>{title}</h6>{links}</div>')
+        cols += f'<div class="mega-col"><h6>{title}</h6>{links}</div>'
 
     total = sum(len(v) for v in by_fam.values())
-    return f"""<div class="mega"><div class="wrap mega-in">
-  {"".join(cols)}
-  <a class="mega-feat" {crm}>
-    <span class="mega-tag">Flagship</span>
-    <b>CRM and guided calling</b>
-    <p>The queue decides who is called next, the script branches on what they
-       actually said, and no call ends without a dated next step.</p>
-    <span class="mega-go">Look inside {ARROW_S}</span>
-  </a>
-</div>
-<div class="mega-foot"><div class="wrap">
-  <span>{total} modules, one permission model. Switch on what you need now.</span>
-  <a {href}>Browse all {total} {ARROW_S}</a>
-</div></div></div>"""
+    feat = (f'<a class="mega-feat" {crm}>'
+            f'<span class="mega-tag">Flagship</span>'
+            f'<b>CRM and guided calling</b>'
+            f'<p>The queue decides who is called next, the script branches on what they '
+            f'actually said, and no call ends without a dated next step.</p>'
+            f'<span class="mega-go">Look inside {ARROW_S}</span></a>')
+    foot = (f'<span>{total} modules, one permission model. Switch on what you need now.</span>'
+            f'<a {href}>Browse all {total} {ARROW_S}</a>')
+    return mega_shell(cols, feat, foot)
+
+
+def mega_product(preview):
+    """How the system works, as opposed to what is in it."""
+    cols = ""
+    for title, items in PRODUCT_COLS:
+        links = "".join(f'<a {_mega_href(h, preview)}>{l}</a>' for l, h in items)
+        cols += f'<div class="mega-col mega-col-wide"><h6>{title}</h6>{links}</div>'
+
+    demo = _mega_href("contact.html", preview)
+    feat = (f'<a class="mega-feat" {demo}>'
+            f'<span class="mega-tag">Forty minutes</span>'
+            f'<b>Bring us your worst process</b>'
+            f'<p>The one with the exception everybody works around. We will configure it '
+            f'live on the call, against your own approval chain.</p>'
+            f'<span class="mega-go">Book a walkthrough {ARROW_S}</span></a>')
+    foot = (f'<span>Approval chains are settings, not code. No developer needed to change them.</span>'
+            f'<a {_mega_href("product.html", preview)}>How it works {ARROW_S}</a>')
+    return mega_shell(cols, feat, foot)
+
+
+MEGA_PANELS = {"modules": mega_modules, "product": mega_product}
 
 
 def header(active, preview):
@@ -177,11 +233,12 @@ def header(active, preview):
     contact = 'href="#" data-page="contact"' if preview else 'href="contact.html"'
     parts = []
     for slug, label, href in NAV:
-        if slug == "modules":
+        if slug in MEGA_ITEMS:
             h = f'href="#" data-page="{slug}"' if preview else f'href="{href}"'
             cls = ' class="on"' if slug == active else ""
+            panel = MEGA_PANELS[slug](preview)
             parts.append(f'<div class="nav-item has-mega">'
-                         f'<a {h}{cls}>{label}{CARET}</a>{mega(preview)}</div>')
+                         f'<a {h}{cls}>{label}{CARET}</a>{panel}</div>')
         else:
             parts.append(link(slug, label, href))
     nav = "".join(parts)
@@ -223,7 +280,7 @@ def footer(preview):
         a("product", "How it works", "product.html"),
         a("modules", "All 28 modules", "modules.html"),
         a("crm", "CRM and calling", "crm.html"),
-        a("contact", "Request a quote", "contact.html"),
+        a("pricing", "Pricing", "pricing.html"),
     ])
     comp = "".join([
         a("investors", "Investors", "investors.html"),
@@ -308,16 +365,56 @@ SCRIPT = """
     onScroll();
   }
 
-  /* Module family filter, used on the modules page. */
+  /* ── Reveal on arrival ──────────────────────────────────────────────
+     Cards fade up as you reach them instead of landing as one wall. The
+     stagger is capped so a filter showing twenty eight cards never leaves
+     the last one waiting seconds to appear. */
+  var reveals=document.querySelectorAll(".reveal");
+  function showAll(){ reveals.forEach(function(el){ el.classList.add("in"); }); }
+  if(reveals.length){
+    if(still || !("IntersectionObserver" in window)){
+      showAll();
+    } else {
+      var io=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(!e.isIntersecting) return;
+          var sibs=Array.prototype.slice.call(e.target.parentNode.children);
+          var i=sibs.indexOf(e.target);
+          e.target.style.transitionDelay=Math.min(i,8)*55+"ms";
+          e.target.classList.add("in");
+          io.unobserve(e.target);
+        });
+      },{rootMargin:"0px 0px -40px 0px",threshold:.08});
+      reveals.forEach(function(el){ io.observe(el); });
+    }
+  }
+
+  /* ── Module family filter ───────────────────────────────────────────
+     Hiding with a class rather than an inline style keeps the transition,
+     and the note above the grid explains the family you just picked. */
   var chips=document.querySelectorAll("[data-fam]");
+  var note=document.getElementById("famNote");
   if(chips.length){
     chips.forEach(function(c){
       c.addEventListener("click",function(){
         var f=c.getAttribute("data-fam");
         chips.forEach(function(x){x.classList.toggle("on",x===c);});
+
         document.querySelectorAll("[data-in]").forEach(function(card){
-          card.style.display=(f==="all"||card.getAttribute("data-in")===f)?"":"none";
+          var show=(f==="all"||card.getAttribute("data-in")===f);
+          card.classList.toggle("hide",!show);
+          if(show && !card.classList.contains("in")) card.classList.add("in");
         });
+
+        if(note){
+          var txt=note.getAttribute("data-"+f);
+          if(txt && !still){
+            note.classList.add("swap");
+            setTimeout(function(){ note.textContent=txt; note.classList.remove("swap"); },220);
+          } else if(txt){
+            note.textContent=txt;
+          }
+        }
       });
     });
   }
@@ -360,11 +457,7 @@ FAMILIES = [
 def module_options():
     """Build the contact form's module list from the module cards themselves,
     so the form can never list a module the Modules page does not, or miss one."""
-    src = (SRC / "pages" / "modules.html").read_text(encoding="utf-8")
-    cards = re.findall(r'<div class="mod-card" data-in="(\w+)">.*?<h4>(.*?)</h4>', src, re.S)
-    by_fam = {}
-    for fam, name in cards:
-        by_fam.setdefault(fam, []).append(name.strip())
+    by_fam = modules_by_family()
 
     out = ['<option selected>The whole system</option>',
            '<option>Not sure yet, please advise</option>']
@@ -375,6 +468,63 @@ def module_options():
         out += [f"<option>{n}</option>" for n in by_fam[key]]
         out.append("</optgroup>")
     return "\n                ".join(out)
+
+
+# The lowest tier each module is included in. Everything above inherits it.
+# Keys must match the module card headings exactly; build fails loudly if not.
+TIER_MIN = {
+    "Requisitions": "core", "Procurement and vendor quotes": "ops",
+    "Site budgets": "ops", "Implementation tracking": "ops",
+    "Leave": "core", "Employee lifecycle": "ops", "Appraisals": "core",
+    "Attendance and policies": "ops", "Recruitment and job portal": "ent",
+    "Offer letters": "ent", "Staff broadcasts": "ops",
+    "CRM and leads": "ent", "Guided calling": "ent", "Deals and pipeline": "ent",
+    "Market demand": "ent", "Revenue outlook": "ent", "Sales activities": "ent",
+    "Sale commissions": "ent", "Client portfolios": "ent",
+    "Work reports": "core", "Monthly performance": "ops",
+    "IT devices and CUG lines": "ops", "Pool car booking": "ops",
+    "Management meeting": "ent",
+    "Audit log": "core", "Root console": "ent", "Oversight analytics": "ops",
+    "Social media monitor": "ent",
+}
+TIER_ORDER = ["core", "ops", "ent"]
+FAM_TITLES = {"spend": "Spend and approvals", "people": "People",
+              "revenue": "Revenue and CRM", "ops": "Operations", "gov": "Governance"}
+
+
+def tier_table():
+    """One accordion per family, with a tick per tier. Generated from the module
+    cards and TIER_MIN together, so the table cannot list a module that does not
+    exist or quietly omit a new one."""
+    by_fam = modules_by_family()
+    known = {n for names in by_fam.values() for n in names}
+    missing = known - set(TIER_MIN)
+    if missing:
+        raise SystemExit(f"  ! TIER_MIN is missing: {sorted(missing)}")
+    stale = set(TIER_MIN) - known
+    if stale:
+        raise SystemExit(f"  ! TIER_MIN names modules that no longer exist: {sorted(stale)}")
+
+    tick = '<svg class="tk"><use href="#i-check"/></svg>'
+    out = []
+    for fam, title in FAM_TITLES.items():
+        names = by_fam.get(fam, [])
+        if not names:
+            continue
+        rows = ""
+        for n in names:
+            lo = TIER_ORDER.index(TIER_MIN[n])
+            cells = "".join(
+                f"<td>{tick}</td>" if i >= lo else '<td class="no">Add on</td>'
+                for i in range(3))
+            rows += f"<tr><td><b>{n}</b></td>{cells}</tr>"
+        out.append(
+            f'<details class="cmp-group"{" open" if fam == "spend" else ""}>'
+            f"<summary>{title} <span>{len(names)} modules</span></summary>"
+            f'<div class="cmp-scroll"><table class="cmp">'
+            f"<thead><tr><th></th><th>Core</th><th>Operations</th><th>Enterprise</th></tr></thead>"
+            f"<tbody>{rows}</tbody></table></div></details>")
+    return "\n".join(out)
 
 
 def parse(path):
@@ -436,7 +586,7 @@ def main():
     (OUT / "favicon.svg").write_text(
         (SRC / "favicon.svg").read_text(encoding="utf-8"), encoding="utf-8")
 
-    order = ["index", "product", "modules", "crm", "investors",
+    order = ["index", "product", "modules", "crm", "pricing", "investors",
              "contact", "thanks"]
     frags = {}
     for slug in order:
@@ -446,6 +596,7 @@ def main():
             continue
         meta, body = parse(p)
         body = body.replace("<!--MODULE_OPTIONS-->", module_options())
+        body = body.replace("<!--TIER_TABLE-->", tier_table())
         frags[slug] = (meta, body)
         (OUT / f"{slug}.html").write_text(document(meta, body, slug), encoding="utf-8")
         print(f"  wrote site/{slug}.html")

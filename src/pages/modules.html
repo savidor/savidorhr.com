@@ -1,21 +1,101 @@
 <!--
 title: Modules | SavidorHR
-desc: All twenty eight SavidorHR modules across spend and approvals, people, revenue, operations and governance. Every one is in production today.
+desc: Twenty eight modules across spend, people, revenue, operations and governance. See how a request moves through all five stages, then filter to the modules you would actually switch on.
 slug: modules
 -->
 
-<section class="sec-sm" style="padding-top:64px;">
+<section class="sec-sm" style="padding-top:64px;padding-bottom:34px;">
   <div class="wrap">
-    <div class="sec-head" style="margin-bottom:34px;">
+    <div class="sec-head center" style="margin-bottom:0;">
       <span class="eyebrow">The full system</span>
-      <h1 class="h1" style="max-width:16ch;">Twenty eight modules. One permission model.</h1>
-      <p class="lead measure-w" style="margin-top:18px;">
-        This is not a roadmap. Every module listed here is running in production today.
-        Switch on what you need now and add the rest as the company grows into them.
+      <h1 class="h1" style="max-width:15ch;margin:0 auto;">Twenty eight modules, one permission model</h1>
+      <p class="lead measure-w" style="margin:18px auto 0;">
+        This is not a roadmap. Every module here runs in production today. They are not
+        twenty eight products bolted together either: they share one employee record, one
+        approval engine and one audit trail, which is why switching another one on takes
+        an afternoon rather than a migration.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ The flow. Shows the shape of the system before asking anyone to read a
+     card grid. Auto-plays, pauses on hover, and holds still for anyone who
+     asks for reduced motion. ══ -->
+<section class="sec-sm flow-sec">
+  <div class="wrap">
+    <div class="sec-head center" style="margin-bottom:38px;">
+      <span class="eyebrow">How work moves</span>
+      <h2 class="h2">One request, five stages, nothing lost in between</h2>
+      <p class="lead measure-w" style="margin:14px auto 0;">
+        Whatever the module, the shape is the same. That is the whole point of putting
+        them on one system.
       </p>
     </div>
 
-    <div class="fam-bar">
+    <div class="flow" id="flow">
+      <div class="flow-rail"><span class="flow-pulse"></span></div>
+      <div class="flow-steps">
+
+        <div class="flow-step" style="--i:0">
+          <span class="fs-n">01</span>
+          <div class="fs-ic"><svg><use href="#i-doc"/></svg></div>
+          <b>Raised</b>
+          <p>Someone asks for something. They never choose who approves it.</p>
+          <span class="fs-tag">Requisitions &middot; Leave &middot; Commissions</span>
+        </div>
+
+        <div class="flow-step" style="--i:1">
+          <span class="fs-n">02</span>
+          <div class="fs-ic"><svg><use href="#i-route"/></svg></div>
+          <b>Routed</b>
+          <p>The chain resolves itself from role, department, site, category and amount.</p>
+          <span class="fs-tag">Routing engine</span>
+        </div>
+
+        <div class="flow-step" style="--i:2">
+          <span class="fs-n">03</span>
+          <div class="fs-ic"><svg><use href="#i-check-c"/></svg></div>
+          <b>Signed or returned</b>
+          <p>Each stage decides. A return carries its reason back, never a silent no.</p>
+          <span class="fs-tag">Thresholds &middot; Procurement gate</span>
+        </div>
+
+        <div class="flow-step" style="--i:3">
+          <span class="fs-n">04</span>
+          <div class="fs-ic"><svg><use href="#i-build"/></svg></div>
+          <b>Executed</b>
+          <p>Money moves, leave starts, the milestone opens and needs evidence to close.</p>
+          <span class="fs-tag">Budgets &middot; Implementation</span>
+        </div>
+
+        <div class="flow-step" style="--i:4">
+          <span class="fs-n">05</span>
+          <div class="fs-ic"><svg><use href="#i-shield"/></svg></div>
+          <b>Recorded</b>
+          <p>Every view, decision and override lands in one trail you can answer from.</p>
+          <span class="fs-tag">Audit log &middot; Oversight</span>
+        </div>
+
+      </div>
+    </div>
+
+    <p class="tiny center" style="margin-top:26px;color:var(--ink-3);">
+      Change who signs at any stage without a developer. The chain is settings, not code.
+    </p>
+  </div>
+</section>
+
+<!-- ══ The catalogue. Filtered, and revealed as you reach it rather than
+     dumped as one wall of twenty eight. ══ -->
+<section class="sec tint">
+  <div class="wrap">
+    <div class="sec-head center" style="margin-bottom:30px;">
+      <span class="eyebrow">The catalogue</span>
+      <h2 class="h2">Start with one family, add the rest as you grow</h2>
+    </div>
+
+    <div class="fam-bar center-bar">
       <button class="chip on" data-fam="all">All 28</button>
       <button class="chip" data-fam="spend">Spend and approvals</button>
       <button class="chip" data-fam="people">People</button>
@@ -24,214 +104,212 @@ slug: modules
       <button class="chip" data-fam="gov">Governance</button>
     </div>
 
-    <div class="cards c3">
+    <p class="fam-note" id="famNote" data-all="Everything below is live today. Filter to a family to see what a single starting point looks like."
+       data-spend="Where money leaves the company. Requests carry their budget line and their full signature history."
+       data-people="One employee record from offer letter to exit, so nothing is retyped and nothing goes missing."
+       data-revenue="Where money comes in. Leads get called, deals get staged, and commissions walk their own approval chain."
+       data-ops="The running of the place: reports, devices, vehicles and the monthly management rhythm."
+       data-gov="Who did what, who looked, and who can break the glass. The part auditors ask about.">
+      Everything below is live today. Filter to a family to see what a single starting point looks like.
+    </p>
 
-      <!-- ── Spend and approvals ── -->
-      <div class="mod-card" data-in="spend">
+    <div class="cards c3 mod-grid">
+      <div class="mod-card reveal" data-in="spend">
         <div class="ic"><svg><use href="#i-doc"/></svg></div>
         <h4>Requisitions</h4>
         <p>Every request carries its site, its budget line and its full signature history.
           Returned requests carry the reason back to the raiser, never a silent rejection.</p>
         <span class="fam-t">Spend and approvals</span>
       </div>
-      <div class="mod-card" data-in="spend">
+      <div class="mod-card reveal" data-in="spend">
         <div class="ic"><svg><use href="#i-cart"/></svg></div>
         <h4>Procurement and vendor quotes</h4>
         <p>Where a site's chain includes a Procurement Officer, a line item with fewer than
           two vendor quotes blocks the whole requisition from advancing.</p>
         <span class="fam-t">Spend and approvals</span>
       </div>
-      <div class="mod-card" data-in="spend">
+      <div class="mod-card reveal" data-in="spend">
         <div class="ic"><svg><use href="#i-wallet"/></svg></div>
         <h4>Site budgets</h4>
         <p>Approved spend commits against its site before money moves. Approving past a
           ceiling is allowed, but it notifies the Managing Director automatically.</p>
         <span class="fam-t">Spend and approvals</span>
       </div>
-      <div class="mod-card" data-in="spend">
+      <div class="mod-card reveal" data-in="spend">
         <div class="ic"><svg><use href="#i-build"/></svg></div>
         <h4>Implementation tracking</h4>
         <p>Opens the moment the CFO releases payment. A milestone needs photographic or
           documentary evidence, and a rejected one reopens the original spend.</p>
         <span class="fam-t">Spend and approvals</span>
       </div>
-
-      <!-- ── People ── -->
-      <div class="mod-card" data-in="people">
+      <div class="mod-card reveal" data-in="people">
         <div class="ic"><svg><use href="#i-cal"/></svg></div>
         <h4>Leave</h4>
         <p>Nightly accrual, live balances and a two stage approval that stops at the
           Executive Director. HR sees every application read only, by policy.</p>
         <span class="fam-t">People</span>
       </div>
-      <div class="mod-card" data-in="people">
+      <div class="mod-card reveal" data-in="people">
         <div class="ic"><svg><use href="#i-users"/></svg></div>
         <h4>Employee lifecycle</h4>
         <p>Onboarding to exit with documents, confirmation, disciplinary record and
           deactivation. Account status stays separate from employment status.</p>
         <span class="fam-t">People</span>
       </div>
-      <div class="mod-card" data-in="people">
+      <div class="mod-card reveal" data-in="people">
         <div class="ic"><svg><use href="#i-award"/></svg></div>
         <h4>Appraisals</h4>
         <p>Self assessment, supervisor scoring and a Managing Director verdict on one form,
           covering confirmation, promotion and salary increment.</p>
         <span class="fam-t">People</span>
       </div>
-      <div class="mod-card" data-in="people">
+      <div class="mod-card reveal" data-in="people">
         <div class="ic"><svg><use href="#i-clock"/></svg></div>
         <h4>Attendance and policies</h4>
         <p>Daily presence against the published holiday calendar. Leave is resolved first,
           so a person on approved absence is never marked absent.</p>
         <span class="fam-t">People</span>
       </div>
-      <div class="mod-card" data-in="people">
+      <div class="mod-card reveal" data-in="people">
         <div class="ic"><svg><use href="#i-case"/></svg></div>
         <h4>Recruitment and job portal</h4>
         <p>Publish a role, collect applications on a public portal, shortlist and interview
           in one place. Everything after the application stays inside your permissions.</p>
         <span class="fam-t">People</span>
       </div>
-      <div class="mod-card" data-in="people">
+      <div class="mod-card reveal" data-in="people">
         <div class="ic"><svg><use href="#i-mail"/></svg></div>
         <h4>Offer letters</h4>
         <p>Generated from the approved role and grade, issued for signature and tracked to
           acceptance. An accepted offer creates the employee record automatically.</p>
         <span class="fam-t">People</span>
       </div>
-      <div class="mod-card" data-in="people">
+      <div class="mod-card reveal" data-in="people">
         <div class="ic"><svg><use href="#i-mega"/></svg></div>
         <h4>Staff broadcasts</h4>
         <p>HR notices, policy nuggets and company announcements by email, push and in app
           sticker, with delivery tracked per person.</p>
         <span class="fam-t">People</span>
       </div>
-
-      <!-- ── Revenue ── -->
-      <div class="mod-card" data-in="revenue">
+      <div class="mod-card reveal" data-in="revenue">
         <div class="ic"><svg><use href="#i-target"/></svg></div>
         <h4>CRM and leads</h4>
         <p>Capture, qualify and convert with duplicate detection on the full international
           phone number. Leads from paid social arrive by signed webhook and route themselves.</p>
         <span class="fam-t">Revenue</span>
       </div>
-      <div class="mod-card" data-in="revenue">
+      <div class="mod-card reveal" data-in="revenue">
         <div class="ic"><svg><use href="#i-mega"/></svg></div>
         <h4>Guided calling</h4>
         <p>The queue serves one lead at a time and the script branches on what the person
           actually said. No call can end without a dated next step.</p>
         <span class="fam-t">Revenue</span>
       </div>
-      <div class="mod-card" data-in="revenue">
+      <div class="mod-card reveal" data-in="revenue">
         <div class="ic"><svg><use href="#i-layers"/></svg></div>
         <h4>Deals and pipeline</h4>
         <p>Stages carry their own odds and every move is kept, so stuck deals and slow
           stages are visible. A deal lost always records why.</p>
         <span class="fam-t">Revenue</span>
       </div>
-      <div class="mod-card" data-in="revenue">
+      <div class="mod-card reveal" data-in="revenue">
         <div class="ic"><svg><use href="#i-case"/></svg></div>
         <h4>Market demand</h4>
         <p>Locations, property types and budgets captured during calls, ranked against what
           you have available. Demand you cannot meet is counted too.</p>
         <span class="fam-t">Revenue</span>
       </div>
-      <div class="mod-card" data-in="revenue">
+      <div class="mod-card reveal" data-in="revenue">
         <div class="ic"><svg><use href="#i-wallet"/></svg></div>
         <h4>Revenue outlook</h4>
         <p>Signed money with real instalment dates, kept separate from weighted forecast.
           Leadership reads both and the two are never added together.</p>
         <span class="fam-t">Revenue</span>
       </div>
-      <div class="mod-card" data-in="revenue">
+      <div class="mod-card reveal" data-in="revenue">
         <div class="ic"><svg><use href="#i-zap"/></svg></div>
         <h4>Sales activities</h4>
         <p>Register an event, raise its marketing spend, then file the report that justifies
           it. No further budget is released while a report is outstanding.</p>
         <span class="fam-t">Revenue</span>
       </div>
-      <div class="mod-card" data-in="revenue">
+      <div class="mod-card reveal" data-in="revenue">
         <div class="ic"><svg><use href="#i-chart"/></svg></div>
         <h4>Sale commissions</h4>
         <p>A won lead becomes a commission request that walks its own approval chain to the
           CFO for payment. Rates are configuration, changed once and applied everywhere.</p>
         <span class="fam-t">Revenue</span>
       </div>
-      <div class="mod-card" data-in="revenue">
+      <div class="mod-card reveal" data-in="revenue">
         <div class="ic"><svg><use href="#i-db"/></svg></div>
         <h4>Client portfolios</h4>
         <p>What each client bought, what they have paid and what is still outstanding, with
           handover and title documents on the same record.</p>
         <span class="fam-t">Revenue</span>
       </div>
-
-      <!-- ── Operations ── -->
-      <div class="mod-card" data-in="ops">
+      <div class="mod-card reveal" data-in="ops">
         <div class="ic"><svg><use href="#i-doc"/></svg></div>
         <h4>Work reports</h4>
         <p>Daily and weekly reports route to the supervisor and escalate when late. Weekly
           rolls into monthly, quarterly and yearly without re entering a line.</p>
         <span class="fam-t">Operations</span>
       </div>
-      <div class="mod-card" data-in="ops">
+      <div class="mod-card reveal" data-in="ops">
         <div class="ic"><svg><use href="#i-layers"/></svg></div>
         <h4>Monthly performance</h4>
         <p>Heads of department declare projections, blockers and the support they need. An
           unresolved blocker carries forward into next month automatically.</p>
         <span class="fam-t">Operations</span>
       </div>
-      <div class="mod-card" data-in="ops">
+      <div class="mod-card reveal" data-in="ops">
         <div class="ic"><svg><use href="#i-laptop"/></svg></div>
         <h4>IT devices and CUG lines</h4>
         <p>Assignment, acknowledgement, maintenance history and closed user group control.
           An unacknowledged device stays flagged until the holder signs for it.</p>
         <span class="fam-t">Operations</span>
       </div>
-      <div class="mod-card" data-in="ops">
+      <div class="mod-card reveal" data-in="ops">
         <div class="ic"><svg><use href="#i-car"/></svg></div>
         <h4>Pool car booking</h4>
         <p>Book a vehicle and driver against a trip. Mileage and fuel close out on return,
           so a trip cannot be quietly left open.</p>
         <span class="fam-t">Operations</span>
       </div>
-      <div class="mod-card" data-in="ops">
+      <div class="mod-card reveal" data-in="ops">
         <div class="ic"><svg><use href="#i-screen"/></svg></div>
         <h4>Management meeting</h4>
         <p>Any format uploaded becomes one uniform deck, presented in a synchronised
           boardroom where every screen follows the chair.</p>
         <span class="fam-t">Operations</span>
       </div>
-
-      <!-- ── Governance ── -->
-      <div class="mod-card" data-in="gov">
+      <div class="mod-card reveal" data-in="gov">
         <div class="ic"><svg><use href="#i-shield"/></svg></div>
         <h4>Audit log</h4>
         <p>Every view, decision and override in one immutable trail. Page views are logged
           as well as actions, so who looked is answerable too.</p>
         <span class="fam-t">Governance</span>
       </div>
-      <div class="mod-card" data-in="gov">
+      <div class="mod-card reveal" data-in="gov">
         <div class="ic"><svg><use href="#i-lock"/></svg></div>
         <h4>Root console</h4>
         <p>Break glass administration behind a PIN, rate limited and logged against itself.
           Anything that writes needs confirmation typed by hand.</p>
         <span class="fam-t">Governance</span>
       </div>
-      <div class="mod-card" data-in="gov">
+      <div class="mod-card reveal" data-in="gov">
         <div class="ic"><svg><use href="#i-eye"/></svg></div>
         <h4>Oversight analytics</h4>
         <p>Read only cross department reporting for the Executive Director and Managing
           Director. Leadership reads everything and approves nothing here.</p>
         <span class="fam-t">Governance</span>
       </div>
-      <div class="mod-card" data-in="gov">
+      <div class="mod-card reveal" data-in="gov">
         <div class="ic"><svg><use href="#i-share"/></svg></div>
         <h4>Social media monitor</h4>
         <p>Connected business accounts, reach and engagement in one view, with access tokens
           encrypted at rest and never readable off the server.</p>
         <span class="fam-t">Governance</span>
       </div>
-
     </div>
   </div>
 </section>

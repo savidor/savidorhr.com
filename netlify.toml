@@ -6,18 +6,6 @@
   publish   = "site"
   functions = "netlify/functions"
 
-# Pricing was removed deliberately. Anyone arriving on an old link lands on the
-# contact page, which is where the answer now is.
-[[redirects]]
-  from   = "/pricing"
-  to     = "/contact.html"
-  status = 301
-
-[[redirects]]
-  from   = "/pricing.html"
-  to     = "/contact.html"
-  status = 301
-
 # Netlify already serves /crm for crm.html, so clean URLs need no rules.
 # Anything genuinely missing gets the home page rather than a bare 404.
 [[redirects]]

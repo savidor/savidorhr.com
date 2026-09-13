@@ -829,10 +829,9 @@ html,body{max-width:100%;}
 .nav-item:hover .mega, .nav-item:focus-within .mega{
   opacity:1; visibility:visible; transform:translateY(0);
 }
-.mega-in{
-  display:grid; grid-template-columns:repeat(4,1fr) 300px;
-  gap:30px; padding:32px 24px 34px;
-}
+.mega-in{display:flex; gap:30px; padding:32px 24px 34px; align-items:flex-start;}
+.mega-col{flex:1 1 0; min-width:0;}
+.mega-feat{flex:0 0 300px;}
 .mega-col h6{
   font-size:.7rem; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
   color:var(--ink-4); margin-bottom:13px; min-height:2.5em;
@@ -877,7 +876,7 @@ html,body{max-width:100%;}
   font-weight:600; color:var(--brand);
 }
 
-@media (max-width:1180px){ .mega-in{grid-template-columns:repeat(4,1fr); } .mega-feat{display:none;} }
+@media (max-width:1180px){ .mega-feat{display:none;} }
 @media (max-width:940px){ .mega{display:none;} }
 
 
@@ -893,26 +892,170 @@ html,body{max-width:100%;}
 @media (max-width:1000px){ .fn-2{right:-8px; top:-18px;} }
 @media (max-width:640px){ .fn-2,.fn-3{display:none;} }
 
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Pricing: four tiers, no figures. The number comes from a conversation,
+   so every card ends in the same ask rather than a price.
+   ═══════════════════════════════════════════════════════════════════════ */
+.tiers.t4{grid-template-columns:repeat(4,1fr); gap:18px; align-items:stretch;}
+.tier{position:relative;}
+.tier{display:flex; flex-direction:column;}
+.tier > .btn{margin-top:auto;}
+.tier .small{color:var(--ink-2); margin-top:8px; line-height:1.55;}
+.tier-custom{background:var(--bg-2);}
+.tier-plus{margin-top:18px; font-size:.86rem; color:var(--ink-3);}
+.tier-plus b{color:var(--ink); font-weight:700;}
+.tk-list{margin-top:16px; gap:11px;}
+.tk-list li{font-size:.9rem; line-height:1.5;}
+.tk-list svg{width:17px; height:17px; margin-top:3px;}
+.tiers.t4 .ticks li{grid-template-columns:17px 1fr; gap:10px;}
+
+/* Comparison accordion. One open group at a time is not enforced; people
+   comparing tiers usually want two families side by side. */
+.cmp-group{border-bottom:1px solid var(--line); background:#fff;}
+.cmp-group:last-child{border-bottom:none;}
+.cmp-group summary{
+  display:flex; align-items:center; gap:12px; cursor:pointer; list-style:none;
+  padding:18px 20px; font-family:var(--f-d); font-size:1rem; font-weight:700;
+  color:var(--ink); transition:background .15s, color .15s;
+}
+.cmp-group summary::-webkit-details-marker{display:none;}
+.cmp-group summary span{
+  font-family:var(--f); font-size:.78rem; font-weight:500; color:var(--ink-3);
+}
+.cmp-group summary::after{
+  content:"+"; margin-left:auto; font-size:1.4rem; font-weight:400;
+  color:var(--ink-3); line-height:1;
+}
+.cmp-group[open] summary::after{content:"\2212";}
+.cmp-group summary:hover{background:var(--bg-2); color:var(--brand);}
+.cmp-group[open] summary{background:var(--brand-50); color:var(--brand);}
+.cmp-group table.cmp th{background:#fff;}
+
+@media (max-width:1100px){ .tiers.t4{grid-template-columns:repeat(2,1fr);} }
+@media (max-width:680px){ .tiers.t4{grid-template-columns:1fr;} }
+
+/* The Product panel has fewer, longer links than the Modules one. */
+.mega-col-wide a{white-space:normal;}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   The flow on the Modules page. The point is to show the shape of the
+   system before asking anyone to read a card grid, so it plays on its own.
+   One 10s cycle lights each of the five stages in turn.
+   ═══════════════════════════════════════════════════════════════════════ */
+.flow-sec{background:
+  radial-gradient(700px 300px at 50% 0%, var(--brand-50), transparent 70%), #fff;}
+.flow{position:relative; padding-top:38px;}
+
+/* Sits above the cards, not behind them: the cards are opaque, so a rail
+   underneath only ever showed through the gaps. 10% and 90% are the centres
+   of the first and last of five equal columns. */
+.flow-rail{
+  position:absolute; top:15px; left:10%; right:10%; height:2px;
+  background:linear-gradient(90deg,var(--line),var(--line-2),var(--line));
+  border-radius:2px;
+}
+.flow-pulse{
+  position:absolute; top:50%; width:10px; height:10px; margin-top:-5px; margin-left:-5px;
+  border-radius:50%; background:var(--brand);
+  box-shadow:0 0 0 5px rgba(162,66,18,.16), 0 0 14px rgba(162,66,18,.55);
+  animation:flowTravel 10s linear infinite;
+}
+@keyframes flowTravel{0%{left:0;} 100%{left:100%;}}
+
+.flow-steps{display:grid; grid-template-columns:repeat(5,1fr); gap:18px; position:relative;}
+.flow-step{
+  background:#fff; border:1px solid var(--line); border-radius:var(--r-lg);
+  padding:26px 20px 20px; text-align:center; position:relative;
+  animation:stepOn 10s ease-in-out infinite;
+  animation-delay:calc(var(--i) * 2s);
+}
+@keyframes stepOn{
+  0%, 6%    {border-color:var(--line); box-shadow:var(--sh-sm); transform:translateY(0);}
+  11%, 24%  {border-color:var(--brand); box-shadow:0 16px 34px -12px rgba(162,66,18,.32);
+             transform:translateY(-5px);}
+  30%, 100% {border-color:var(--line); box-shadow:var(--sh-sm); transform:translateY(0);}
+}
+.fs-n{
+  position:absolute; top:13px; left:16px; font-family:var(--f-m);
+  font-size:.68rem; font-weight:500; color:var(--ink-4); letter-spacing:.04em;
+}
+.fs-ic{
+  width:46px; height:46px; margin:4px auto 14px; border-radius:12px;
+  background:var(--bg-2); border:1px solid var(--line); display:grid; place-items:center;
+  animation:stepIc 10s ease-in-out infinite; animation-delay:calc(var(--i) * 2s);
+}
+.fs-ic svg{width:22px; height:22px; color:var(--ink-3);
+  animation:stepSvg 10s ease-in-out infinite; animation-delay:calc(var(--i) * 2s);}
+@keyframes stepIc{
+  0%, 6%   {background:var(--bg-2); border-color:var(--line);}
+  11%, 24% {background:var(--brand); border-color:var(--brand);}
+  30%,100% {background:var(--bg-2); border-color:var(--line);}
+}
+@keyframes stepSvg{
+  0%, 6%   {color:var(--ink-3);}
+  11%, 24% {color:#fff;}
+  30%,100% {color:var(--ink-3);}
+}
+.flow-step b{
+  display:block; font-family:var(--f-d); font-size:1.02rem; font-weight:700;
+  color:var(--ink); letter-spacing:-.012em; margin-bottom:7px;
+}
+.flow-step p{font-size:.86rem; color:var(--ink-2); line-height:1.55;}
+.fs-tag{
+  display:block; margin-top:13px; padding-top:11px; border-top:1px solid var(--line);
+  font-size:.72rem; font-weight:600; color:var(--ink-4); letter-spacing:.02em;
+}
+
+/* Hovering stops it, so anyone reading a stage is not fighting the animation. */
+.flow:hover .flow-step, .flow:hover .fs-ic, .flow:hover .fs-ic svg,
+.flow:hover .flow-pulse{animation-play-state:paused;}
+
+@media (max-width:1080px){
+  .flow-steps{grid-template-columns:repeat(2,1fr);}
+  .flow-rail{display:none;}
+}
+@media (max-width:560px){ .flow-steps{grid-template-columns:1fr;} }
+
+/* ── Catalogue: centred chips, a line of context per family, and cards that
+      arrive as you reach them rather than all at once. ── */
+.center-bar{justify-content:center;}
+/* Centring an overflowing scroller puts its first items out of reach, and the
+   chip bar becomes a sideways scroller on small screens. */
+@media (max-width:640px){ .center-bar{justify-content:flex-start;} }
+.fam-note{
+  text-align:center; max-width:62ch; margin:0 auto 30px;
+  font-size:.98rem; color:var(--ink-2); line-height:1.6; min-height:3.2em;
+  transition:opacity .22s ease;
+}
+.fam-note.swap{opacity:0;}
+
+.reveal{opacity:0; transform:translateY(16px);}
+.reveal.in{
+  opacity:1; transform:none;
+  transition:opacity .5s cubic-bezier(.4,0,.2,1), transform .5s cubic-bezier(.4,0,.2,1);
+}
+.mod-grid .mod-card{transition:opacity .26s ease, transform .26s ease,
+  box-shadow .25s, border-color .2s;}
+.mod-grid .mod-card.hide{display:none;}
+
+/* Motion is decoration here, never information: it all reads the same
+   standing still. */
+@media (prefers-reduced-motion: reduce){
+  .flow-step, .fs-ic, .fs-ic svg, .flow-pulse{animation:none;}
+  .flow-step{border-color:var(--line-2);}
+  .flow-pulse{display:none;}
+  .reveal, .reveal.in{opacity:1; transform:none; transition:none;}
+}
+
 </style>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol><symbol id="i-check-c" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="16 10 11 15 8 12"/></symbol><symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></symbol><symbol id="i-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></symbol><symbol id="i-wallet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></symbol><symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></symbol><symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol><symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol><symbol id="i-award" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5 17 22l-5-3-5 3 1.5-8.5"/></symbol><symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol><symbol id="i-case" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol><symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22 6 12 13 2 6"/></symbol><symbol id="i-mega" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1z"/><path d="M16 8a5 5 0 0 1 0 8"/><path d="M19 5a9 9 0 0 1 0 14"/></symbol><symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol><symbol id="i-laptop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><line x1="2" y1="20" x2="22" y2="20"/></symbol><symbol id="i-car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3v-5l2-5h14l2 5v5h-2"/><circle cx="7.5" cy="17" r="2"/><circle cx="16.5" cy="17" r="2"/><line x1="9.5" y1="17" x2="14.5" y2="17"/></symbol><symbol id="i-screen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></symbol><symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></symbol><symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol><symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol><symbol id="i-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></symbol><symbol id="i-db" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.7-4 3-9 3s-9-1.3-9-3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/></symbol><symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol><symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></symbol><symbol id="i-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol><symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol><symbol id="i-route" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"/><circle cx="18" cy="5" r="3"/><path d="M9 19h4a4 4 0 0 0 4-4V9"/></symbol><symbol id="i-build" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 1 5 5L8.5 22.5 2 24l1.5-6.5z"/><line x1="12" y1="9" x2="18" y2="15"/></symbol></svg>
 
 <header class="hdr">
   <div class="wrap hdr-in">
     <a class="logo" href="#" data-page="index"><span class="logo-m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="5 12.5 10 17.5 19 7.5"/></svg></span>Savidor<i>HR</i></a>
-    <nav class="nav"><a href="#" data-page="product">Product</a><div class="nav-item has-mega"><a href="#" data-page="modules">Modules<svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a><div class="mega"><div class="wrap mega-in">
-  <div class="mega-col"><h6>Spend and approvals</h6><a href="#" data-page="modules">Requisitions</a><a href="#" data-page="modules">Procurement and vendor quotes</a><a href="#" data-page="modules">Site budgets</a><a href="#" data-page="modules">Implementation tracking</a></div><div class="mega-col"><h6>People</h6><a href="#" data-page="modules">Leave</a><a href="#" data-page="modules">Employee lifecycle</a><a href="#" data-page="modules">Appraisals</a><a href="#" data-page="modules">Attendance and policies</a><a href="#" data-page="modules">Recruitment and job portal</a><a href="#" data-page="modules">Offer letters</a><a href="#" data-page="modules">Staff broadcasts</a></div><div class="mega-col"><h6>Revenue and CRM</h6><a href="#" data-page="modules">CRM and leads</a><a href="#" data-page="modules">Guided calling</a><a href="#" data-page="modules">Deals and pipeline</a><a href="#" data-page="modules">Market demand</a><a href="#" data-page="modules">Revenue outlook</a><a href="#" data-page="modules">Sales activities</a><a href="#" data-page="modules">Sale commissions</a><a href="#" data-page="modules">Client portfolios</a></div><div class="mega-col"><h6>Operations and governance</h6><a href="#" data-page="modules">Work reports</a><a href="#" data-page="modules">Monthly performance</a><a href="#" data-page="modules">IT devices and CUG lines</a><a href="#" data-page="modules">Pool car booking</a><a href="#" data-page="modules">Management meeting</a><a href="#" data-page="modules">Audit log</a><a href="#" data-page="modules">Root console</a><a href="#" data-page="modules">Oversight analytics</a><a href="#" data-page="modules">Social media monitor</a></div>
-  <a class="mega-feat" href="#" data-page="crm">
-    <span class="mega-tag">Flagship</span>
-    <b>CRM and guided calling</b>
-    <p>The queue decides who is called next, the script branches on what they
-       actually said, and no call ends without a dated next step.</p>
-    <span class="mega-go">Look inside <svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
-  </a>
-</div>
-<div class="mega-foot"><div class="wrap">
-  <span>28 modules, one permission model. Switch on what you need now.</span>
-  <a href="#" data-page="modules">Browse all 28 <svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-</div></div></div></div><a href="#" data-page="crm">CRM</a><a href="#" data-page="investors">Investors</a></nav>
+    <nav class="nav"><div class="nav-item has-mega"><a href="#" data-page="product">Product<svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a><div class="mega"><div class="wrap mega-in"><div class="mega-col mega-col-wide"><h6>How it works</h6><a href="#" data-page="product">How a request moves</a><a href="#" data-page="product">The routing engine</a><a href="#" data-page="product">Roles and permissions</a></div><div class="mega-col mega-col-wide"><h6>Built in</h6><a href="#" data-page="product">Audit trail on every view</a><a href="#" data-page="product">Email and push notification</a><a href="#" data-page="product">Works on the phone in the field</a><a href="#" data-page="product">Break glass administration</a></div><div class="mega-col mega-col-wide"><h6>Getting live</h6><a href="#" data-page="product">Deployment in weeks</a><a href="#" data-page="product">Migration from what you have</a><a href="#" data-page="contact">Talk to an engineer</a></div><a class="mega-feat" href="#" data-page="contact"><span class="mega-tag">Forty minutes</span><b>Bring us your worst process</b><p>The one with the exception everybody works around. We will configure it live on the call, against your own approval chain.</p><span class="mega-go">Book a walkthrough <svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a></div><div class="mega-foot"><div class="wrap"><span>Approval chains are settings, not code. No developer needed to change them.</span><a href="#" data-page="product">How it works <svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div></div></div></div><div class="nav-item has-mega"><a href="#" data-page="modules">Modules<svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a><div class="mega"><div class="wrap mega-in"><div class="mega-col"><h6>Spend and approvals</h6><a href="#" data-page="modules">Requisitions</a><a href="#" data-page="modules">Procurement and vendor quotes</a><a href="#" data-page="modules">Site budgets</a><a href="#" data-page="modules">Implementation tracking</a></div><div class="mega-col"><h6>People</h6><a href="#" data-page="modules">Leave</a><a href="#" data-page="modules">Employee lifecycle</a><a href="#" data-page="modules">Appraisals</a><a href="#" data-page="modules">Attendance and policies</a><a href="#" data-page="modules">Recruitment and job portal</a><a href="#" data-page="modules">Offer letters</a><a href="#" data-page="modules">Staff broadcasts</a></div><div class="mega-col"><h6>Revenue and CRM</h6><a href="#" data-page="modules">CRM and leads</a><a href="#" data-page="modules">Guided calling</a><a href="#" data-page="modules">Deals and pipeline</a><a href="#" data-page="modules">Market demand</a><a href="#" data-page="modules">Revenue outlook</a><a href="#" data-page="modules">Sales activities</a><a href="#" data-page="modules">Sale commissions</a><a href="#" data-page="modules">Client portfolios</a></div><div class="mega-col"><h6>Operations and governance</h6><a href="#" data-page="modules">Work reports</a><a href="#" data-page="modules">Monthly performance</a><a href="#" data-page="modules">IT devices and CUG lines</a><a href="#" data-page="modules">Pool car booking</a><a href="#" data-page="modules">Management meeting</a><a href="#" data-page="modules">Audit log</a><a href="#" data-page="modules">Root console</a><a href="#" data-page="modules">Oversight analytics</a><a href="#" data-page="modules">Social media monitor</a></div><a class="mega-feat" href="#" data-page="crm"><span class="mega-tag">Flagship</span><b>CRM and guided calling</b><p>The queue decides who is called next, the script branches on what they actually said, and no call ends without a dated next step.</p><span class="mega-go">Look inside <svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a></div><div class="mega-foot"><div class="wrap"><span>28 modules, one permission model. Switch on what you need now.</span><a href="#" data-page="modules">Browse all 28 <svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div></div></div></div><a href="#" data-page="pricing">Pricing</a><a href="#" data-page="investors">Investors</a></nav>
     <div class="hdr-cta">
       <a class="btn btn-s" href="#" data-page="contact">Contact sales</a>
       <a class="btn btn-p" href="#" data-page="contact">Book a demo</a>
@@ -922,7 +1065,7 @@ html,body{max-width:100%;}
     </button>
   </div>
   <div class="hdr-bar" id="hdrBar"></div>
-  <div class="wrap"><div class="mnav" id="mnav"><a href="#" data-page="product">Product</a><a href="#" data-page="modules">Modules</a><a href="#" data-page="crm">CRM</a><a href="#" data-page="investors">Investors</a>
+  <div class="wrap"><div class="mnav" id="mnav"><a href="#" data-page="product">Product</a><a href="#" data-page="modules">Modules</a><a href="#" data-page="pricing">Pricing</a><a href="#" data-page="investors">Investors</a>
     <div class="mnav-cta">
       <a class="btn btn-p" href="#" data-page="contact">Book a demo</a>
       <a class="btn btn-s" href="#" data-page="contact">Contact sales</a>
@@ -1427,7 +1570,7 @@ html,body{max-width:100%;}
   </div>
 </section>
 
-<section class="sec-sm">
+<section class="sec-sm" id="how">
   <div class="wrap">
     <div class="cards c4">
       <div class="card">
@@ -1462,7 +1605,7 @@ html,body{max-width:100%;}
   </div>
 </section>
 
-<section class="sec tint">
+<section class="sec tint" id="routing">
   <div class="wrap">
     <div class="feat">
       <div class="feat-t">
@@ -1516,7 +1659,7 @@ html,body{max-width:100%;}
   </div>
 </section>
 
-<section class="sec">
+<section class="sec" id="builtin">
   <div class="wrap">
     <div class="sec-head center">
       <span class="eyebrow">Built in</span>
@@ -1568,7 +1711,7 @@ html,body{max-width:100%;}
   </div>
 </section>
 
-<section class="sec tint">
+<section class="sec tint" id="deploy">
   <div class="wrap">
     <div class="feat rev">
       <div class="feat-t">
@@ -1631,18 +1774,98 @@ html,body{max-width:100%;}
     </div>
   </div>
 </section></main></div>
-<div class="page" id="page-modules" hidden><main><section class="sec-sm" style="padding-top:64px;">
+<div class="page" id="page-modules" hidden><main><section class="sec-sm" style="padding-top:64px;padding-bottom:34px;">
   <div class="wrap">
-    <div class="sec-head" style="margin-bottom:34px;">
+    <div class="sec-head center" style="margin-bottom:0;">
       <span class="eyebrow">The full system</span>
-      <h1 class="h1" style="max-width:16ch;">Twenty eight modules. One permission model.</h1>
-      <p class="lead measure-w" style="margin-top:18px;">
-        This is not a roadmap. Every module listed here is running in production today.
-        Switch on what you need now and add the rest as the company grows into them.
+      <h1 class="h1" style="max-width:15ch;margin:0 auto;">Twenty eight modules, one permission model</h1>
+      <p class="lead measure-w" style="margin:18px auto 0;">
+        This is not a roadmap. Every module here runs in production today. They are not
+        twenty eight products bolted together either: they share one employee record, one
+        approval engine and one audit trail, which is why switching another one on takes
+        an afternoon rather than a migration.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ The flow. Shows the shape of the system before asking anyone to read a
+     card grid. Auto-plays, pauses on hover, and holds still for anyone who
+     asks for reduced motion. ══ -->
+<section class="sec-sm flow-sec">
+  <div class="wrap">
+    <div class="sec-head center" style="margin-bottom:38px;">
+      <span class="eyebrow">How work moves</span>
+      <h2 class="h2">One request, five stages, nothing lost in between</h2>
+      <p class="lead measure-w" style="margin:14px auto 0;">
+        Whatever the module, the shape is the same. That is the whole point of putting
+        them on one system.
       </p>
     </div>
 
-    <div class="fam-bar">
+    <div class="flow" id="flow">
+      <div class="flow-rail"><span class="flow-pulse"></span></div>
+      <div class="flow-steps">
+
+        <div class="flow-step" style="--i:0">
+          <span class="fs-n">01</span>
+          <div class="fs-ic"><svg><use href="#i-doc"/></svg></div>
+          <b>Raised</b>
+          <p>Someone asks for something. They never choose who approves it.</p>
+          <span class="fs-tag">Requisitions &middot; Leave &middot; Commissions</span>
+        </div>
+
+        <div class="flow-step" style="--i:1">
+          <span class="fs-n">02</span>
+          <div class="fs-ic"><svg><use href="#i-route"/></svg></div>
+          <b>Routed</b>
+          <p>The chain resolves itself from role, department, site, category and amount.</p>
+          <span class="fs-tag">Routing engine</span>
+        </div>
+
+        <div class="flow-step" style="--i:2">
+          <span class="fs-n">03</span>
+          <div class="fs-ic"><svg><use href="#i-check-c"/></svg></div>
+          <b>Signed or returned</b>
+          <p>Each stage decides. A return carries its reason back, never a silent no.</p>
+          <span class="fs-tag">Thresholds &middot; Procurement gate</span>
+        </div>
+
+        <div class="flow-step" style="--i:3">
+          <span class="fs-n">04</span>
+          <div class="fs-ic"><svg><use href="#i-build"/></svg></div>
+          <b>Executed</b>
+          <p>Money moves, leave starts, the milestone opens and needs evidence to close.</p>
+          <span class="fs-tag">Budgets &middot; Implementation</span>
+        </div>
+
+        <div class="flow-step" style="--i:4">
+          <span class="fs-n">05</span>
+          <div class="fs-ic"><svg><use href="#i-shield"/></svg></div>
+          <b>Recorded</b>
+          <p>Every view, decision and override lands in one trail you can answer from.</p>
+          <span class="fs-tag">Audit log &middot; Oversight</span>
+        </div>
+
+      </div>
+    </div>
+
+    <p class="tiny center" style="margin-top:26px;color:var(--ink-3);">
+      Change who signs at any stage without a developer. The chain is settings, not code.
+    </p>
+  </div>
+</section>
+
+<!-- ══ The catalogue. Filtered, and revealed as you reach it rather than
+     dumped as one wall of twenty eight. ══ -->
+<section class="sec tint">
+  <div class="wrap">
+    <div class="sec-head center" style="margin-bottom:30px;">
+      <span class="eyebrow">The catalogue</span>
+      <h2 class="h2">Start with one family, add the rest as you grow</h2>
+    </div>
+
+    <div class="fam-bar center-bar">
       <button class="chip on" data-fam="all">All 28</button>
       <button class="chip" data-fam="spend">Spend and approvals</button>
       <button class="chip" data-fam="people">People</button>
@@ -1651,214 +1874,212 @@ html,body{max-width:100%;}
       <button class="chip" data-fam="gov">Governance</button>
     </div>
 
-    <div class="cards c3">
+    <p class="fam-note" id="famNote" data-all="Everything below is live today. Filter to a family to see what a single starting point looks like."
+       data-spend="Where money leaves the company. Requests carry their budget line and their full signature history."
+       data-people="One employee record from offer letter to exit, so nothing is retyped and nothing goes missing."
+       data-revenue="Where money comes in. Leads get called, deals get staged, and commissions walk their own approval chain."
+       data-ops="The running of the place: reports, devices, vehicles and the monthly management rhythm."
+       data-gov="Who did what, who looked, and who can break the glass. The part auditors ask about.">
+      Everything below is live today. Filter to a family to see what a single starting point looks like.
+    </p>
 
-      <!-- ── Spend and approvals ── -->
-      <div class="mod-card" data-in="spend">
+    <div class="cards c3 mod-grid">
+      <div class="mod-card reveal" data-in="spend">
         <div class="ic"><svg><use href="#i-doc"/></svg></div>
         <h4>Requisitions</h4>
         <p>Every request carries its site, its budget line and its full signature history.
           Returned requests carry the reason back to the raiser, never a silent rejection.</p>
         <span class="fam-t">Spend and approvals</span>
       </div>
-      <div class="mod-card" data-in="spend">
+      <div class="mod-card reveal" data-in="spend">
         <div class="ic"><svg><use href="#i-cart"/></svg></div>
         <h4>Procurement and vendor quotes</h4>
         <p>Where a site's chain includes a Procurement Officer, a line item with fewer than
           two vendor quotes blocks the whole requisition from advancing.</p>
         <span class="fam-t">Spend and approvals</span>
       </div>
-      <div class="mod-card" data-in="spend">
+      <div class="mod-card reveal" data-in="spend">
         <div class="ic"><svg><use href="#i-wallet"/></svg></div>
         <h4>Site budgets</h4>
         <p>Approved spend commits against its site before money moves. Approving past a
           ceiling is allowed, but it notifies the Managing Director automatically.</p>
         <span class="fam-t">Spend and approvals</span>
       </div>
-      <div class="mod-card" data-in="spend">
+      <div class="mod-card reveal" data-in="spend">
         <div class="ic"><svg><use href="#i-build"/></svg></div>
         <h4>Implementation tracking</h4>
         <p>Opens the moment the CFO releases payment. A milestone needs photographic or
           documentary evidence, and a rejected one reopens the original spend.</p>
         <span class="fam-t">Spend and approvals</span>
       </div>
-
-      <!-- ── People ── -->
-      <div class="mod-card" data-in="people">
+      <div class="mod-card reveal" data-in="people">
         <div class="ic"><svg><use href="#i-cal"/></svg></div>
         <h4>Leave</h4>
         <p>Nightly accrual, live balances and a two stage approval that stops at the
           Executive Director. HR sees every application read only, by policy.</p>
         <span class="fam-t">People</span>
       </div>
-      <div class="mod-card" data-in="people">
+      <div class="mod-card reveal" data-in="people">
         <div class="ic"><svg><use href="#i-users"/></svg></div>
         <h4>Employee lifecycle</h4>
         <p>Onboarding to exit with documents, confirmation, disciplinary record and
           deactivation. Account status stays separate from employment status.</p>
         <span class="fam-t">People</span>
       </div>
-      <div class="mod-card" data-in="people">
+      <div class="mod-card reveal" data-in="people">
         <div class="ic"><svg><use href="#i-award"/></svg></div>
         <h4>Appraisals</h4>
         <p>Self assessment, supervisor scoring and a Managing Director verdict on one form,
           covering confirmation, promotion and salary increment.</p>
         <span class="fam-t">People</span>
       </div>
-      <div class="mod-card" data-in="people">
+      <div class="mod-card reveal" data-in="people">
         <div class="ic"><svg><use href="#i-clock"/></svg></div>
         <h4>Attendance and policies</h4>
         <p>Daily presence against the published holiday calendar. Leave is resolved first,
           so a person on approved absence is never marked absent.</p>
         <span class="fam-t">People</span>
       </div>
-      <div class="mod-card" data-in="people">
+      <div class="mod-card reveal" data-in="people">
         <div class="ic"><svg><use href="#i-case"/></svg></div>
         <h4>Recruitment and job portal</h4>
         <p>Publish a role, collect applications on a public portal, shortlist and interview
           in one place. Everything after the application stays inside your permissions.</p>
         <span class="fam-t">People</span>
       </div>
-      <div class="mod-card" data-in="people">
+      <div class="mod-card reveal" data-in="people">
         <div class="ic"><svg><use href="#i-mail"/></svg></div>
         <h4>Offer letters</h4>
         <p>Generated from the approved role and grade, issued for signature and tracked to
           acceptance. An accepted offer creates the employee record automatically.</p>
         <span class="fam-t">People</span>
       </div>
-      <div class="mod-card" data-in="people">
+      <div class="mod-card reveal" data-in="people">
         <div class="ic"><svg><use href="#i-mega"/></svg></div>
         <h4>Staff broadcasts</h4>
         <p>HR notices, policy nuggets and company announcements by email, push and in app
           sticker, with delivery tracked per person.</p>
         <span class="fam-t">People</span>
       </div>
-
-      <!-- ── Revenue ── -->
-      <div class="mod-card" data-in="revenue">
+      <div class="mod-card reveal" data-in="revenue">
         <div class="ic"><svg><use href="#i-target"/></svg></div>
         <h4>CRM and leads</h4>
         <p>Capture, qualify and convert with duplicate detection on the full international
           phone number. Leads from paid social arrive by signed webhook and route themselves.</p>
         <span class="fam-t">Revenue</span>
       </div>
-      <div class="mod-card" data-in="revenue">
+      <div class="mod-card reveal" data-in="revenue">
         <div class="ic"><svg><use href="#i-mega"/></svg></div>
         <h4>Guided calling</h4>
         <p>The queue serves one lead at a time and the script branches on what the person
           actually said. No call can end without a dated next step.</p>
         <span class="fam-t">Revenue</span>
       </div>
-      <div class="mod-card" data-in="revenue">
+      <div class="mod-card reveal" data-in="revenue">
         <div class="ic"><svg><use href="#i-layers"/></svg></div>
         <h4>Deals and pipeline</h4>
         <p>Stages carry their own odds and every move is kept, so stuck deals and slow
           stages are visible. A deal lost always records why.</p>
         <span class="fam-t">Revenue</span>
       </div>
-      <div class="mod-card" data-in="revenue">
+      <div class="mod-card reveal" data-in="revenue">
         <div class="ic"><svg><use href="#i-case"/></svg></div>
         <h4>Market demand</h4>
         <p>Locations, property types and budgets captured during calls, ranked against what
           you have available. Demand you cannot meet is counted too.</p>
         <span class="fam-t">Revenue</span>
       </div>
-      <div class="mod-card" data-in="revenue">
+      <div class="mod-card reveal" data-in="revenue">
         <div class="ic"><svg><use href="#i-wallet"/></svg></div>
         <h4>Revenue outlook</h4>
         <p>Signed money with real instalment dates, kept separate from weighted forecast.
           Leadership reads both and the two are never added together.</p>
         <span class="fam-t">Revenue</span>
       </div>
-      <div class="mod-card" data-in="revenue">
+      <div class="mod-card reveal" data-in="revenue">
         <div class="ic"><svg><use href="#i-zap"/></svg></div>
         <h4>Sales activities</h4>
         <p>Register an event, raise its marketing spend, then file the report that justifies
           it. No further budget is released while a report is outstanding.</p>
         <span class="fam-t">Revenue</span>
       </div>
-      <div class="mod-card" data-in="revenue">
+      <div class="mod-card reveal" data-in="revenue">
         <div class="ic"><svg><use href="#i-chart"/></svg></div>
         <h4>Sale commissions</h4>
         <p>A won lead becomes a commission request that walks its own approval chain to the
           CFO for payment. Rates are configuration, changed once and applied everywhere.</p>
         <span class="fam-t">Revenue</span>
       </div>
-      <div class="mod-card" data-in="revenue">
+      <div class="mod-card reveal" data-in="revenue">
         <div class="ic"><svg><use href="#i-db"/></svg></div>
         <h4>Client portfolios</h4>
         <p>What each client bought, what they have paid and what is still outstanding, with
           handover and title documents on the same record.</p>
         <span class="fam-t">Revenue</span>
       </div>
-
-      <!-- ── Operations ── -->
-      <div class="mod-card" data-in="ops">
+      <div class="mod-card reveal" data-in="ops">
         <div class="ic"><svg><use href="#i-doc"/></svg></div>
         <h4>Work reports</h4>
         <p>Daily and weekly reports route to the supervisor and escalate when late. Weekly
           rolls into monthly, quarterly and yearly without re entering a line.</p>
         <span class="fam-t">Operations</span>
       </div>
-      <div class="mod-card" data-in="ops">
+      <div class="mod-card reveal" data-in="ops">
         <div class="ic"><svg><use href="#i-layers"/></svg></div>
         <h4>Monthly performance</h4>
         <p>Heads of department declare projections, blockers and the support they need. An
           unresolved blocker carries forward into next month automatically.</p>
         <span class="fam-t">Operations</span>
       </div>
-      <div class="mod-card" data-in="ops">
+      <div class="mod-card reveal" data-in="ops">
         <div class="ic"><svg><use href="#i-laptop"/></svg></div>
         <h4>IT devices and CUG lines</h4>
         <p>Assignment, acknowledgement, maintenance history and closed user group control.
           An unacknowledged device stays flagged until the holder signs for it.</p>
         <span class="fam-t">Operations</span>
       </div>
-      <div class="mod-card" data-in="ops">
+      <div class="mod-card reveal" data-in="ops">
         <div class="ic"><svg><use href="#i-car"/></svg></div>
         <h4>Pool car booking</h4>
         <p>Book a vehicle and driver against a trip. Mileage and fuel close out on return,
           so a trip cannot be quietly left open.</p>
         <span class="fam-t">Operations</span>
       </div>
-      <div class="mod-card" data-in="ops">
+      <div class="mod-card reveal" data-in="ops">
         <div class="ic"><svg><use href="#i-screen"/></svg></div>
         <h4>Management meeting</h4>
         <p>Any format uploaded becomes one uniform deck, presented in a synchronised
           boardroom where every screen follows the chair.</p>
         <span class="fam-t">Operations</span>
       </div>
-
-      <!-- ── Governance ── -->
-      <div class="mod-card" data-in="gov">
+      <div class="mod-card reveal" data-in="gov">
         <div class="ic"><svg><use href="#i-shield"/></svg></div>
         <h4>Audit log</h4>
         <p>Every view, decision and override in one immutable trail. Page views are logged
           as well as actions, so who looked is answerable too.</p>
         <span class="fam-t">Governance</span>
       </div>
-      <div class="mod-card" data-in="gov">
+      <div class="mod-card reveal" data-in="gov">
         <div class="ic"><svg><use href="#i-lock"/></svg></div>
         <h4>Root console</h4>
         <p>Break glass administration behind a PIN, rate limited and logged against itself.
           Anything that writes needs confirmation typed by hand.</p>
         <span class="fam-t">Governance</span>
       </div>
-      <div class="mod-card" data-in="gov">
+      <div class="mod-card reveal" data-in="gov">
         <div class="ic"><svg><use href="#i-eye"/></svg></div>
         <h4>Oversight analytics</h4>
         <p>Read only cross department reporting for the Executive Director and Managing
           Director. Leadership reads everything and approves nothing here.</p>
         <span class="fam-t">Governance</span>
       </div>
-      <div class="mod-card" data-in="gov">
+      <div class="mod-card reveal" data-in="gov">
         <div class="ic"><svg><use href="#i-share"/></svg></div>
         <h4>Social media monitor</h4>
         <p>Connected business accounts, reach and engagement in one view, with access tokens
           encrypted at rest and never readable off the server.</p>
         <span class="fam-t">Governance</span>
       </div>
-
     </div>
   </div>
 </section>
@@ -2207,6 +2428,164 @@ html,body{max-width:100%;}
       <div class="btn-row">
         <a class="btn btn-w btn-lg" href="contact.html" data-page="contact">Book a walkthrough</a>
         <a class="btn btn-o btn-lg" href="modules.html" data-page="modules">See all modules</a>
+      </div>
+    </div>
+  </div>
+</section></main></div>
+<div class="page" id="page-pricing" hidden><main><section class="sec-sm" style="padding-top:64px;">
+  <div class="wrap">
+    <div class="sec-head center" style="margin-bottom:44px;">
+      <span class="eyebrow">Pricing</span>
+      <h1 class="h1" style="max-width:17ch;margin:0 auto;">Priced on what you switch on</h1>
+      <p class="lead measure-w" style="margin:18px auto 0;">
+        Two things set the number: how many people use it, and which modules you turn on.
+        Tell us both and we will send a written quote and a deployment date, usually within
+        one working day. No per seat surprises and no charge for the modules you leave off.
+      </p>
+      <div class="btn-row" style="justify-content:center;margin-top:28px;">
+        <a class="btn btn-p btn-lg" href="contact.html" data-page="contact">Get a quote</a>
+        <a class="btn btn-s btn-lg" href="modules.html" data-page="modules">See all 28 modules</a>
+      </div>
+    </div>
+
+    <div class="tiers t4">
+      <div class="tier">
+        <h3>Core</h3>
+        <p class="small">The approval spine. For a company that wants requests to stop
+          living in chat threads.</p>
+        <ul class="ticks tk-list">
+          <li><svg><use href="#i-check"/></svg><span>Requisitions and approval chains</span></li>
+          <li><svg><use href="#i-check"/></svg><span>Leave and entitlement accrual</span></li>
+          <li><svg><use href="#i-check"/></svg><span>Appraisals</span></li>
+          <li><svg><use href="#i-check"/></svg><span>Work reports with escalation</span></li>
+          <li><svg><use href="#i-check"/></svg><span>Audit log on every view and decision</span></li>
+          <li><svg><use href="#i-check"/></svg><span>Email and push notification</span></li>
+        </ul>
+        <a class="btn btn-s" href="contact.html" data-page="contact" style="width:100%;margin-top:22px;">Get a quote</a>
+      </div>
+
+      <div class="tier best">
+        <span class="tier-tag">Most chosen</span>
+        <h3>Operations</h3>
+        <p class="small">Adds the money controls and the full employee record. Where most
+          groups of 50 to 250 land.</p>
+        <p class="tier-plus">Everything in <b>Core</b>, plus</p>
+        <ul class="ticks tk-list">
+          <li><svg><use href="#i-check"/></svg><span>Procurement and vendor quotes</span></li>
+          <li><svg><use href="#i-check"/></svg><span>Site budgets and commitment tracking</span></li>
+          <li><svg><use href="#i-check"/></svg><span>Implementation tracking</span></li>
+          <li><svg><use href="#i-check"/></svg><span>Employee lifecycle and documents</span></li>
+          <li><svg><use href="#i-check"/></svg><span>IT devices and CUG lines</span></li>
+          <li><svg><use href="#i-check"/></svg><span>Monthly performance reviews</span></li>
+          <li><svg><use href="#i-check"/></svg><span>Oversight analytics for ED and MD</span></li>
+        </ul>
+        <a class="btn btn-p" href="contact.html" data-page="contact" style="width:100%;margin-top:22px;">Get a quote</a>
+      </div>
+
+      <div class="tier">
+        <h3>Enterprise</h3>
+        <p class="small">Everything, including the revenue side and break glass
+          administration. For multi arm groups.</p>
+        <p class="tier-plus">Everything in <b>Operations</b>, plus</p>
+        <ul class="ticks tk-list">
+          <li><svg><use href="#i-check"/></svg><span>CRM, guided calling and market demand</span></li>
+          <li><svg><use href="#i-check"/></svg><span>Deals, pipeline and revenue outlook</span></li>
+          <li><svg><use href="#i-check"/></svg><span>Sales activities and commissions</span></li>
+          <li><svg><use href="#i-check"/></svg><span>Client portfolios</span></li>
+          <li><svg><use href="#i-check"/></svg><span>Recruitment, job portal and offer letters</span></li>
+          <li><svg><use href="#i-check"/></svg><span>Management meeting boardroom</span></li>
+          <li><svg><use href="#i-check"/></svg><span>Root console and dedicated support</span></li>
+        </ul>
+        <a class="btn btn-s" href="contact.html" data-page="contact" style="width:100%;margin-top:22px;">Get a quote</a>
+      </div>
+
+      <div class="tier tier-custom">
+        <h3>Custom</h3>
+        <p class="small">Pick modules individually, or bring a process we have not met yet.</p>
+        <ul class="ticks tk-list">
+          <li><svg><use href="#i-check"/></svg><span>Any modules, chosen one by one</span></li>
+          <li><svg><use href="#i-check"/></svg><span>Priced once across every arm of a group</span></li>
+          <li><svg><use href="#i-check"/></svg><span>Migration from your existing system</span></li>
+          <li><svg><use href="#i-check"/></svg><span>Custom approval rules we build with you</span></li>
+        </ul>
+        <a class="btn btn-s" href="contact.html" data-page="contact" style="width:100%;margin-top:22px;">Talk to us</a>
+      </div>
+    </div>
+
+    <p class="tiny center" style="margin-top:24px;color:var(--ink-3);">
+      One time setup and mapping is quoted separately from the annual licence. Both appear
+      on the same written quote, so there is nothing to discover later.
+    </p>
+  </div>
+</section>
+
+<section class="sec tint">
+  <div class="wrap">
+    <div class="sec-head center" style="margin-bottom:34px;">
+      <h2 class="h2">Compare what is included</h2>
+      <p class="lead measure-w" style="margin:16px auto 0;">
+        Every module, and the lowest tier it comes with. Anything marked as an add on can
+        still be switched on at a lower tier and is quoted on its own.
+      </p>
+    </div>
+    <div class="cmp-wrap">
+      <details class="cmp-group" open><summary>Spend and approvals <span>4 modules</span></summary><div class="cmp-scroll"><table class="cmp"><thead><tr><th></th><th>Core</th><th>Operations</th><th>Enterprise</th></tr></thead><tbody><tr><td><b>Requisitions</b></td><td><svg class="tk"><use href="#i-check"/></svg></td><td><svg class="tk"><use href="#i-check"/></svg></td><td><svg class="tk"><use href="#i-check"/></svg></td></tr><tr><td><b>Procurement and vendor quotes</b></td><td class="no">Add on</td><td><svg class="tk"><use href="#i-check"/></svg></td><td><svg class="tk"><use href="#i-check"/></svg></td></tr><tr><td><b>Site budgets</b></td><td class="no">Add on</td><td><svg class="tk"><use href="#i-check"/></svg></td><td><svg class="tk"><use href="#i-check"/></svg></td></tr><tr><td><b>Implementation tracking</b></td><td class="no">Add on</td><td><svg class="tk"><use href="#i-check"/></svg></td><td><svg class="tk"><use href="#i-check"/></svg></td></tr></tbody></table></div></details>
+<details class="cmp-group"><summary>People <span>7 modules</span></summary><div class="cmp-scroll"><table class="cmp"><thead><tr><th></th><th>Core</th><th>Operations</th><th>Enterprise</th></tr></thead><tbody><tr><td><b>Leave</b></td><td><svg class="tk"><use href="#i-check"/></svg></td><td><svg class="tk"><use href="#i-check"/></svg></td><td><svg class="tk"><use href="#i-check"/></svg></td></tr><tr><td><b>Employee lifecycle</b></td><td class="no">Add on</td><td><svg class="tk"><use href="#i-check"/></svg></td><td><svg class="tk"><use href="#i-check"/></svg></td></tr><tr><td><b>Appraisals</b></td><td><svg class="tk"><use href="#i-check"/></svg></td><td><svg class="tk"><use href="#i-check"/></svg></td><td><svg class="tk"><use href="#i-check"/></svg></td></tr><tr><td><b>Attendance and policies</b></td><td class="no">Add on</td><td><svg class="tk"><use href="#i-check"/></svg></td><td><svg class="tk"><use href="#i-check"/></svg></td></tr><tr><td><b>Recruitment and job portal</b></td><td class="no">Add on</td><td class="no">Add on</td><td><svg class="tk"><use href="#i-check"/></svg></td></tr><tr><td><b>Offer letters</b></td><td class="no">Add on</td><td class="no">Add on</td><td><svg class="tk"><use href="#i-check"/></svg></td></tr><tr><td><b>Staff broadcasts</b></td><td class="no">Add on</td><td><svg class="tk"><use href="#i-check"/></svg></td><td><svg class="tk"><use href="#i-check"/></svg></td></tr></tbody></table></div></details>
+<details class="cmp-group"><summary>Revenue and CRM <span>8 modules</span></summary><div class="cmp-scroll"><table class="cmp"><thead><tr><th></th><th>Core</th><th>Operations</th><th>Enterprise</th></tr></thead><tbody><tr><td><b>CRM and leads</b></td><td class="no">Add on</td><td class="no">Add on</td><td><svg class="tk"><use href="#i-check"/></svg></td></tr><tr><td><b>Guided calling</b></td><td class="no">Add on</td><td class="no">Add on</td><td><svg class="tk"><use href="#i-check"/></svg></td></tr><tr><td><b>Deals and pipeline</b></td><td class="no">Add on</td><td class="no">Add on</td><td><svg class="tk"><use href="#i-check"/></svg></td></tr><tr><td><b>Market demand</b></td><td class="no">Add on</td><td class="no">Add on</td><td><svg class="tk"><use href="#i-check"/></svg></td></tr><tr><td><b>Revenue outlook</b></td><td class="no">Add on</td><td class="no">Add on</td><td><svg class="tk"><use href="#i-check"/></svg></td></tr><tr><td><b>Sales activities</b></td><td class="no">Add on</td><td class="no">Add on</td><td><svg class="tk"><use href="#i-check"/></svg></td></tr><tr><td><b>Sale commissions</b></td><td class="no">Add on</td><td class="no">Add on</td><td><svg class="tk"><use href="#i-check"/></svg></td></tr><tr><td><b>Client portfolios</b></td><td class="no">Add on</td><td class="no">Add on</td><td><svg class="tk"><use href="#i-check"/></svg></td></tr></tbody></table></div></details>
+<details class="cmp-group"><summary>Operations <span>5 modules</span></summary><div class="cmp-scroll"><table class="cmp"><thead><tr><th></th><th>Core</th><th>Operations</th><th>Enterprise</th></tr></thead><tbody><tr><td><b>Work reports</b></td><td><svg class="tk"><use href="#i-check"/></svg></td><td><svg class="tk"><use href="#i-check"/></svg></td><td><svg class="tk"><use href="#i-check"/></svg></td></tr><tr><td><b>Monthly performance</b></td><td class="no">Add on</td><td><svg class="tk"><use href="#i-check"/></svg></td><td><svg class="tk"><use href="#i-check"/></svg></td></tr><tr><td><b>IT devices and CUG lines</b></td><td class="no">Add on</td><td><svg class="tk"><use href="#i-check"/></svg></td><td><svg class="tk"><use href="#i-check"/></svg></td></tr><tr><td><b>Pool car booking</b></td><td class="no">Add on</td><td><svg class="tk"><use href="#i-check"/></svg></td><td><svg class="tk"><use href="#i-check"/></svg></td></tr><tr><td><b>Management meeting</b></td><td class="no">Add on</td><td class="no">Add on</td><td><svg class="tk"><use href="#i-check"/></svg></td></tr></tbody></table></div></details>
+<details class="cmp-group"><summary>Governance <span>4 modules</span></summary><div class="cmp-scroll"><table class="cmp"><thead><tr><th></th><th>Core</th><th>Operations</th><th>Enterprise</th></tr></thead><tbody><tr><td><b>Audit log</b></td><td><svg class="tk"><use href="#i-check"/></svg></td><td><svg class="tk"><use href="#i-check"/></svg></td><td><svg class="tk"><use href="#i-check"/></svg></td></tr><tr><td><b>Root console</b></td><td class="no">Add on</td><td class="no">Add on</td><td><svg class="tk"><use href="#i-check"/></svg></td></tr><tr><td><b>Oversight analytics</b></td><td class="no">Add on</td><td><svg class="tk"><use href="#i-check"/></svg></td><td><svg class="tk"><use href="#i-check"/></svg></td></tr><tr><td><b>Social media monitor</b></td><td class="no">Add on</td><td class="no">Add on</td><td><svg class="tk"><use href="#i-check"/></svg></td></tr></tbody></table></div></details>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head center" style="margin-bottom:10px;">
+      <h2 class="h2">Questions we get asked first</h2>
+    </div>
+    <div class="faq" style="max-width:800px;margin:0 auto;">
+      <details open>
+        <summary>Why is there no price on this page?</summary>
+        <p>Because a headcount of 60 and a headcount of 600 are different products, and a
+          company switching on four modules is not buying what a group switching on
+          twenty four is buying. Publishing one number would be wrong for almost everybody
+          reading it. Tell us the two facts and you get a real figure, not a range.</p>
+      </details>
+      <details>
+        <summary>Can we start small and add modules later?</summary>
+        <p>Yes, and most companies do. Modules switch on without a migration because they
+          already share one permission model and one employee record. You are quoted the
+          difference, not a new licence.</p>
+      </details>
+      <details>
+        <summary>How is a group with several arms priced?</summary>
+        <p>Once, across all the arms in scope. You are not quoted separately per company,
+          and staff who work across arms are counted once.</p>
+      </details>
+      <details>
+        <summary>What does the setup fee actually cover?</summary>
+        <p>Mapping your existing approval chains into the routing engine, importing your
+          people and their reporting lines, and training the administrators. It is the work
+          that decides whether the system matches how you already operate.</p>
+      </details>
+      <details>
+        <summary>What happens to our data if we leave?</summary>
+        <p>Full export on request, in a format you can read without us. The break glass
+          console also snapshots any table before a destructive operation.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="cta">
+      <h2 class="h2">Tell us your headcount and we will quote it</h2>
+      <p>Say which modules you think you need, or describe the process that is hurting and
+        let us recommend them. Either way you get a written quote and a deployment date.</p>
+      <div class="btn-row">
+        <a class="btn btn-w btn-lg" href="contact.html" data-page="contact">Get a quote</a>
+        <a class="btn btn-o btn-lg" href="product.html" data-page="product">See how it works</a>
       </div>
     </div>
   </div>
@@ -2582,7 +2961,7 @@ html,body{max-width:100%;}
         <a class="logo" href="#"><span class="logo-m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="5 12.5 10 17.5 19 7.5"/></svg></span>Savidor<i>HR</i></a>
         <p>Workforce and approval infrastructure for African enterprise. Built in Lagos.</p>
       </div>
-      <div><h5>Product</h5><ul><li><a href="#" data-page="product">How it works</a></li><li><a href="#" data-page="modules">All 28 modules</a></li><li><a href="#" data-page="crm">CRM and calling</a></li><li><a href="#" data-page="contact">Request a quote</a></li></ul></div>
+      <div><h5>Product</h5><ul><li><a href="#" data-page="product">How it works</a></li><li><a href="#" data-page="modules">All 28 modules</a></li><li><a href="#" data-page="crm">CRM and calling</a></li><li><a href="#" data-page="pricing">Pricing</a></li></ul></div>
       <div><h5>Modules</h5><ul>
         <li><a href="#" data-page="modules">Spend and approvals</a></li>
         <li><a href="#" data-page="modules">People</a></li>
@@ -2650,16 +3029,56 @@ html,body{max-width:100%;}
     onScroll();
   }
 
-  /* Module family filter, used on the modules page. */
+  /* ── Reveal on arrival ──────────────────────────────────────────────
+     Cards fade up as you reach them instead of landing as one wall. The
+     stagger is capped so a filter showing twenty eight cards never leaves
+     the last one waiting seconds to appear. */
+  var reveals=document.querySelectorAll(".reveal");
+  function showAll(){ reveals.forEach(function(el){ el.classList.add("in"); }); }
+  if(reveals.length){
+    if(still || !("IntersectionObserver" in window)){
+      showAll();
+    } else {
+      var io=new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(!e.isIntersecting) return;
+          var sibs=Array.prototype.slice.call(e.target.parentNode.children);
+          var i=sibs.indexOf(e.target);
+          e.target.style.transitionDelay=Math.min(i,8)*55+"ms";
+          e.target.classList.add("in");
+          io.unobserve(e.target);
+        });
+      },{rootMargin:"0px 0px -40px 0px",threshold:.08});
+      reveals.forEach(function(el){ io.observe(el); });
+    }
+  }
+
+  /* ── Module family filter ───────────────────────────────────────────
+     Hiding with a class rather than an inline style keeps the transition,
+     and the note above the grid explains the family you just picked. */
   var chips=document.querySelectorAll("[data-fam]");
+  var note=document.getElementById("famNote");
   if(chips.length){
     chips.forEach(function(c){
       c.addEventListener("click",function(){
         var f=c.getAttribute("data-fam");
         chips.forEach(function(x){x.classList.toggle("on",x===c);});
+
         document.querySelectorAll("[data-in]").forEach(function(card){
-          card.style.display=(f==="all"||card.getAttribute("data-in")===f)?"":"none";
+          var show=(f==="all"||card.getAttribute("data-in")===f);
+          card.classList.toggle("hide",!show);
+          if(show && !card.classList.contains("in")) card.classList.add("in");
         });
+
+        if(note){
+          var txt=note.getAttribute("data-"+f);
+          if(txt && !still){
+            note.classList.add("swap");
+            setTimeout(function(){ note.textContent=txt; note.classList.remove("swap"); },220);
+          } else if(txt){
+            note.textContent=txt;
+          }
+        }
       });
     });
   }
