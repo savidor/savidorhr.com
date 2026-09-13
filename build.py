@@ -7,7 +7,7 @@ Sources live in  src/ :
     pages/*.html      one fragment per page, with a small header comment
 
 Outputs to  site/ :
-    index.html, product.html, modules.html, pricing.html,
+    index.html, product.html, modules.html, crm.html,
     investors.html, contact.html, site.css
     Upload that whole folder to your host. No build step needed on the server.
 
@@ -37,7 +37,6 @@ NAV = [
     ("product", "Product", "product.html"),
     ("modules", "Modules", "modules.html"),
     ("crm", "CRM", "crm.html"),
-    ("pricing", "Pricing", "pricing.html"),
     ("investors", "Investors", "investors.html"),
 ]
 
@@ -156,7 +155,7 @@ def footer(preview):
         a("product", "How it works", "product.html"),
         a("modules", "All 28 modules", "modules.html"),
         a("crm", "CRM and calling", "crm.html"),
-        a("pricing", "Pricing", "pricing.html"),
+        a("contact", "Request a quote", "contact.html"),
     ])
     comp = "".join([
         a("investors", "Investors", "investors.html"),
@@ -339,7 +338,7 @@ def main():
     (OUT / "favicon.svg").write_text(
         (SRC / "favicon.svg").read_text(encoding="utf-8"), encoding="utf-8")
 
-    order = ["index", "product", "modules", "crm", "pricing", "investors",
+    order = ["index", "product", "modules", "crm", "investors",
              "contact", "thanks"]
     frags = {}
     for slug in order:
