@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://savidorhr.com.ng/sitemap.xml
+Sitemap: https://savidorhr.com/sitemap.xml

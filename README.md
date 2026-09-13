@@ -41,7 +41,7 @@ publishes automatically.
 
    To use Resend instead, set `RESEND_API_KEY` rather than `BREVO_API_KEY`.
    The function picks up whichever is present.
-3. *Domain management* → add `savidorhr.com.ng` and follow the DNS steps.
+3. *Domain management* → add `savidorhr.com` and follow the DNS steps.
    HTTPS is issued automatically.
 
 To work on it locally: edit files in `src/`, run `python3 build.py`, open

@@ -6,12 +6,12 @@
  * Environment variables (Site configuration → Environment variables):
  *   BREVO_API_KEY   a Brevo v3 API key            ─┐ set one of these
  *   RESEND_API_KEY  a Resend API key              ─┘
- *   NOTIFY_TO       where enquiries land          (default hello@savidorhr.com.ng)
- *   NOTIFY_FROM     the verified sender address   (default hello@savidorhr.com.ng)
+ *   NOTIFY_TO       where enquiries land          (default hello@savidorhr.com)
+ *   NOTIFY_FROM     the verified sender address   (default hello@savidorhr.com)
  */
 
-const TO = process.env.NOTIFY_TO || "hello@savidorhr.com.ng";
-const FROM = process.env.NOTIFY_FROM || "hello@savidorhr.com.ng";
+const TO = process.env.NOTIFY_TO || "hello@savidorhr.com";
+const FROM = process.env.NOTIFY_FROM || "hello@savidorhr.com";
 
 const BRAND = "#A24212";
 const INK = "#101828";
@@ -99,7 +99,7 @@ function buildHtml(data, meta) {
    }
 
    <tr><td style="border-top:1px solid ${LINE};background:${BG_2};padding:18px 32px;font:400 12px/1.6 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:${INK_3};">
-     Sent from the contact form on savidorhr.com.ng${
+     Sent from the contact form on savidorhr.com${
        meta.date ? ` &middot; ${esc(meta.date)}` : ""
      }<br>A copy is kept under Forms in the Netlify dashboard.
    </td></tr>

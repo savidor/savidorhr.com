@@ -24,10 +24,10 @@ SRC = HERE / "src"
 OUT = HERE / "site"
 
 # ── Edit these when the domain and contact details are settled ────────────
-DOMAIN = "https://savidorhr.com.ng"
+DOMAIN = "https://savidorhr.com"
 COMPANY = "SavidorHR"
-EMAIL = "hello@savidorhr.com.ng"
-EMAIL_INV = "invest@savidorhr.com.ng"
+EMAIL = "hello@savidorhr.com"
+EMAIL_INV = "invest@savidorhr.com"
 PHONE = "+234 000 000 0000"
 
 # Reachable, but deliberately absent from the nav, the sitemap and the preview.
@@ -93,6 +93,11 @@ ICONS = {
 }
 
 
+ARROW_S = ('<svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+           'stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">'
+           '<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>')
+
+
 def sprite():
     """One hidden SVG holding every icon, referenced by <use>."""
     syms = "".join(
@@ -108,6 +113,60 @@ LOGO_MARK = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-
              '<polyline points="5 12.5 10 17.5 19 7.5"/></svg>')
 
 
+# Mega menu columns. Operations and Governance share one column so the panel
+# stays four columns wide next to the featured card.
+MEGA_COLS = [
+    ("Spend and approvals", ["spend"]),
+    ("People",              ["people"]),
+    ("Revenue and CRM",     ["revenue"]),
+    ("Operations and governance", ["ops", "gov"]),
+]
+
+CARET = ('<svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+         'stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">'
+         '<polyline points="6 9 12 15 18 9"/></svg>')
+
+
+def modules_by_family():
+    """The single source of truth for what modules exist: the cards themselves."""
+    src = (SRC / "pages" / "modules.html").read_text(encoding="utf-8")
+    cards = re.findall(r'<div class="mod-card" data-in="(\w+)">.*?<h4>(.*?)</h4>', src, re.S)
+    by_fam = {}
+    for fam, name in cards:
+        by_fam.setdefault(fam, []).append(name.strip())
+    return by_fam
+
+
+def mega(preview):
+    """The Modules mega panel. Built from the module cards, so a new module
+    appears in the navigation the moment its card is added."""
+    by_fam = modules_by_family()
+    href = 'href="#" data-page="modules"' if preview else 'href="modules.html"'
+    crm = 'href="#" data-page="crm"' if preview else 'href="crm.html"'
+
+    cols = []
+    for title, keys in MEGA_COLS:
+        names = [n for k in keys for n in by_fam.get(k, [])]
+        links = "".join(f"<a {href}>{n}</a>" for n in names)
+        cols.append(f'<div class="mega-col"><h6>{title}</h6>{links}</div>')
+
+    total = sum(len(v) for v in by_fam.values())
+    return f"""<div class="mega"><div class="wrap mega-in">
+  {"".join(cols)}
+  <a class="mega-feat" {crm}>
+    <span class="mega-tag">Flagship</span>
+    <b>CRM and guided calling</b>
+    <p>The queue decides who is called next, the script branches on what they
+       actually said, and no call ends without a dated next step.</p>
+    <span class="mega-go">Look inside {ARROW_S}</span>
+  </a>
+</div>
+<div class="mega-foot"><div class="wrap">
+  <span>{total} modules, one permission model. Switch on what you need now.</span>
+  <a {href}>Browse all {total} {ARROW_S}</a>
+</div></div></div>"""
+
+
 def header(active, preview):
     def link(slug, label, href):
         h = f'href="#" data-page="{slug}"' if preview else f'href="{href}"'
@@ -116,7 +175,16 @@ def header(active, preview):
 
     home = 'href="#" data-page="index"' if preview else 'href="index.html"'
     contact = 'href="#" data-page="contact"' if preview else 'href="contact.html"'
-    nav = "".join(link(s, l, h) for s, l, h in NAV)
+    parts = []
+    for slug, label, href in NAV:
+        if slug == "modules":
+            h = f'href="#" data-page="{slug}"' if preview else f'href="{href}"'
+            cls = ' class="on"' if slug == active else ""
+            parts.append(f'<div class="nav-item has-mega">'
+                         f'<a {h}{cls}>{label}{CARET}</a>{mega(preview)}</div>')
+        else:
+            parts.append(link(slug, label, href))
+    nav = "".join(parts)
     def mlink(slug, label, href):
         h = f'href="#" data-page="{slug}"' if preview else f'href="{href}"'
         cls = ' class="on"' if slug == active else ""

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://savidorhr.com.ng/</loc><priority>1.0</priority></url>
-  <url><loc>https://savidorhr.com.ng/product.html</loc><priority>0.8</priority></url>
-  <url><loc>https://savidorhr.com.ng/modules.html</loc><priority>0.8</priority></url>
-  <url><loc>https://savidorhr.com.ng/crm.html</loc><priority>0.8</priority></url>
-  <url><loc>https://savidorhr.com.ng/investors.html</loc><priority>0.8</priority></url>
-  <url><loc>https://savidorhr.com.ng/contact.html</loc><priority>0.8</priority></url>
+  <url><loc>https://savidorhr.com/</loc><priority>1.0</priority></url>
+  <url><loc>https://savidorhr.com/product.html</loc><priority>0.8</priority></url>
+  <url><loc>https://savidorhr.com/modules.html</loc><priority>0.8</priority></url>
+  <url><loc>https://savidorhr.com/crm.html</loc><priority>0.8</priority></url>
+  <url><loc>https://savidorhr.com/investors.html</loc><priority>0.8</priority></url>
+  <url><loc>https://savidorhr.com/contact.html</loc><priority>0.8</priority></url>
 </urlset>

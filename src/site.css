@@ -803,3 +803,89 @@ html,body{max-width:100%;}
   .slot.filled b{font-size:1.5rem;}
   .slot.soft b{font-size:1rem;}
 }
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Mega menu. Desktop only: below 940px the burger menu takes over, so the
+   panel is never rendered on a phone and needs no touch handling.
+   Opens on hover and on keyboard focus, with no JavaScript.
+   ═══════════════════════════════════════════════════════════════════════ */
+.nav-item{position:static; display:flex; align-items:center;}
+.nav-item > a{display:inline-flex; align-items:center; gap:5px;}
+.caret{width:14px; height:14px; opacity:.6; transition:transform .2s;}
+.nav-item:hover > a .caret, .nav-item:focus-within > a .caret{transform:rotate(180deg);}
+
+.mega{
+  position:absolute; left:0; right:0; top:100%;
+  background:#fff; border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  box-shadow:0 24px 48px -16px rgba(16,24,40,.18);
+  opacity:0; visibility:hidden; transform:translateY(-8px);
+  transition:opacity .18s ease, transform .18s ease, visibility .18s;
+}
+.nav-item:hover .mega, .nav-item:focus-within .mega{
+  opacity:1; visibility:visible; transform:translateY(0);
+}
+.mega-in{
+  display:grid; grid-template-columns:repeat(4,1fr) 300px;
+  gap:30px; padding:32px 24px 34px;
+}
+.mega-col h6{
+  font-size:.7rem; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
+  color:var(--ink-4); margin-bottom:13px; min-height:2.5em;
+}
+.mega-col a{
+  display:block; padding:6px 8px; margin-left:-8px; border-radius:6px;
+  font-size:.9rem; font-weight:500; color:var(--ink-2); line-height:1.45;
+  transition:background .13s, color .13s;
+}
+.mega-col a:hover{background:var(--brand-50); color:var(--brand);}
+
+.mega-feat{
+  display:block; background:var(--brand-50); border:1px solid var(--brand-100);
+  border-radius:var(--r-lg); padding:22px; transition:box-shadow .18s, transform .18s;
+}
+.mega-feat:hover{box-shadow:var(--sh-lg); transform:translateY(-2px);}
+.mega-tag{
+  display:inline-block; font-size:.64rem; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; color:#fff; background:var(--brand);
+  padding:3px 9px; border-radius:99px; margin-bottom:12px;
+}
+.mega-feat b{
+  display:block; font-family:var(--f-d); font-size:1.02rem; font-weight:700;
+  color:var(--ink); letter-spacing:-.012em; margin-bottom:7px;
+}
+.mega-feat p{font-size:.83rem; color:var(--ink-2); line-height:1.55;}
+.mega-go{
+  display:inline-flex; align-items:center; gap:6px; margin-top:14px;
+  font-size:.85rem; font-weight:600; color:var(--brand);
+}
+.mega-go .ar, .mega-foot .ar{width:15px; height:15px;}
+.mega-feat:hover .mega-go .ar{transform:translateX(3px);}
+.mega-go .ar{transition:transform .18s;}
+
+.mega-foot{background:var(--bg-2); border-top:1px solid var(--line);}
+.mega-foot .wrap{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:20px; padding:13px 24px; font-size:.86rem; color:var(--ink-3);
+}
+.mega-foot a{
+  display:inline-flex; align-items:center; gap:6px;
+  font-weight:600; color:var(--brand);
+}
+
+@media (max-width:1180px){ .mega-in{grid-template-columns:repeat(4,1fr); } .mega-feat{display:none;} }
+@media (max-width:940px){ .mega{display:none;} }
+
+
+/* Extra hero moments. Staggered so the three never bob in unison, and all
+   three disappear together on small screens, where they would cover the mock. */
+.fn-2{left:auto; right:-22px; top:-26px; bottom:auto; animation-delay:1.1s;}
+.fn-3{left:auto; right:-38px; top:auto; bottom:-30px; max-width:258px; animation-delay:2.3s;}
+.fn-ic.info{background:var(--info-bg); border-color:var(--info-line);}
+.fn-ic.info svg{color:var(--info);}
+.fn-ic.brand{background:var(--brand-100); border-color:var(--brand-100);}
+.fn-ic.brand svg{color:var(--brand);}
+@media (max-width:1180px){ .fn-3{display:none;} }
+@media (max-width:1000px){ .fn-2{right:-8px; top:-18px;} }
+@media (max-width:640px){ .fn-2,.fn-3{display:none;} }
