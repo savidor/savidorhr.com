@@ -16,8 +16,11 @@ client-side switching, so the whole site can be previewed from one link.
 
 Run:  python3 marketing/build.py
 """
+import hashlib
 import re
 import pathlib
+
+CSS_NAME = "site.css"  # replaced with the fingerprinted name at build time
 
 HERE = pathlib.Path(__file__).parent
 SRC = HERE / "src"
@@ -564,7 +567,7 @@ def document(meta, body, slug):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="{CSS_NAME}">
 </head>
 <body>
 {sprite()}
@@ -582,7 +585,20 @@ def document(meta, body, slug):
 def main():
     OUT.mkdir(exist_ok=True)
     css = (SRC / "site.css").read_text(encoding="utf-8")
-    (OUT / "site.css").write_text(css, encoding="utf-8")
+
+    # Fingerprint the stylesheet. Without this the filename never changes, so a
+    # long Cache-Control header serves week-old CSS against freshly built HTML
+    # and the site renders unstyled for anyone who visited before. The hash in
+    # the name means the URL changes whenever the bytes do, which is what makes
+    # the long cache safe rather than dangerous.
+    global CSS_NAME
+    digest = hashlib.md5(css.encode("utf-8")).hexdigest()[:10]
+    CSS_NAME = f"site.{digest}.css"
+    for stale in OUT.glob("site.*.css"):
+        if stale.name != CSS_NAME:
+            stale.unlink()
+    (OUT / "site.css").unlink(missing_ok=True)
+    (OUT / CSS_NAME).write_text(css, encoding="utf-8")
     (OUT / "favicon.svg").write_text(
         (SRC / "favicon.svg").read_text(encoding="utf-8"), encoding="utf-8")
 
@@ -629,7 +645,7 @@ def main():
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
         f"{urls}</urlset>\n", encoding="utf-8")
-    print("  wrote site/robots.txt, site/sitemap.xml, site/favicon.svg")
+    print(f"  wrote site/robots.txt, site/sitemap.xml, site/favicon.svg, {CSS_NAME}")
 
 
 if __name__ == "__main__":
