@@ -9,7 +9,10 @@ netlify/        the form notification function
 src/            source you edit
   site.css        the whole design system
   favicon.svg     browser tab icon
+  fonts/*.woff2   the two self-hosted webfonts, subset
   pages/*.html    one fragment per page
+tools/          not part of the build
+  build_fonts.py  regenerates src/fonts, run by hand
 build.py        assembles everything
 site/           build output, what Netlify publishes
 _preview.html   all six pages in one file, for sharing a preview link
@@ -78,7 +81,7 @@ Three things are placeholders.
 | What | Where | Note |
 |---|---|---|
 | Domain and contact details | `build.py`, the constants block at the top | Change `DOMAIN`, `EMAIL`, `EMAIL_INV`, `PHONE`, then rebuild. They propagate to every page, the footer, the sitemap and the social tags. |
-| Logo | `build.py`, `LOGO_MARK` | Currently a generic infinity mark. Replace the SVG path, or swap the `<span class="logo-m">` for an `<img>`. Also replace `src/favicon.svg`. |
+| Logo | `build.py`, `LOGO_MARK` | The three node triangle. It paints its own colours rather than inheriting `currentColor`, so it keeps a white tile on dark grounds. Also replace `src/favicon.svg` if you change it. |
 | Testimonial | `src/pages/index.html`, the `.quote` block | Labelled "Illustrative customer quote". Replace with a real attributed one, or delete the section. |
 
 Investor traction figures on `investors.html` are intentionally blank. Fill them
@@ -89,6 +92,41 @@ only with numbers you can evidence.
 `og.png` is referenced in the page head but not included. Until you add a
 1200x630 PNG at the web root, links shared on WhatsApp, LinkedIn and X will show
 no preview image. Everything else works without it.
+
+## Fonts
+
+Inter and Plus Jakarta Sans are **served from our own origin**, not from Google.
+Loading them from `fonts.googleapis.com` cost two extra DNS and TLS handshakes,
+and the font URLs were not even known until that render-blocking stylesheet came
+back. The old setup pulled up to 18 files totalling about 750KB. This one is
+four files totalling 64KB, two of which the page preloads.
+
+Both are variable fonts, so one file covers every weight. They are subset by
+`tools/build_fonts.py`:
+
+- `*-latin.woff2` covers ASCII, Latin-1 and common punctuation. Deliberately
+  wider than what the pages contain today, so ordinary copy edits cannot
+  silently drop a glyph.
+- `*-naira.woff2` carries the single character U+20A6. The naira sign is the
+  only character on the site outside Latin-1, and Google ships it inside a
+  latin-ext file carrying the whole of Latin Extended plus IPA, 83KB for Inter
+  alone. Its `unicode-range` means the browser fetches it only for pages that
+  print a figure in naira.
+
+To regenerate them:
+
+```
+python3 -m venv /tmp/fontenv
+/tmp/fontenv/bin/pip install "fonttools[woff]" brotli
+/tmp/fontenv/bin/python tools/build_fonts.py
+```
+
+`build.py` content-hashes each file into `site/fonts/` and fills the
+`__FONT_*__` placeholders in `site.css`, so the URLs in the stylesheet are
+generated. Editing them by hand does nothing.
+
+Monospace is the system stack. A webfont there would have cost two more files
+to set a handful of figures inside screenshot mockups.
 
 ## Notes
 

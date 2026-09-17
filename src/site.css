@@ -10,6 +10,39 @@
    green for action on top of it, and the three logo node hues.
    ═══════════════════════════════════════════════════════════════════════ */
 
+/* ── Webfonts, served from our own origin ─────────────────────────────
+   Two variable fonts, subset by tools/build_fonts.py and preloaded by the
+   page. The URLs below are placeholders; build.py fills in the hashed
+   filenames, so editing them here by hand does nothing.
+
+   The naira sign is the only character on the site outside Latin-1, and
+   Google ships it inside a latin-ext file carrying the whole of Latin
+   Extended plus IPA, 83KB for Inter alone. It gets its own one glyph file
+   instead, which the unicode-range below fetches only when a page prints a
+   figure in naira. */
+@font-face{
+  font-family:"Inter"; font-style:normal; font-weight:100 900; font-display:swap;
+  src:url("__FONT_INTER_LATIN__") format("woff2");
+  unicode-range:U+0000-00FF,U+2013,U+2014,U+2018,U+2019,U+201C,U+201D,
+    U+2022,U+2026,U+2039,U+203A,U+2122,U+2190-2193,U+2212;
+}
+@font-face{
+  font-family:"Inter"; font-style:normal; font-weight:100 900; font-display:swap;
+  src:url("__FONT_INTER_NAIRA__") format("woff2");
+  unicode-range:U+20A6;
+}
+@font-face{
+  font-family:"Plus Jakarta Sans"; font-style:normal; font-weight:200 800;
+  font-display:swap; src:url("__FONT_JAKARTA_LATIN__") format("woff2");
+  unicode-range:U+0000-00FF,U+2013,U+2014,U+2018,U+2019,U+201C,U+201D,
+    U+2022,U+2026,U+2039,U+203A,U+2122,U+2190-2193,U+2212;
+}
+@font-face{
+  font-family:"Plus Jakarta Sans"; font-style:normal; font-weight:200 800;
+  font-display:swap; src:url("__FONT_JAKARTA_NAIRA__") format("woff2");
+  unicode-range:U+20A6;
+}
+
 :root{
   --brand:#2D60D0;
   --brand-700:#1E48AE;
@@ -55,7 +88,10 @@
   --shell:1216px;
   --f:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
   --f-d:"Plus Jakarta Sans","Inter",-apple-system,"Segoe UI",sans-serif;
-  --f-m:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  /* System mono. A webfont here would cost another two files to set a
+     handful of figures in mockups, where the system stack is already
+     tabular and indistinguishable at this size. */
+  --f-m:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
 }
 
 *{box-sizing:border-box;}
@@ -1509,3 +1545,45 @@ html,body{max-width:100%;}
 /* Emphasis inside body copy on the blue needs to be brighter than the text
    around it, not the same translucent white. */
 .ondark strong,.ondark .lead b{color:#fff;}
+
+/* ── The announcement pill on a phone ────────────────────────────────
+   As an inline-flex stadium it wraps into two flex items, so the chip
+   sits alone on the first line with a long empty gap beside it and the
+   99px radius balloons around the whole thing. On a phone it becomes an
+   ordinary block instead: the chip is inline-block, the sentence flows
+   after it and wraps underneath, and the radius drops to a card corner. */
+@media (max-width:640px){
+  .pill{
+    display:block; max-width:100%;
+    border-radius:13px; padding:9px 13px 10px;
+    line-height:1.45; text-align:left;
+  }
+  .pill b{
+    display:inline-block; margin-right:7px;
+    position:relative; top:-1px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   WHAT A PHONE SHOULD NOT BE ASKED TO PAINT
+   Three things here cost far more than they are worth on a phone, and none
+   of them carries information:
+
+   1. A blurred backdrop on a sticky header, which re-blurs whatever is
+      behind it on every scroll frame.
+   2. Two large blurred layers in the hero animating forever.
+   3. The five stage flow on the Modules page, whose 10s loop animates
+      box-shadow, and an animated box-shadow repaints rather than composites.
+
+   All three hold still below 640px. The desktop versions are untouched.
+   ═══════════════════════════════════════════════════════════════════════ */
+@media (max-width:640px){
+  .hdr,.hdr.scrolled{background:#fff; backdrop-filter:none;}
+
+  .hero::before{animation:none; filter:blur(52px); opacity:.45;}
+  .hero::after{display:none;}
+
+  .flow-step,.fs-ic,.fs-ic svg,.flow-pulse{animation:none;}
+  .flow-step{border-color:var(--line-2);}
+  .flow-pulse{display:none;}
+}

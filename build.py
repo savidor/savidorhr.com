@@ -22,6 +22,7 @@ import re
 import pathlib
 
 CSS_NAME = "site.css"  # replaced with the fingerprinted name at build time
+FONT_TAGS = ""         # preload links, filled in once the fonts are hashed
 
 HERE = pathlib.Path(__file__).parent
 SRC = HERE / "src"
@@ -894,9 +895,7 @@ def document(meta, body, slug):
 <meta property="og:image" content="{DOMAIN}/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+{FONT_TAGS}
 <link rel="stylesheet" href="{CSS_NAME}">
 </head>
 <body>
@@ -912,9 +911,86 @@ def document(meta, body, slug):
 """
 
 
+# ── Self-hosted webfonts ──────────────────────────────────────────────────────
+# Built by tools/build_fonts.py and committed under src/fonts/. Loading them
+# from Google cost two extra DNS and TLS handshakes, and the font URLs were not
+# even known until that render-blocking stylesheet came back. Serving them from
+# our own origin lets the HTML preload them on the first parse instead.
+#
+# Each file is fingerprinted for exactly the reason the stylesheet is: an
+# unversioned asset behind a one year cache is how this site once served
+# week-old CSS against fresh HTML and rendered unstyled.
+FONTS = ["inter-latin", "inter-naira", "jakarta-latin", "jakarta-naira"]
+
+# Only the two that carry actual text are preloaded, because those block first
+# paint. The naira files are about 1KB each and the browser fetches them on
+# demand through their unicode-range.
+FONT_PRELOAD = ["inter-latin", "jakarta-latin"]
+
+
+def install_fonts(css):
+    """Publish src/fonts under hashed names and point the CSS at them.
+
+    Returns the rewritten CSS and {name: published path}. Substitution happens
+    before the stylesheet is hashed, so the CSS fingerprint covers the font
+    URLs too and a font swap busts the stylesheet cache with it.
+    """
+    dest_dir = OUT / "fonts"
+    dest_dir.mkdir(parents=True, exist_ok=True)
+
+    published = {}
+    for name in FONTS:
+        src = SRC / "fonts" / f"{name}.woff2"
+        if not src.exists():
+            raise SystemExit(f"  ! missing {src}\n    Run tools/build_fonts.py")
+        data = src.read_bytes()
+        digest = hashlib.md5(data).hexdigest()[:10]
+        out_name = f"{name}.{digest}.woff2"
+        (dest_dir / out_name).write_bytes(data)
+        published[name] = f"fonts/{out_name}"
+
+    keep = {p.rsplit("/", 1)[-1] for p in published.values()}
+    for stale in dest_dir.glob("*.woff2"):
+        if stale.name not in keep:
+            stale.unlink()
+
+    for name, path in published.items():
+        token = "__FONT_" + name.upper().replace("-", "_") + "__"
+        if token not in css:
+            raise SystemExit(f"  ! {token} is not referenced in src/site.css")
+        css = css.replace(token, path)
+    return css, published
+
+
+def strip_css_comments(css):
+    """Drop comments from the published stylesheet.
+
+    src/site.css is commented heavily on purpose and stays that way; this only
+    affects what ships. It is worth roughly a third of the compressed
+    stylesheet, and the browser no longer parses past 25KB of prose.
+
+    Whitespace is left alone. Collapsing it as well saved another 0.4KB
+    compressed, which is not worth the chance of mangling a selector.
+    """
+    out = re.sub(r"/\*.*?\*/", "", css, flags=re.S)
+    # A comment opener inside a quoted value would make the regex eat real
+    # rules, so prove the declarations survived before shipping it.
+    for anchor in (".hero{", ".band{", "@font-face{", ".phero{"):
+        if anchor not in out.replace(" ", "").replace("\n", ""):
+            raise SystemExit(f"  ! minifier lost {anchor}, shipping source instead")
+    return re.sub(r"\n{2,}", "\n", out).strip() + "\n"
+
+
 def main():
     OUT.mkdir(exist_ok=True)
     css = (SRC / "site.css").read_text(encoding="utf-8")
+    css, font_paths = install_fonts(css)
+    css = strip_css_comments(css)
+
+    global FONT_TAGS
+    FONT_TAGS = "\n".join(
+        f'<link rel="preload" href="{font_paths[n]}" as="font" '
+        f'type="font/woff2" crossorigin>' for n in FONT_PRELOAD)
 
     # Fingerprint the stylesheet. Without this the filename never changes, so a
     # long Cache-Control header serves week-old CSS against freshly built HTML
@@ -957,11 +1033,11 @@ def main():
             continue
         parts.append(f'<div class="page" id="page-{slug}"{" hidden" if slug != "index" else ""}>'
                      f"<main>{body.strip()}</main></div>")
+    # _preview.html sits at the repo root while the fonts are published inside
+    # site/, so the relative URLs in the inlined CSS need one level added.
+    preview_css = css.replace('url("fonts/', 'url("site/fonts/')
     preview = (f"<title>{COMPANY}</title>\n"
-               '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?'
-               'family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&'
-               'family=JetBrains+Mono:wght@400;500&display=swap">\n'
-               f"<style>\n{css}\n</style>\n{sprite()}\n{header('index', True)}\n"
+               f"<style>\n{preview_css}\n</style>\n{sprite()}\n{header('index', True)}\n"
                + "\n".join(parts) + f"\n{footer(True)}\n{SCRIPT}\n{PREVIEW_SCRIPT}\n")
     (HERE / "_preview.html").write_text(preview, encoding="utf-8")
     print(f"  wrote _preview.html ({len(preview):,} chars)")

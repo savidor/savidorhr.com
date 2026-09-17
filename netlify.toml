@@ -33,3 +33,19 @@
   for = "/site.css"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
+
+# The fonts are content hashed by build.py for the same reason the stylesheet
+# is, so the same long cache is safe on them. They are also the largest thing
+# the site downloads, which makes a repeat visit almost free.
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# HTML must always be revalidated, or a cached page keeps pointing at a
+# stylesheet that has since been replaced. This is the pairing that makes
+# immutable caching of the hashed assets above safe.
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
