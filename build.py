@@ -137,9 +137,18 @@ def sprite():
     return f'<svg width="0" height="0" style="position:absolute" aria-hidden="true">{syms}</svg>'
 
 
-LOGO_MARK = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"'
-             ' stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
-             '<polyline points="5 12.5 10 17.5 19 7.5"/></svg>')
+# The brand mark: three nodes joined into a triangle, which is the shape an
+# approval chain makes. It paints its own colours rather than inheriting
+# currentColor, because the three nodes differ, so it must sit on a white
+# tile (.logo-m) on every ground, light or dark.
+LOGO_MARK = (
+    '<svg viewBox="0 0 24 24" aria-hidden="true">'
+    '<path d="M12 6.6 6.9 16.4H17.1Z" fill="none" stroke="#5B6B8C"'
+    ' stroke-width="1.5" stroke-linejoin="round" opacity=".92"/>'
+    '<circle cx="12" cy="6.6" r="2.75" fill="#F5B33F"/>'
+    '<circle cx="6.9" cy="16.4" r="2.75" fill="#16A55F"/>'
+    '<circle cx="17.1" cy="16.4" r="2.75" fill="#2E63D5"/>'
+    '</svg>')
 
 
 # Mega menu columns. Operations and Governance share one column so the panel
@@ -252,7 +261,7 @@ def header(active, preview):
     return f"""
 <header class="hdr">
   <div class="wrap hdr-in">
-    <a class="logo" {home}><span class="logo-m">{LOGO_MARK}</span>Savidor<i>HR</i></a>
+    <a class="logo" {home}><span class="logo-m">{LOGO_MARK}</span><span class="logo-t">Savidor<i>HR</i></span></a>
     <nav class="nav">{nav}</nav>
     <div class="hdr-cta">
       <a class="btn btn-s" {contact}>Contact sales</a>
@@ -293,7 +302,7 @@ def footer(preview):
   <div class="wrap">
     <div class="ftr-grid">
       <div class="ftr-about">
-        <a class="logo" href="{'#' if preview else 'index.html'}"><span class="logo-m">{LOGO_MARK}</span>Savidor<i>HR</i></a>
+        <a class="logo" href="{'#' if preview else 'index.html'}"><span class="logo-m">{LOGO_MARK}</span><span class="logo-t">Savidor<i>HR</i></span></a>
         <p>Workforce and approval infrastructure for African enterprise. Built in Lagos.</p>
       </div>
       <div><h5>Product</h5><ul>{prod}</ul></div>
@@ -499,6 +508,29 @@ FAMILIES = [
     ("ops",     "Operations"),
     ("gov",     "Governance"),
 ]
+
+# The icon each family wears wherever it is named, so the home page grid, the
+# Modules hero and the mega menu never disagree about which glyph means what.
+FAM_ICONS = {"spend": "wallet", "people": "users", "revenue": "target",
+             "ops": "layers", "gov": "shield"}
+
+
+def family_chips():
+    """The glass chips in the Modules page hero, counted from the catalogue.
+
+    The module count is hand-maintained in prose in several places and has
+    shipped wrong before, so anything that can be counted is counted here
+    rather than typed into the page.
+    """
+    by_fam = modules_by_family()
+    out = []
+    for key, label in FAMILIES:
+        n = len(by_fam.get(key, []))
+        if not n:
+            continue
+        out.append(f'<span class="hchip"><svg><use href="#i-{FAM_ICONS[key]}"/></svg>'
+                   f'{label} <b>{n}</b></span>')
+    return "\n      ".join(out)
 
 
 def module_options():
@@ -853,7 +885,7 @@ def document(meta, body, slug):
 <title>{meta.get('title', COMPANY)}</title>
 <meta name="description" content="{meta.get('desc', '')}">
 <link rel="canonical" href="{DOMAIN}/{'' if slug == 'index' else slug + '.html'}">{noindex}
-<meta name="theme-color" content="#A24212">
+<meta name="theme-color" content="#2D60D0">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="{COMPANY}">
 <meta property="og:url" content="{DOMAIN}/{'' if slug == 'index' else slug + '.html'}">
@@ -910,6 +942,8 @@ def main():
             continue
         meta, body = parse(p)
         body = body.replace("<!--MODULE_OPTIONS-->", module_options())
+        body = body.replace("<!--FAMILY_CHIPS-->", family_chips())
+        body = body.replace("<!--MODULE_COUNT-->", str(len(MODULES)))
         body = body.replace("<!--TIER_TABLE-->", tier_table())
         body = body.replace("<!--MODULE_EXPLORER-->", module_explorer())
         frags[slug] = (meta, body)

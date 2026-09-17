@@ -3,16 +3,35 @@
 <style>
 /* ═══════════════════════════════════════════════════════════════════════
    SavidorHR marketing site
-   Enterprise SaaS conventions: white ground, soft cards, generous space,
-   rust reserved for action. Committed to a light theme, as marketing sites
-   in this category are, so every colour is painted explicitly.
+   Enterprise SaaS conventions: soft cards, generous space, one action
+   colour. Deep blue carries the hero, the showcase bands and the footer;
+   reading sections stay on white so long tables and the module explorer
+   remain legible. Committed to a light theme, as marketing sites in this
+   category are, so every colour is painted explicitly.
+
+   Palette taken from the SavidorHR brand flier: a blue gradient ground,
+   green for action on top of it, and the three logo node hues.
    ═══════════════════════════════════════════════════════════════════════ */
 
 :root{
-  --brand:#A24212;
-  --brand-700:#8B380F;
-  --brand-100:#F7E4D9;
-  --brand-50:#FDF5F0;
+  --brand:#2D60D0;
+  --brand-700:#1E48AE;
+  --brand-600:#2554BF;
+  --brand-100:#DCE7FB;
+  --brand-50:#F0F5FE;
+
+  /* The blue ground, darkest at the bottom right exactly as the flier runs. */
+  --navy:#0F1B61;
+  --navy-2:#16307F;
+  --blue-lt:#3D73DC;
+
+  /* Green is the action colour on blue, the way the flier's tick buttons
+     and icon badges are. On white, blue stays the action colour. */
+  --accent:#16A55F;
+  --accent-600:#12894F;
+  --accent-400:#3ACF84;
+  --mint:#5CE8B0;
+  --amber:#F5B33F;
 
   --ink:#101828;
   --ink-2:#475467;
@@ -395,14 +414,16 @@ table.cmp .no{color:var(--ink-4);}
    ═══════════════════════════════════════════════════════════════════════ */
 
 /* ── Family accents ───────────────────────────────────────────────────
-   Rust stays the action colour, but icon tiles get their own family hue so
-   a wall of 24 modules reads as five groups instead of one orange block. */
+   Blue stays the action colour, but icon tiles get their own family hue so
+   a wall of 28 modules reads as five groups instead of one blue block. The
+   five are spread around the logo's own blue, green and amber rather than
+   picked freely, so the grid still looks like one brand. */
 :root{
-  --f1:#A24212; --f1-bg:#FDF0E8; --f1-ln:#F6D8C5;   /* spend    */
-  --f2:#0B7A5A; --f2-bg:#E9F7F1; --f2-ln:#C2EADA;   /* people   */
+  --f1:#2D60D0; --f1-bg:#EAF1FD; --f1-ln:#C9DCFA;   /* spend    */
+  --f2:#16A55F; --f2-bg:#E7F7EF; --f2-ln:#BEEAD4;   /* people   */
   --f3:#6435C9; --f3-bg:#F2EDFC; --f3-ln:#DBCDF7;   /* revenue  */
-  --f4:#1A56DB; --f4-bg:#EAF2FE; --f4-ln:#C7DCFB;   /* ops      */
-  --f5:#3A3FBF; --f5-bg:#EDEEFB; --f5-ln:#D1D4F5;   /* govern.  */
+  --f4:#0E7490; --f4-bg:#E6F5F9; --f4-ln:#BEE4EF;   /* ops      */
+  --f5:#B26206; --f5-bg:#FDF2E3; --f5-ln:#F7DCB4;   /* govern.  */
 }
 .mod-card[data-in="spend"]   .ic{background:var(--f1-bg); border-color:var(--f1-ln);}
 .mod-card[data-in="spend"]   .ic svg{color:var(--f1);}
@@ -439,13 +460,13 @@ table.cmp .no{color:var(--ink-4);}
 .grad{color:var(--brand);}
 @supports (-webkit-background-clip:text) or (background-clip:text){
   .grad{
-    background:linear-gradient(100deg,#C25016 0%,#A24212 45%,#7A3009 100%);
+    background:linear-gradient(100deg,var(--mint) 0%,#57D9F2 42%,#8FB6FF 100%);
     -webkit-background-clip:text; background-clip:text;
     -webkit-text-fill-color:transparent; color:transparent;
   }
 }
 .stat b{
-  background:linear-gradient(135deg,#C25016,#A24212 60%,#7A3009);
+  background:linear-gradient(135deg,var(--blue-lt),var(--brand) 55%,var(--navy-2));
   -webkit-background-clip:text; background-clip:text;
   -webkit-text-fill-color:transparent;
 }
@@ -458,9 +479,9 @@ table.cmp .no{color:var(--ink-4);}
   filter:blur(70px); opacity:.5; z-index:0;
 }
 .hero::before{width:460px; height:460px; top:-170px; right:-110px;
-  background:radial-gradient(circle,#F6C9A8,transparent 68%); animation:float1 17s ease-in-out infinite;}
+  background:radial-gradient(circle,#6FE3B4,transparent 68%); animation:float1 17s ease-in-out infinite;}
 .hero::after{width:380px; height:380px; bottom:40px; left:-150px;
-  background:radial-gradient(circle,#CBDCF8,transparent 68%); animation:float2 21s ease-in-out infinite;}
+  background:radial-gradient(circle,#5E8BEE,transparent 68%); animation:float2 21s ease-in-out infinite;}
 @keyframes float1{0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(-26px,30px) scale(1.07);}}
 @keyframes float2{0%,100%{transform:translate(0,0) scale(1);} 50%{transform:translate(30px,-24px) scale(1.09);}}
 
@@ -471,8 +492,8 @@ table.cmp .no{color:var(--ink-4);}
 
 /* ── Buttons with a little life ───────────────────────────────────── */
 .btn{position:relative;}
-.btn-p{box-shadow:0 1px 2px rgba(16,24,40,.06), 0 4px 12px -3px rgba(162,66,18,.34);}
-.btn-p:hover{transform:translateY(-1px); box-shadow:0 2px 4px rgba(16,24,40,.07), 0 8px 20px -4px rgba(162,66,18,.42);}
+.btn-p{box-shadow:0 1px 2px rgba(16,24,40,.06), 0 4px 12px -3px rgba(45,96,208,.34);}
+.btn-p:hover{transform:translateY(-1px); box-shadow:0 2px 4px rgba(16,24,40,.07), 0 8px 20px -4px rgba(45,96,208,.42);}
 .btn-p:active,.btn-s:active{transform:translateY(0);}
 .btn-s:hover{transform:translateY(-1px);}
 .btn svg{transition:transform .2s;}
@@ -489,12 +510,12 @@ tr:hover .badge{transform:scale(1.04);}
 /* Family chips */
 .chip{transition:transform .16s, background .16s, border-color .16s, color .16s;}
 .chip:hover{transform:translateY(-1px);}
-.chip.on{box-shadow:0 4px 12px -3px rgba(162,66,18,.4);}
+.chip.on{box-shadow:0 4px 12px -3px rgba(45,96,208,.4);}
 
 /* Tier card lift */
 .tier{transition:transform .25s, box-shadow .25s;}
 .tier:hover{transform:translateY(-4px); box-shadow:var(--sh-lg);}
-.tier.best:hover{box-shadow:0 28px 56px -14px rgba(162,66,18,.28);}
+.tier.best:hover{box-shadow:0 28px 56px -14px rgba(45,96,208,.28);}
 
 /* Footer and FAQ warmth */
 .ftr a{transition:color .15s, transform .15s; display:inline-block;}
@@ -773,7 +794,7 @@ html,body{max-width:100%;}
 /* How far through the page you are. */
 .hdr-bar{
   position:absolute; left:0; right:0; bottom:-1px; height:2px;
-  background:linear-gradient(90deg,#C25016,var(--brand) 60%,#7A3009);
+  background:linear-gradient(90deg,var(--accent),var(--brand) 55%,var(--navy-2));
   transform:scaleX(0); transform-origin:0 50%;
   transition:transform .1s linear;
   pointer-events:none;
@@ -959,7 +980,7 @@ html,body{max-width:100%;}
 .flow-pulse{
   position:absolute; top:50%; width:10px; height:10px; margin-top:-5px; margin-left:-5px;
   border-radius:50%; background:var(--brand);
-  box-shadow:0 0 0 5px rgba(162,66,18,.16), 0 0 14px rgba(162,66,18,.55);
+  box-shadow:0 0 0 5px rgba(45,96,208,.16), 0 0 14px rgba(45,96,208,.55);
   animation:flowTravel 10s linear infinite;
 }
 @keyframes flowTravel{0%{left:0;} 100%{left:100%;}}
@@ -973,7 +994,7 @@ html,body{max-width:100%;}
 }
 @keyframes stepOn{
   0%, 6%    {border-color:var(--line); box-shadow:var(--sh-sm); transform:translateY(0);}
-  11%, 24%  {border-color:var(--brand); box-shadow:0 16px 34px -12px rgba(162,66,18,.32);
+  11%, 24%  {border-color:var(--brand); box-shadow:0 16px 34px -12px rgba(45,96,208,.32);
              transform:translateY(-5px);}
   30%, 100% {border-color:var(--line); box-shadow:var(--sh-sm); transform:translateY(0);}
 }
@@ -1140,12 +1161,364 @@ html,body{max-width:100%;}
   .exp-ch{transition:none;}
 }
 
+
+/* ═══════════════════════════════════════════════════════════════════════
+   THE BLUE IDENTITY
+   Taken from the SavidorHR brand flier: a blue gradient that runs light at
+   the top left to near black navy at the bottom right, green for action on
+   top of it, and white product surfaces floating over the ground.
+
+   Deliberately NOT applied to everything. The hero, one showcase band, the
+   closing call to action and the footer carry the blue. Dense reading
+   sections stay on white, because a 28 row comparison table on a gradient
+   is a worse page however rich it looks.
+
+   `.ondark` is the switch: put it on any section sitting on the blue and
+   every child that needs to flip does so from these rules alone.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root{
+  /* Family hues brightened for the blue ground. The light tints above stay
+     correct on white; these are their readable counterparts on navy. */
+  --f1-d:#7FA6F5; --f2-d:#3ADE93; --f3-d:#A98BF5;
+  --f4-d:#3FBEDC; --f5-d:#F5B85A;
+
+  /* One gradient definition, reused by the hero, the bands and the footer
+     so they read as the same surface lit from the same direction. */
+  --ground:linear-gradient(152deg,#3D73DC 0%,#2A57C4 32%,#1B3C96 66%,#0F1B61 100%);
+  --dots:radial-gradient(circle at 1px 1px, rgba(255,255,255,.13) 1px, transparent 0);
+  --glow:radial-gradient(760px 420px at 82% 4%, rgba(92,232,176,.16), transparent 66%);
+}
+
+/* ── The logo tile ───────────────────────────────────────────────────
+   The mark carries three different node colours, so it cannot invert for a
+   dark ground the way a single colour glyph would. It keeps its white tile
+   everywhere instead, which is what the flier does and what makes it read
+   as the same object in the header and down in the navy footer. */
+.logo-m{background:#fff; border:1px solid var(--line); box-shadow:var(--sh-sm);}
+.logo-m svg{width:19px; height:19px;}
+.hdr.scrolled .logo-m svg{width:17px; height:17px;}
+.ondark .logo-m, .ftr .logo-m{border-color:rgba(255,255,255,.22);
+  box-shadow:0 6px 18px -6px rgba(5,12,45,.6);}
+
+/* ── Sections sitting on the blue ────────────────────────────────── */
+.band{
+  background:var(--dots) 0 0/34px 34px, var(--glow), var(--ground);
+  position:relative; overflow:hidden; border:0;
+}
+.band > *{position:relative; z-index:1;}
+
+.ondark{color:rgba(255,255,255,.78);}
+.ondark h1,.ondark h2,.ondark h3,.ondark h4,.ondark h5,
+.ondark .h1,.ondark .h2,.ondark .h3,.ondark .h4{color:#fff;}
+.ondark p,.ondark .lead{color:rgba(255,255,255,.78);}
+.ondark .small{color:rgba(255,255,255,.68);}
+.ondark .tiny,.ondark .hero-note{color:rgba(255,255,255,.68);}
+.ondark .eyebrow{color:var(--mint);}
+.ondark :focus-visible{outline-color:var(--mint);}
+
+/* Green is the action colour on blue, blue stays the action colour on
+   white. Same button class, right contrast on either ground. */
+.ondark .btn-p{
+  background:var(--accent); color:#fff; border-color:transparent;
+  box-shadow:0 2px 4px rgba(5,12,45,.2), 0 10px 24px -6px rgba(22,165,95,.5);
+}
+.ondark .btn-p:hover{background:var(--accent-600);
+  box-shadow:0 4px 8px rgba(5,12,45,.24), 0 14px 30px -6px rgba(22,165,95,.6);}
+.ondark .btn-s{
+  background:rgba(255,255,255,.1); color:#fff;
+  border-color:rgba(255,255,255,.34); box-shadow:none;
+  backdrop-filter:saturate(160%) blur(8px);
+}
+.ondark .btn-s:hover{background:rgba(255,255,255,.18); border-color:rgba(255,255,255,.6);}
+
+/* ── Glassy cards ────────────────────────────────────────────────── */
+.ondark .card{
+  background:rgba(255,255,255,.07); border-color:rgba(255,255,255,.16);
+  backdrop-filter:saturate(150%) blur(10px);
+  box-shadow:0 20px 44px -22px rgba(5,12,45,.8);
+}
+.ondark .card:hover{
+  background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.34);
+  box-shadow:0 28px 56px -20px rgba(5,12,45,.9);
+}
+.ondark .card p{color:rgba(255,255,255,.74);}
+.ondark .card .tiny{color:rgba(255,255,255,.55);}
+
+/* Family colour survives on the band, at the brightness navy needs. The
+   family rules further up are equal specificity, so these win by order. */
+/* Solid, saturated tiles with a white glyph, the way the flier's badges
+   are. A tinted translucent tile over a blue ground washes out: the tile
+   and the ground are then the same colour at different opacities. */
+.ondark .cards .card .ic{border-color:transparent;}
+.ondark .cards .card .ic svg{color:#fff;}
+.ondark .cards .card:nth-child(5n+1) .ic{background:#4D8DF0; box-shadow:0 8px 18px -8px rgba(77,141,240,.9);}
+.ondark .cards .card:nth-child(5n+2) .ic{background:#16A55F; box-shadow:0 8px 18px -8px rgba(22,165,95,.9);}
+.ondark .cards .card:nth-child(5n+3) .ic{background:#7C4DEB; box-shadow:0 8px 18px -8px rgba(124,77,235,.9);}
+.ondark .cards .card:nth-child(5n+4) .ic{background:#0E9DC0; box-shadow:0 8px 18px -8px rgba(14,157,192,.9);}
+.ondark .cards .card:nth-child(5n+5) .ic{background:#E09A20; box-shadow:0 8px 18px -8px rgba(224,154,32,.9);}
+.ondark .cards .card .tiny{color:rgba(255,255,255,.66);}
+
+/* The closing card in a family grid is an invitation, not a module, so it
+   is solid green rather than another pane of glass. */
+.ondark .cards .card.card-go{
+  background:linear-gradient(140deg,var(--accent-400),var(--accent) 62%,var(--accent-600));
+  border-color:transparent; box-shadow:0 22px 46px -18px rgba(22,165,95,.6);
+}
+.ondark .cards .card.card-go:hover{box-shadow:0 30px 60px -18px rgba(22,165,95,.75);}
+.ondark .cards .card.card-go .ic{background:rgba(255,255,255,.2); border-color:rgba(255,255,255,.34);}
+.ondark .cards .card.card-go .ic svg{color:#fff;}
+.ondark .cards .card.card-go p{color:rgba(255,255,255,.88);}
+
+/* ── The hero ────────────────────────────────────────────────────────
+   Repainted onto the blue ground. The product mockup and the floating
+   moment cards stay white, so they read as lit objects held above the
+   surface, which is the whole effect the flier gets from its laptop. */
+.hero{
+  background:var(--dots) 0 0/34px 34px, var(--glow), var(--ground);
+  border-bottom:0; padding-bottom:0;
+}
+.hero::before{background:radial-gradient(circle,rgba(92,232,176,.5),transparent 68%); opacity:.55;}
+.hero::after{background:radial-gradient(circle,rgba(110,160,255,.55),transparent 68%); opacity:.5;}
+
+/* The announcement pill becomes glass. Its chip keeps the mint so the one
+   genuinely new thing on the page is the brightest thing on it. */
+.ondark .pill{
+  background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.22);
+  color:rgba(255,255,255,.86); backdrop-filter:saturate(160%) blur(10px);
+  box-shadow:0 8px 24px -10px rgba(5,12,45,.6);
+}
+.ondark .pill:hover{background:rgba(255,255,255,.16); box-shadow:0 12px 30px -10px rgba(5,12,45,.7);}
+.ondark .pill b{background:var(--mint); color:#06371F;}
+.ondark .pill b::after{background:#06371F;}
+
+/* The accent words in the headline. Mint reads as light on this ground the
+   way the deeper brand blue cannot. */
+.ondark .grad{color:var(--mint);}
+@supports (-webkit-background-clip:text) or (background-clip:text){
+  .ondark .grad{
+    background:linear-gradient(100deg,var(--mint) 0%,#7DF0DC 46%,#9EC6FF 100%);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:transparent;
+  }
+}
+
+/* The mockup and its moment cards, lifted off the blue. */
+.hero .shot{
+  border-color:rgba(255,255,255,.14);
+  box-shadow:0 44px 90px -26px rgba(5,12,45,.72), 0 0 0 1px rgba(255,255,255,.08);
+}
+.hero .float-note{
+  border-color:rgba(255,255,255,.5);
+  box-shadow:0 26px 52px -16px rgba(5,12,45,.66);
+}
+
+/* Breathing room under the mockup, which used to sit on the section edge. */
+.hero-grid{padding-bottom:84px;}
+@media (max-width:1000px){ .hero-grid{padding-bottom:64px;} }
+@media (max-width:640px){ .hero-grid{padding-bottom:44px;} }
+
+/* ── The stats strip ─────────────────────────────────────────────────
+   Directly under the hero on white, so the eye gets a rest between the
+   blue of the hero and the blue of the showcase band further down. */
+.stat b{font-variant-numeric:tabular-nums;}
+.ondark .stat b{
+  background:linear-gradient(135deg,var(--mint),#9EC6FF 70%);
+  -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent; color:var(--mint);
+}
+.ondark .stat span{color:rgba(255,255,255,.72);}
+
+/* ── The testimonial ─────────────────────────────────────────────── */
+.quote{
+  background:var(--dots) 0 0/30px 30px,
+    linear-gradient(140deg,#24509E 0%,#16307F 48%,#0B1345 100%);
+  box-shadow:0 30px 70px -28px rgba(5,12,45,.7);
+}
+.quote-av{background:linear-gradient(140deg,var(--accent-400),var(--accent-600)); color:#fff;}
+
+/* ── The closing call to action ──────────────────────────────────── */
+.cta{
+  background:var(--dots) 0 0/30px 30px, var(--glow),
+    linear-gradient(140deg,var(--blue-lt) 0%,var(--brand) 40%,var(--navy) 100%);
+  box-shadow:0 30px 70px -28px rgba(15,27,97,.55);
+}
+.btn-w{background:#fff; color:var(--brand);}
+.btn-w:hover{background:var(--brand-50); color:var(--brand-700);}
+
+/* ── The footer ──────────────────────────────────────────────────────
+   Navy, so the page closes on the colour it opened with. */
+.ftr{
+  background:var(--dots) 0 0/34px 34px,
+    linear-gradient(170deg,#132864 0%,#0F1B61 55%,#080F3C 100%);
+  border-top:0; color:rgba(255,255,255,.7);
+}
+.ftr h5{color:#fff;}
+.ftr a{color:rgba(255,255,255,.7);}
+.ftr a:hover{color:var(--mint);}
+.ftr .logo{color:#fff;}
+.ftr .logo i{color:var(--mint);}
+.ftr-about p{color:rgba(255,255,255,.66);}
+.ftr-btm{border-top-color:rgba(255,255,255,.14); color:rgba(255,255,255,.55);}
+
+/* ── Phone ───────────────────────────────────────────────────────── */
+@media (max-width:640px){
+  /* The dot field is invisible at this size and only costs paint, so it is
+     dropped. These re-declare the whole `background` shorthand rather than
+     just `background-image`: dropping one image layer while the shorthand
+     above still carries two `background-size` values leaves the sizes
+     cycling onto the wrong layers, which tiled the gradient at 30px and
+     striped the quote and the footer. Layer counts have to agree. */
+  .hero,.band{background:var(--glow),var(--ground);}
+  .cta{background:var(--glow),
+    linear-gradient(140deg,var(--blue-lt) 0%,var(--brand) 40%,var(--navy) 100%);}
+  .quote{background:linear-gradient(140deg,#24509E 0%,#16307F 48%,#0B1345 100%);}
+  .ftr{background:linear-gradient(170deg,#132864 0%,#0F1B61 55%,#080F3C 100%);}
+  .hero .shot{box-shadow:0 24px 50px -18px rgba(5,12,45,.7);}
+}
+
+/* Backdrop filters are a real cost on low end phones, and the glass reads
+   almost the same without them once the card is over a gradient. */
+@media (max-width:900px){
+  .ondark .card,.ondark .pill,.ondark .btn-s{backdrop-filter:none;}
+  .ondark .card{background:rgba(255,255,255,.1);}
+}
+
+/* ── White surfaces standing on the blue ─────────────────────────────
+   The `.ondark` colour flips are ancestor rules, so they also reach into
+   the product mockup and the floating moment cards, which are white panes
+   and need their own dark type. Setting the colour on the pane itself puts
+   every inheriting child right in one go; the few children that carry an
+   explicit `.ondark` rule are restated below it. */
+.ondark .shot,.ondark .float-note{color:var(--ink);}
+.ondark .shot h1,.ondark .shot h2,.ondark .shot h3,
+.ondark .shot h4,.ondark .shot h5,.ondark .float-note b{color:var(--ink);}
+.ondark .shot p,.ondark .float-note p{color:var(--ink-2);}
+.ondark .shot .small,.ondark .shot .tiny,
+.ondark .float-note span{color:var(--ink-3);}
+
+/* ── The sector strip, still inside the hero ─────────────────────── */
+.ondark .logos p{color:rgba(255,255,255,.62);}
+.ondark .logo-ph{color:rgba(255,255,255,.72);}
+.ondark .logo-ph:hover{color:#fff;}
+
+/* ── The logo lockup ─────────────────────────────────────────────────
+   On white the mark stands on its own at full size. The white tile is
+   only what the flier needs to lift it off a blue ground, so it comes
+   back on the blue and in the footer, and nowhere else. */
+.logo{gap:10px;}
+.logo-t{display:inline-flex;}
+.logo-m{
+  width:34px; height:34px; background:transparent; border:0;
+  box-shadow:none; border-radius:9px;
+}
+.logo-m svg{width:34px; height:34px;}
+.hdr.scrolled .logo-m{width:30px; height:30px;}
+.hdr.scrolled .logo-m svg{width:30px; height:30px;}
+
+.ondark .logo-m,.ftr .logo-m{
+  background:#fff; border:1px solid rgba(255,255,255,.24);
+  box-shadow:0 8px 20px -8px rgba(5,12,45,.7);
+}
+.ondark .logo-m svg,.ftr .logo-m svg{width:25px; height:25px;}
+@media (max-width:420px){
+  .logo-m,.logo-m svg{width:30px; height:30px;}
+}
+
+/* ── Two layout corrections the blue made obvious ────────────────────
+   `.ftr a` sets display:inline-block and outranks `.logo`, so the footer
+   lockup lost its flex row and the mark dropped onto its own line. */
+.ftr .logo{display:inline-flex; align-items:center;}
+
+/* `.cta` centres its text, but a flex row is justified, not text-aligned,
+   so the buttons stayed left under a centred heading. */
+.cta .btn-row{justify-content:center;}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PAGE HEROES
+   Every page opens on the blue, not only the home page. There is no product
+   mockup to fill a second column here, so these are centred, and each one
+   carries a row of glass chips or stat tiles underneath: a line of substance
+   per page rather than the same decorative band repeated six times.
+   ═══════════════════════════════════════════════════════════════════════ */
+.phero{padding:84px 0 90px; text-align:center;}
+.phero .h1{max-width:19ch; margin:0 auto;}
+.phero .h1.wide{max-width:25ch;}
+.phero .lead{margin:20px auto 0;}
+.phero .btn-row{justify-content:center; margin-top:30px;}
+.phero .eyebrow{margin-bottom:16px;}
+
+/* Left aligned variant, for a hero that sits beside something. */
+.phero.left{text-align:left;}
+.phero.left .h1,.phero.left .lead{margin-left:0; margin-right:0;}
+.phero.left .btn-row,.phero.left .hchips{justify-content:flex-start;}
+
+.hchips{display:flex; justify-content:center; flex-wrap:wrap; gap:10px; margin-top:44px;}
+.hchip{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:9px 16px; border-radius:99px;
+  background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2);
+  backdrop-filter:saturate(160%) blur(10px);
+  font-size:.87rem; font-weight:600; color:#fff; white-space:nowrap;
+  box-shadow:0 8px 22px -12px rgba(5,12,45,.7);
+}
+.hchip svg{width:16px; height:16px; color:var(--mint); flex:0 0 auto;}
+.hchip b{font-weight:800; color:var(--mint); font-variant-numeric:tabular-nums;}
+
+/* Glass stat tiles, for the pages whose opening fact is a number. */
+.hstats{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:46px;}
+.hstats > *{min-width:0;}
+.hstat{
+  background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.18);
+  backdrop-filter:saturate(150%) blur(10px);
+  border-radius:16px; padding:22px 18px; text-align:center;
+  box-shadow:0 18px 40px -20px rgba(5,12,45,.8);
+}
+.hstat b{
+  display:block; font-family:var(--f-d); font-size:2rem; font-weight:800;
+  letter-spacing:-.03em; line-height:1; font-variant-numeric:tabular-nums;
+  color:var(--mint);
+  background:linear-gradient(135deg,var(--mint),#9EC6FF 75%);
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+}
+.hstat span{display:block; margin-top:9px; font-size:.84rem; font-weight:500;
+  line-height:1.4; color:rgba(255,255,255,.72);}
+
+@media (max-width:820px){ .hstats{grid-template-columns:repeat(2,1fr);} }
+@media (max-width:900px){
+  .hchip{backdrop-filter:none; background:rgba(255,255,255,.13);}
+  .hstat{backdrop-filter:none; background:rgba(255,255,255,.11);}
+}
+@media (max-width:640px){
+  .phero{padding:52px 0 60px;}
+  .phero .h1,.phero .h1.wide{max-width:100%;}
+  .hchips{gap:8px; margin-top:32px;}
+  .hchip{padding:8px 13px; font-size:.81rem; white-space:normal;}
+  .hstats{gap:10px; margin-top:34px;}
+  .hstat{padding:16px 13px; border-radius:14px;}
+  .hstat b{font-size:1.55rem;}
+  .hstat span{font-size:.76rem;}
+}
+
+/* The confirmation seal on the thanks page hero. */
+.tick-seal{
+  width:66px; height:66px; margin:0 auto 26px; border-radius:50%;
+  background:rgba(58,222,147,.18); border:1px solid rgba(92,232,176,.5);
+  display:grid; place-items:center; color:var(--mint);
+  box-shadow:0 14px 34px -14px rgba(22,165,95,.75);
+}
+.tick-seal svg{width:31px; height:31px;}
+
+/* Emphasis inside body copy on the blue needs to be brighter than the text
+   around it, not the same translucent white. */
+.ondark strong,.ondark .lead b{color:#fff;}
+
 </style>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol><symbol id="i-check-c" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="16 10 11 15 8 12"/></symbol><symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></symbol><symbol id="i-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></symbol><symbol id="i-wallet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></symbol><symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></symbol><symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol><symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol><symbol id="i-award" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5 17 22l-5-3-5 3 1.5-8.5"/></symbol><symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol><symbol id="i-case" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol><symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22 6 12 13 2 6"/></symbol><symbol id="i-mega" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1z"/><path d="M16 8a5 5 0 0 1 0 8"/><path d="M19 5a9 9 0 0 1 0 14"/></symbol><symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol><symbol id="i-laptop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><line x1="2" y1="20" x2="22" y2="20"/></symbol><symbol id="i-car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3v-5l2-5h14l2 5v5h-2"/><circle cx="7.5" cy="17" r="2"/><circle cx="16.5" cy="17" r="2"/><line x1="9.5" y1="17" x2="14.5" y2="17"/></symbol><symbol id="i-screen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></symbol><symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></symbol><symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol><symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol><symbol id="i-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></symbol><symbol id="i-db" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.7-4 3-9 3s-9-1.3-9-3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/></symbol><symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol><symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></symbol><symbol id="i-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol><symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol><symbol id="i-route" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"/><circle cx="18" cy="5" r="3"/><path d="M9 19h4a4 4 0 0 0 4-4V9"/></symbol><symbol id="i-build" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 1 5 5L8.5 22.5 2 24l1.5-6.5z"/><line x1="12" y1="9" x2="18" y2="15"/></symbol></svg>
 
 <header class="hdr">
   <div class="wrap hdr-in">
-    <a class="logo" href="#" data-page="index"><span class="logo-m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="5 12.5 10 17.5 19 7.5"/></svg></span>Savidor<i>HR</i></a>
+    <a class="logo" href="#" data-page="index"><span class="logo-m"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.6 6.9 16.4H17.1Z" fill="none" stroke="#5B6B8C" stroke-width="1.5" stroke-linejoin="round" opacity=".92"/><circle cx="12" cy="6.6" r="2.75" fill="#F5B33F"/><circle cx="6.9" cy="16.4" r="2.75" fill="#16A55F"/><circle cx="17.1" cy="16.4" r="2.75" fill="#2E63D5"/></svg></span><span class="logo-t">Savidor<i>HR</i></span></a>
     <nav class="nav"><div class="nav-item has-mega"><a href="#" data-page="product">Product<svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a><div class="mega"><div class="wrap mega-in"><div class="mega-col mega-col-wide"><h6>How it works</h6><a href="#" data-page="product">How a request moves</a><a href="#" data-page="product">The routing engine</a><a href="#" data-page="product">Roles and permissions</a></div><div class="mega-col mega-col-wide"><h6>Built in</h6><a href="#" data-page="product">Audit trail on every view</a><a href="#" data-page="product">Email and push notification</a><a href="#" data-page="product">Works on the phone in the field</a><a href="#" data-page="product">Break glass administration</a></div><div class="mega-col mega-col-wide"><h6>Getting live</h6><a href="#" data-page="product">Deployment in weeks</a><a href="#" data-page="product">Migration from what you have</a><a href="#" data-page="contact">Talk to an engineer</a></div><a class="mega-feat" href="#" data-page="contact"><span class="mega-tag">Forty minutes</span><b>Bring us your worst process</b><p>The one with the exception everybody works around. We will configure it live on the call, against your own approval chain.</p><span class="mega-go">Book a walkthrough <svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a></div><div class="mega-foot"><div class="wrap"><span>Approval chains are settings, not code. No developer needed to change them.</span><a href="#" data-page="product">How it works <svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div></div></div></div><div class="nav-item has-mega"><a href="#" data-page="modules">Modules<svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a><div class="mega"><div class="wrap mega-in"><div class="mega-col"><h6>Spend and approvals</h6><a href="#" data-page="modules">Requisitions</a><a href="#" data-page="modules">Procurement and vendor quotes</a><a href="#" data-page="modules">Site budgets</a><a href="#" data-page="modules">Implementation tracking</a></div><div class="mega-col"><h6>People</h6><a href="#" data-page="modules">Leave</a><a href="#" data-page="modules">Employee lifecycle</a><a href="#" data-page="modules">Appraisals</a><a href="#" data-page="modules">Attendance and policies</a><a href="#" data-page="modules">Recruitment and job portal</a><a href="#" data-page="modules">Offer letters</a><a href="#" data-page="modules">Staff broadcasts</a></div><div class="mega-col"><h6>Revenue and CRM</h6><a href="#" data-page="modules">CRM and leads</a><a href="#" data-page="modules">Guided calling</a><a href="#" data-page="modules">Deals and pipeline</a><a href="#" data-page="modules">Market demand</a><a href="#" data-page="modules">Revenue outlook</a><a href="#" data-page="modules">Sales activities</a><a href="#" data-page="modules">Sale commissions</a><a href="#" data-page="modules">Client portfolios</a></div><div class="mega-col"><h6>Operations and governance</h6><a href="#" data-page="modules">Work reports</a><a href="#" data-page="modules">Monthly performance</a><a href="#" data-page="modules">IT devices and CUG lines</a><a href="#" data-page="modules">Pool car booking</a><a href="#" data-page="modules">Management meeting</a><a href="#" data-page="modules">Audit log</a><a href="#" data-page="modules">Root console</a><a href="#" data-page="modules">Oversight analytics</a><a href="#" data-page="modules">Social media monitor</a></div><a class="mega-feat" href="#" data-page="crm"><span class="mega-tag">Flagship</span><b>CRM and guided calling</b><p>The queue decides who is called next, the script branches on what they actually said, and no call ends without a dated next step.</p><span class="mega-go">Look inside <svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a></div><div class="mega-foot"><div class="wrap"><span>28 modules, one permission model. Switch on what you need now.</span><a href="#" data-page="modules">Browse all 28 <svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a></div></div></div></div><a href="#" data-page="pricing">Pricing</a><a href="#" data-page="investors">Investors</a></nav>
     <div class="hdr-cta">
       <a class="btn btn-s" href="#" data-page="contact">Contact sales</a>
@@ -1163,7 +1536,7 @@ html,body{max-width:100%;}
     </div>
   </div></div>
 </header>
-<div class="page" id="page-index"><main><section class="hero">
+<div class="page" id="page-index"><main><section class="hero ondark">
   <div class="wrap hero-grid">
     <div>
       <div class="pill"><b>New</b> Procurement and vendor quotes now included in Operations</div>
@@ -1535,7 +1908,7 @@ html,body{max-width:100%;}
   </div>
 </section>
 
-<section class="sec tint">
+<section class="sec band ondark">
   <div class="wrap">
     <div class="sec-head center">
       <span class="eyebrow">The full system</span>
@@ -1576,12 +1949,10 @@ html,body{max-width:100%;}
         <p>Audit log, root console, oversight analytics, social media monitor.</p>
         <p class="tiny" style="margin-top:12px;">4 modules</p>
       </a>
-      <a class="card" href="contact.html" data-page="contact"
-         style="background:var(--ink); border-color:var(--ink);">
-        <div class="ic" style="background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.2);">
-          <svg style="color:#fff"><use href="#i-arrow"/></svg></div>
-        <h3 class="h4" style="color:#fff">Not sure where to start?</h3>
-        <p style="color:rgba(255,255,255,.7)">Tell us how your company approves things today
+      <a class="card card-go" href="contact.html" data-page="contact">
+        <div class="ic"><svg><use href="#i-arrow"/></svg></div>
+        <h3 class="h4">Not sure where to start?</h3>
+        <p>Tell us how your company approves things today
           and we will scope it with you.</p>
       </a>
     </div>
@@ -1647,16 +2018,24 @@ html,body{max-width:100%;}
     </div>
   </div>
 </section></main></div>
-<div class="page" id="page-product" hidden><main><section class="sec-sm" style="padding-top:64px;">
+<div class="page" id="page-product" hidden><main><section class="phero band ondark">
   <div class="wrap">
-    <div class="sec-head" style="margin-bottom:0;">
-      <span class="eyebrow">How it works</span>
-      <h1 class="h1" style="max-width:17ch;">Your approval chain, stored as settings</h1>
-      <p class="lead measure-w" style="margin-top:18px;">
-        Most workflow tools hard code one approval path and make every company bend to it.
-        SavidorHR keeps the chain as data, so you change who signs for what without anyone
-        touching the software.
-      </p>
+    <span class="eyebrow">How it works</span>
+    <h1 class="h1">Your approval chain, stored as settings</h1>
+    <p class="lead measure-w">
+      Most workflow tools hard code one approval path and make every company bend to it.
+      SavidorHR keeps the chain as data, so you change who signs for what without anyone
+      touching the software.
+    </p>
+    <div class="btn-row">
+      <a class="btn btn-p btn-lg" href="contact.html" data-page="contact">Book a demo</a>
+      <a class="btn btn-s btn-lg" href="modules.html" data-page="modules">See all 28 modules</a>
+    </div>
+    <div class="hchips">
+      <span class="hchip"><svg><use href="#i-route"/></svg>Routing per site, category and amount</span>
+      <span class="hchip"><svg><use href="#i-users"/></svg><b>19</b> role permissions</span>
+      <span class="hchip"><svg><use href="#i-eye"/></svg>Views logged, not only changes</span>
+      <span class="hchip"><svg><use href="#i-zap"/></svg>Live in weeks</span>
     </div>
   </div>
 </section>
@@ -1750,7 +2129,7 @@ html,body{max-width:100%;}
   </div>
 </section>
 
-<section class="sec" id="builtin">
+<section class="sec band ondark" id="builtin">
   <div class="wrap">
     <div class="sec-head center">
       <span class="eyebrow">Built in</span>
@@ -1865,17 +2244,27 @@ html,body{max-width:100%;}
     </div>
   </div>
 </section></main></div>
-<div class="page" id="page-modules" hidden><main><section class="sec-sm" style="padding-top:64px;padding-bottom:34px;">
+<div class="page" id="page-modules" hidden><main><section class="phero band ondark">
   <div class="wrap">
-    <div class="sec-head center" style="margin-bottom:0;">
-      <span class="eyebrow">The full system</span>
-      <h1 class="h1" style="max-width:15ch;margin:0 auto;">Twenty eight modules, one permission model</h1>
-      <p class="lead measure-w" style="margin:18px auto 0;">
-        This is not a roadmap. Every module here runs in production today. They are not
-        twenty eight products bolted together either: they share one employee record, one
-        approval engine and one audit trail, which is why switching another one on takes
-        an afternoon rather than a migration.
-      </p>
+    <span class="eyebrow">The full system</span>
+    <h1 class="h1 wide">Twenty eight modules, one permission model</h1>
+    <p class="lead measure-w">
+      This is not a roadmap. Every module here runs in production today. They are not
+      twenty eight products bolted together either: they share one employee record, one
+      approval engine and one audit trail, which is why switching another one on takes
+      an afternoon rather than a migration.
+    </p>
+    <div class="btn-row">
+      <a class="btn btn-p btn-lg" href="contact.html" data-page="contact">Book a demo</a>
+      <a class="btn btn-s btn-lg" href="pricing.html" data-page="pricing">See what is in each tier</a>
+    </div>
+    <!-- Counted from the catalogue in build.py, never typed. -->
+    <div class="hchips">
+      <span class="hchip"><svg><use href="#i-wallet"/></svg>Spend and approvals <b>4</b></span>
+      <span class="hchip"><svg><use href="#i-users"/></svg>People <b>7</b></span>
+      <span class="hchip"><svg><use href="#i-target"/></svg>Revenue <b>8</b></span>
+      <span class="hchip"><svg><use href="#i-layers"/></svg>Operations <b>5</b></span>
+      <span class="hchip"><svg><use href="#i-shield"/></svg>Governance <b>4</b></span>
     </div>
   </div>
 </section>
@@ -2004,21 +2393,25 @@ html,body{max-width:100%;}
     </div>
   </div>
 </section></main></div>
-<div class="page" id="page-crm" hidden><main><section class="sec-sm" style="padding-top:64px;">
+<div class="page" id="page-crm" hidden><main><section class="phero band ondark">
   <div class="wrap">
-    <div class="sec-head" style="margin-bottom:40px;">
-      <span class="eyebrow">The CRM</span>
-      <h1 class="h1" style="max-width:19ch;">Every lead is called, and every call is recorded as a decision</h1>
-      <p class="lead measure-w" style="margin-top:18px;">
-        Most CRMs are a filing cabinet. Your team logs what already happened and the
-        pipeline slowly fills with leads nobody has rung in four months. This one runs the
-        other way round: it decides who gets called next, walks the caller through the
-        conversation, and refuses to let a call end without a dated next step.
-      </p>
-      <div class="btn-row" style="margin-top:28px;">
-        <a class="btn btn-p btn-lg" href="contact.html" data-page="contact">Book a walkthrough</a>
-        <a class="btn btn-s btn-lg" href="modules.html" data-page="modules">See all modules</a>
-      </div>
+    <span class="eyebrow">The CRM</span>
+    <h1 class="h1 wide">Every lead is called, and every call is recorded as a decision</h1>
+    <p class="lead measure-w">
+      Most CRMs are a filing cabinet. Your team logs what already happened and the
+      pipeline slowly fills with leads nobody has rung in four months. This one runs the
+      other way round: it decides who gets called next, walks the caller through the
+      conversation, and refuses to let a call end without a dated next step.
+    </p>
+    <div class="btn-row">
+      <a class="btn btn-p btn-lg" href="contact.html" data-page="contact">Book a walkthrough</a>
+      <a class="btn btn-s btn-lg" href="modules.html" data-page="modules">See all modules</a>
+    </div>
+    <div class="hchips">
+      <span class="hchip"><svg><use href="#i-mega"/></svg>One lead at a time</span>
+      <span class="hchip"><svg><use href="#i-route"/></svg>Every outcome sets a date</span>
+      <span class="hchip"><svg><use href="#i-chart"/></svg>Signed money apart from forecast</span>
+      <span class="hchip"><svg><use href="#i-target"/></svg>Unmet demand counted</span>
     </div>
   </div>
 </section>
@@ -2134,7 +2527,7 @@ html,body{max-width:100%;}
   </div>
 </section>
 
-<section class="sec tint">
+<section class="sec band ondark">
   <div class="wrap">
     <div class="sec-head center">
       <span class="eyebrow">Market intelligence</span>
@@ -2339,22 +2732,30 @@ html,body{max-width:100%;}
     </div>
   </div>
 </section></main></div>
-<div class="page" id="page-pricing" hidden><main><section class="sec-sm" style="padding-top:64px;">
+<div class="page" id="page-pricing" hidden><main><section class="phero band ondark">
   <div class="wrap">
-    <div class="sec-head center" style="margin-bottom:44px;">
-      <span class="eyebrow">Pricing</span>
-      <h1 class="h1" style="max-width:17ch;margin:0 auto;">Priced on what you switch on</h1>
-      <p class="lead measure-w" style="margin:18px auto 0;">
-        Two things set the number: how many people use it, and which modules you turn on.
-        Tell us both and we will send a written quote and a deployment date, usually within
-        one working day. No per seat surprises and no charge for the modules you leave off.
-      </p>
-      <div class="btn-row" style="justify-content:center;margin-top:28px;">
-        <a class="btn btn-p btn-lg" href="contact.html" data-page="contact">Get a quote</a>
-        <a class="btn btn-s btn-lg" href="modules.html" data-page="modules">See all 28 modules</a>
-      </div>
+    <span class="eyebrow">Pricing</span>
+    <h1 class="h1">Priced on what you switch on</h1>
+    <p class="lead measure-w">
+      Two things set the number: how many people use it, and which modules you turn on.
+      Tell us both and we will send a written quote and a deployment date, usually within
+      one working day. No per seat surprises and no charge for the modules you leave off.
+    </p>
+    <div class="btn-row">
+      <a class="btn btn-p btn-lg" href="contact.html" data-page="contact">Get a quote</a>
+      <a class="btn btn-s btn-lg" href="modules.html" data-page="modules">See all 28 modules</a>
     </div>
+    <div class="hchips">
+      <span class="hchip"><svg><use href="#i-users"/></svg>Priced by headcount</span>
+      <span class="hchip"><svg><use href="#i-layers"/></svg>Pay for the modules you switch on</span>
+      <span class="hchip"><svg><use href="#i-clock"/></svg>Written quote in one working day</span>
+      <span class="hchip"><svg><use href="#i-check-c"/></svg>Setup fee, then an annual licence</span>
+    </div>
+  </div>
+</section>
 
+<section class="sec-sm" style="padding-top:64px;">
+  <div class="wrap">
     <div class="tiers t4">
       <div class="tier">
         <h3>Core</h3>
@@ -2497,33 +2898,33 @@ html,body{max-width:100%;}
     </div>
   </div>
 </section></main></div>
-<div class="page" id="page-investors" hidden><main><section class="sec-sm" style="padding-top:64px;">
+<div class="page" id="page-investors" hidden><main><section class="phero band ondark">
   <div class="wrap">
-    <div class="sec-head" style="margin-bottom:0;">
-      <span class="eyebrow">Investor overview</span>
-      <h1 class="h1" style="max-width:15ch;">A working product, not a deck</h1>
-      <p class="lead measure-w" style="margin-top:18px;">
-        SavidorHR is in daily production use across a multi arm property and automobile
-        group. Twenty eight modules, nineteen role permissions and 187 screens are shipped
-        and in use, not planned.
-      </p>
-      <div class="btn-row" style="margin-top:28px;">
-        <a class="btn btn-p btn-lg" href="mailto:invest@savidorhr.com">Request the deck</a>
-        <a class="btn btn-s btn-lg" href="product.html" data-page="product">See the product</a>
-      </div>
+    <span class="eyebrow">Investor overview</span>
+    <h1 class="h1">A working product, not a deck</h1>
+    <p class="lead measure-w">
+      SavidorHR is in daily production use across a multi arm property and automobile
+      group. Twenty eight modules, nineteen role permissions and 187 screens are shipped
+      and in use, not planned.
+    </p>
+    <div class="btn-row">
+      <a class="btn btn-p btn-lg" href="mailto:invest@savidorhr.com">Request the deck</a>
+      <a class="btn btn-s btn-lg" href="product.html" data-page="product">See the product</a>
+    </div>
+    <!-- The traction figures lead the page rather than sitting under it. How
+         each one is counted is stated immediately below, on white. -->
+    <div class="hstats">
+      <div class="hstat"><b>&#8358;2bn+</b><span>Value routed to date</span></div>
+      <div class="hstat"><b>45</b><span>Staff on the platform</span></div>
+      <div class="hstat"><b>1</b><span>Company live in production</span></div>
+      <div class="hstat"><b>&#8358;50m</b><span>Currently raising</span></div>
     </div>
   </div>
 </section>
 
 <section class="sec-sm">
   <div class="wrap">
-    <div class="slots">
-      <div class="slot filled"><b>&#8358;2bn+</b><span>Value routed to date</span></div>
-      <div class="slot filled"><b>45</b><span>Staff on the platform</span></div>
-      <div class="slot filled"><b>1</b><span>Company live in production</span></div>
-      <div class="slot filled"><b>&#8358;50m</b><span>Currently raising</span></div>
-    </div>
-    <p class="tiny" style="margin-top:18px;max-width:78ch;">
+    <p class="tiny" style="max-width:78ch;">
       <b style="color:var(--ink);">How these are counted.</b>
       Value routed is the total naira value of requisitions and payments that have passed
       through an approval chain in the system to date. Staff on the platform counts people
@@ -2689,19 +3090,30 @@ html,body{max-width:100%;}
     </div>
   </div>
 </section></main></div>
-<div class="page" id="page-contact" hidden><main><section class="sec-sm" style="padding-top:64px;">
+<div class="page" id="page-contact" hidden><main><section class="phero band ondark">
+  <div class="wrap">
+    <span class="eyebrow">Book a demo</span>
+    <h1 class="h1">Forty minutes, on your own process</h1>
+    <p class="lead measure-w">
+      We do not run a recorded demo. Bring the approval process that causes you the most
+      trouble and we will configure it live, then you can decide whether it is worth
+      continuing.
+    </p>
+    <div class="hchips">
+      <span class="hchip"><svg><use href="#i-clock"/></svg>Forty minutes</span>
+      <span class="hchip"><svg><use href="#i-build"/></svg>Configured live on the call</span>
+      <span class="hchip"><svg><use href="#i-mail"/></svg>We reply within one working day</span>
+    </div>
+  </div>
+</section>
+
+<section class="sec-sm" style="padding-top:64px;">
   <div class="wrap">
     <div class="feat" style="align-items:start;">
       <div class="feat-t">
-        <span class="eyebrow">Book a demo</span>
-        <h1 class="h1" style="max-width:14ch;">Forty minutes, on your own process</h1>
-        <p class="lead" style="margin-top:18px;">
-          We do not run a recorded demo. Bring the approval process that causes you the most
-          trouble and we will configure it live, then you can decide whether it is worth
-          continuing.
-        </p>
+        <h2 class="h3" style="margin-bottom:18px;">What to expect</h2>
 
-        <ul class="ticks" style="margin-top:28px;">
+        <ul class="ticks" style="margin-top:0;">
           <li><svg><use href="#i-check-c"/></svg><span><b>No preparation needed.</b>
             Bring the process in your head. We will write it down on the call.</span></li>
           <li><svg><use href="#i-check-c"/></svg><span><b>A firm number, not a range.</b>
@@ -2865,7 +3277,7 @@ html,body{max-width:100%;}
   <div class="wrap">
     <div class="ftr-grid">
       <div class="ftr-about">
-        <a class="logo" href="#"><span class="logo-m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="5 12.5 10 17.5 19 7.5"/></svg></span>Savidor<i>HR</i></a>
+        <a class="logo" href="#"><span class="logo-m"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.6 6.9 16.4H17.1Z" fill="none" stroke="#5B6B8C" stroke-width="1.5" stroke-linejoin="round" opacity=".92"/><circle cx="12" cy="6.6" r="2.75" fill="#F5B33F"/><circle cx="6.9" cy="16.4" r="2.75" fill="#16A55F"/><circle cx="17.1" cy="16.4" r="2.75" fill="#2E63D5"/></svg></span><span class="logo-t">Savidor<i>HR</i></span></a>
         <p>Workforce and approval infrastructure for African enterprise. Built in Lagos.</p>
       </div>
       <div><h5>Product</h5><ul><li><a href="#" data-page="product">How it works</a></li><li><a href="#" data-page="modules">All 28 modules</a></li><li><a href="#" data-page="crm">CRM and calling</a></li><li><a href="#" data-page="pricing">Pricing</a></li></ul></div>
