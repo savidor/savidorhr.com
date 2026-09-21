@@ -1463,76 +1463,171 @@ html,body{max-width:100%;}
   background:rgba(255,255,255,.2); box-shadow:none;
 }
 .ondark .cards .card.card-go .ic svg{color:#fff;}
-.ins-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+.ins-tag{
+  display:inline-block; font-size:.7rem; font-weight:700; letter-spacing:.07em;
+  text-transform:uppercase; color:var(--brand); background:var(--brand-50);
+  border:1px solid var(--brand-100); padding:4px 10px; border-radius:99px;
+}
+.ondark .ins-tag{background:rgba(255,255,255,.16); border-color:rgba(255,255,255,.22);
+  color:#fff;}
+.ins-card-in .ins-tag,.share .ins-tag{align-self:flex-start;}
+.ins-meta .ins-tag{align-self:auto;}
+.ins-meta{
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap; align-self:flex-start;
+  font-size:.84rem; color:var(--ink-3); font-weight:500;
+}
+.ins-meta i{width:3px; height:3px; border-radius:50%; background:var(--line-2);
+  display:block;}
+.ondark .ins-meta{color:rgba(255,255,255,.76);}
+.ondark .ins-meta i{background:rgba(255,255,255,.4);}
+.ins-lead{
+  display:grid; grid-template-columns:1.05fr .95fr; gap:44px; align-items:center;
+  background:#fff; border:1px solid var(--line); border-radius:26px;
+  padding:26px; box-shadow:var(--sh-sm);
+  transition:box-shadow .25s, transform .25s, border-color .2s;
+}
+.ins-lead:hover{box-shadow:var(--sh-xl); transform:translateY(-3px);
+  border-color:var(--line-2);}
+.ins-lead-ph{display:block; border-radius:18px;}
+.ins-lead-ph img{aspect-ratio:16/10; object-fit:cover; width:100%;}
+.ins-lead-in{display:block;}
+.ins-lead-in .h2{display:block; font-size:clamp(1.5rem,2.4vw,2.05rem);
+  margin:14px 0 14px;}
+.ins-lead-in .lead{margin-bottom:18px;}
+.ins-flag{
+  display:inline-block; margin-right:8px; font-size:.7rem; font-weight:800;
+  letter-spacing:.08em; text-transform:uppercase; color:#06371F;
+  background:var(--mint); padding:4px 10px; border-radius:99px;
+}
+@media (max-width:940px){
+  .ins-lead{grid-template-columns:1fr; gap:22px; padding:18px;}
+}
+.ins-filter{margin-bottom:34px;}
+.ins-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
 @media (max-width:940px){ .ins-grid{grid-template-columns:repeat(2,1fr);} }
 @media (max-width:640px){ .ins-grid{grid-template-columns:1fr;} }
 .ins-card{
   display:flex; flex-direction:column; background:#fff;
-  border:1px solid var(--line); border-radius:18px; padding:26px;
+  border:1px solid var(--line); border-radius:20px; overflow:hidden;
   box-shadow:var(--sh-sm);
-  transition:box-shadow .2s, transform .2s, border-color .2s;
+  transition:box-shadow .22s, transform .22s, border-color .2s;
 }
-.ins-card:hover{box-shadow:var(--sh-lg); transform:translateY(-3px);
+.ins-card:hover{box-shadow:var(--sh-lg); transform:translateY(-4px);
   border-color:var(--line-2);}
-.ins-card .h4{margin:10px 0 10px;}
-.ins-card p{font-size:.95rem; color:var(--ink-2); flex:1;}
-.ins-date{
-  font-size:.76rem; font-weight:700; letter-spacing:.06em;
-  text-transform:uppercase; color:var(--ink-4);
-}
+.ins-cover{display:block; overflow:hidden; background:var(--bg-3);}
+.ins-cover img{aspect-ratio:16/10; object-fit:cover; width:100%;
+  transition:transform .6s cubic-bezier(.22,.7,.28,1);}
+.ins-card:hover .ins-cover img{transform:scale(1.05);}
+.ins-card-in{display:flex; flex-direction:column; flex:1; padding:22px;}
+.ins-card .h4{display:block; margin:12px 0 10px;}
+.ins-card p{font-size:.94rem; color:var(--ink-2); flex:1; margin-bottom:16px;}
+.ins-card.hide{display:none;}
+.ins-empty{text-align:center; color:var(--ink-3); padding:40px 0;}
 .ins-read{
-  display:inline-flex; align-items:center; gap:7px; margin-top:18px;
-  font-size:.9rem; font-weight:600; color:var(--brand);
+  display:inline-flex; align-items:center; gap:7px;
+  font-size:.92rem; font-weight:600; color:var(--brand);
 }
 .ins-read .ar{width:15px; height:15px; transition:transform .2s;}
-.ins-card:hover .ins-read .ar{transform:translateX(4px);}
-.crumbs{font-size:.86rem; color:var(--ink-3); margin-bottom:26px;}
-.crumbs a{color:var(--ink-2); font-weight:500;}
+.ins-lead:hover .ins-read .ar{transform:translateX(4px);}
+.ins-hero{padding:70px 0 62px; text-align:left;}
+.ins-hero .h1{max-width:22ch; margin:12px 0 18px;}
+.ins-hero .lead{margin-bottom:22px;}
+@media (max-width:640px){ .ins-hero{padding:48px 0 44px;} }
+.crumbs{font-size:.86rem; color:var(--ink-3); margin-bottom:18px;}
+.ondark .crumbs{color:rgba(255,255,255,.7);}
+.crumbs a{font-weight:500;}
+.ondark .crumbs a{color:rgba(255,255,255,.88);}
 .crumbs a:hover{color:var(--brand);}
+.ondark .crumbs a:hover{color:var(--mint);}
 .crumbs span{margin:0 6px; color:var(--ink-4);}
-.ins-article .h1{margin:10px 0 18px; max-width:20ch;}
-.ins-article .lead{margin-bottom:8px;}
-.ins-body{max-width:68ch; margin-top:38px;}
-.ins-body h2{
-  font-family:var(--f-d); font-size:1.5rem; font-weight:800;
-  letter-spacing:-.022em; margin:44px 0 14px; color:var(--ink);
+.ondark .crumbs span{color:rgba(255,255,255,.5);}
+.crumbs .here{margin:0; color:inherit;}
+.ins-layout{display:grid; grid-template-columns:232px minmax(0,1fr); gap:56px;
+  align-items:start;}
+@media (max-width:1000px){ .ins-layout{grid-template-columns:1fr; gap:30px;} }
+.ins-layout > *{min-width:0;}
+.toc{position:sticky; top:96px;}
+@media (max-width:1000px){ .toc{position:static;} }
+.toc-t{font-size:.72rem; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--ink-4); margin-bottom:12px;}
+.toc-list{display:flex; flex-direction:column; border-left:2px solid var(--line);}
+.toc-list a{
+  padding:8px 0 8px 14px; margin-left:-2px; font-size:.9rem; line-height:1.4;
+  color:var(--ink-3); border-left:2px solid transparent;
+  transition:color .18s, border-color .18s;
 }
+.toc-list a:hover{color:var(--ink);}
+.toc-list a.on{color:var(--brand); font-weight:600; border-left-color:var(--brand);}
+.ins-body{max-width:70ch;}
+.ins-body h2{
+  font-family:var(--f-d); font-size:1.55rem; font-weight:800;
+  letter-spacing:-.024em; margin:46px 0 14px; color:var(--ink);
+  scroll-margin-top:100px;
+}
+.ins-body h2:first-child{margin-top:0;}
 .ins-body h3{
   font-family:var(--f-d); font-size:1.14rem; font-weight:700;
   letter-spacing:-.016em; margin:32px 0 10px; color:var(--ink);
 }
-.ins-body p{margin-bottom:18px; color:var(--ink-2); font-size:1.04rem;
-  line-height:1.72;}
+.ins-body p{margin-bottom:19px; color:var(--ink-2); font-size:1.06rem;
+  line-height:1.74;}
 .ins-body strong{color:var(--ink); font-weight:600;}
-.ins-body ul,.ins-body ol{margin:0 0 20px; padding-left:22px;
-  color:var(--ink-2); font-size:1.04rem; line-height:1.72;}
-.ins-body li{margin-bottom:9px;}
-.ins-body li::marker{color:var(--brand);}
+.ins-body em{font-style:italic;}
+.ins-body ul,.ins-body ol{margin:0 0 22px; padding-left:22px;
+  color:var(--ink-2); font-size:1.06rem; line-height:1.74;}
+.ins-body li{margin-bottom:10px;}
+.ins-body li::marker{color:var(--brand); font-weight:700;}
 .ins-body a{color:var(--brand); font-weight:600; text-decoration:underline;
-  text-underline-offset:2px;}
+  text-underline-offset:3px; text-decoration-thickness:1.5px;}
 .ins-body a:hover{color:var(--brand-700);}
 .ins-body blockquote{
-  margin:28px 0; padding:18px 24px; border-left:3px solid var(--brand);
-  background:var(--brand-50); border-radius:0 var(--r) var(--r) 0;
+  margin:32px 0; padding:22px 26px; border-radius:0 18px 18px 0;
+  border-left:3px solid var(--accent); background:var(--ok-bg);
 }
-.ins-body blockquote p{margin:0; color:var(--ink); font-weight:500;}
+.ins-body blockquote p{margin:0; color:var(--ink); font-weight:500;
+  font-size:1.08rem;}
 .ins-cta{
-  max-width:68ch; margin-top:48px; padding:32px;
-  border:1px solid var(--line); border-radius:20px; background:var(--bg-2);
+  margin-top:52px; padding:34px; border-radius:22px;
+  background:var(--dots) 0 0/30px 30px, var(--glow),
+    linear-gradient(140deg,var(--blue-lt) 0%,var(--brand) 42%,var(--navy) 100%);
+  box-shadow:0 26px 60px -26px rgba(15,27,97,.55);
 }
-.ins-cta .h3{margin-bottom:8px;}
-.ins-cta p{color:var(--ink-2); margin-bottom:20px;}
+.ins-cta .h3{color:#fff; margin-bottom:8px;}
+.ins-cta p{color:rgba(255,255,255,.88); margin-bottom:22px; font-size:1rem;}
+.share{display:flex; flex-direction:column; align-items:flex-start; gap:9px;
+  margin-top:34px; padding-top:26px; border-top:1px solid var(--line);}
+.share-l{font-size:.72rem; font-weight:700; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--ink-4);}
+.share-b{
+  display:inline-flex; align-items:center; gap:9px; width:100%;
+  padding:9px 13px; border-radius:10px; cursor:pointer;
+  border:1px solid var(--line); background:#fff; font-family:var(--f);
+  font-size:.88rem; font-weight:600; color:var(--ink-2);
+  transition:background .16s, border-color .16s, color .16s, transform .16s;
+}
+.share-b svg{width:16px; height:16px; flex:0 0 auto;}
+.share-b:hover{transform:translateY(-1px); border-color:var(--line-2);}
+.share-b.wa:hover{background:#25D366; border-color:#25D366; color:#fff;}
+.share-b.li:hover{background:#0A66C2; border-color:#0A66C2; color:#fff;}
+.share-b.x:hover{background:#111; border-color:#111; color:#fff;}
+.share-b.copy.done{background:var(--ok-bg); border-color:var(--ok-line);
+  color:var(--ok);}
+@media (max-width:1000px){
+  .share{flex-direction:row; align-items:center; flex-wrap:wrap;}
+  .share-b{width:auto;}
+}
 .ins-more{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
 @media (max-width:940px){ .ins-more{grid-template-columns:1fr;} }
 .ins-more-item{
   display:block; background:#fff; border:1px solid var(--line);
-  border-radius:16px; padding:22px; box-shadow:var(--sh-sm);
+  border-radius:18px; padding:22px; box-shadow:var(--sh-sm);
   transition:box-shadow .2s, transform .2s;
 }
-.ins-more-item:hover{box-shadow:var(--sh-lg); transform:translateY(-2px);}
-.ins-more-item b{display:block; margin:8px 0 6px; font-family:var(--f-d);
-  font-size:1rem; font-weight:700; color:var(--ink); line-height:1.35;}
-.ins-more-item p{font-size:.9rem; color:var(--ink-2); line-height:1.55;}
+.ins-more-item:hover{box-shadow:var(--sh-lg); transform:translateY(-3px);}
+.ins-more-item b{display:block; margin:10px 0 7px; font-family:var(--f-d);
+  font-size:1.02rem; font-weight:700; color:var(--ink); line-height:1.35;}
+.ins-more-item p{font-size:.9rem; color:var(--ink-2); line-height:1.58;
+  margin-bottom:12px;}
 
 </style>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol><symbol id="i-check-c" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="16 10 11 15 8 12"/></symbol><symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></symbol><symbol id="i-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></symbol><symbol id="i-wallet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></symbol><symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></symbol><symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol><symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol><symbol id="i-award" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5 17 22l-5-3-5 3 1.5-8.5"/></symbol><symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol><symbol id="i-case" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol><symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22 6 12 13 2 6"/></symbol><symbol id="i-mega" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1z"/><path d="M16 8a5 5 0 0 1 0 8"/><path d="M19 5a9 9 0 0 1 0 14"/></symbol><symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol><symbol id="i-laptop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><line x1="2" y1="20" x2="22" y2="20"/></symbol><symbol id="i-car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3v-5l2-5h14l2 5v5h-2"/><circle cx="7.5" cy="17" r="2"/><circle cx="16.5" cy="17" r="2"/><line x1="9.5" y1="17" x2="14.5" y2="17"/></symbol><symbol id="i-screen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></symbol><symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></symbol><symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol><symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol><symbol id="i-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></symbol><symbol id="i-db" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.7-4 3-9 3s-9-1.3-9-3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/></symbol><symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol><symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></symbol><symbol id="i-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol><symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol><symbol id="i-route" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"/><circle cx="18" cy="5" r="3"/><path d="M9 19h4a4 4 0 0 0 4-4V9"/></symbol><symbol id="i-build" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 1 5 5L8.5 22.5 2 24l1.5-6.5z"/><line x1="12" y1="9" x2="18" y2="15"/></symbol></svg>
@@ -3365,7 +3460,7 @@ html,body{max-width:100%;}
     </div>
   </div>
 </section></main></div>
-<div class="page" id="page-insights" hidden><main><section class="phero band ondark navy-ph">
+<div class="page" id="page-insights" hidden><main><section class="phero band ondark navy-ph ins-top">
   <img class="ph navy-bg" src="site/img/talking-1400.11a450c2ca.webp" srcset="site/img/talking-600.324b6a8d28.webp 600w, site/img/talking-900.efec2ae937.webp 900w, site/img/talking-1400.11a450c2ca.webp 1400w" sizes="100vw" width="1400" height="788" alt="Colleagues talking in the break area of a Lagos office" fetchpriority="high" decoding="async" style="background-image:url(data:image/webp;base64,UklGRowAAABXRUJQVlA4IIAAAACwAwCdASoUAAwAPyF4s1GtJySisAgBoCQJYwDE2BDYDCIsJYukAAD+j697B4Lw2Obh5x19Kbna3iwaNpce0scfaXjY9uI9xSvQCEn0LvKkjQQZuGKzKeSG8PtQn8TaAcYxuZ56r+sA+SW5/jlRoI28ACipOr5PQxdCo6imXsAAAA==)"><i class="navy-scrim" aria-hidden="true"></i>
   <div class="wrap rise">
     <span class="eyebrow">News and insights</span>
@@ -3378,9 +3473,47 @@ html,body{max-width:100%;}
   </div>
 </section>
 
-<section class="sec">
+<section class="sec-sm">
   <div class="wrap">
-    <div class="ins-grid"><a class="ins-card" href="insights/choosing-hr-software-nigeria.html"><span class="ins-date">16 September 2026</span><h2 class="h4">What to ask before you buy HR software in Nigeria</h2><p>The demo will look fine. These are the questions that decide whether the thing is still in use a year later.</p><span class="ins-read">Read it<svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a><a class="ins-card" href="insights/approval-chain-that-does-not-stall.html"><span class="ins-date">8 September 2026</span><h2 class="h4">How to design an approval chain that does not stall</h2><p>Most approval processes are not badly designed. They are undocumented, and they stop the first week somebody travels.</p><span class="ins-read">Read it<svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a><a class="ins-card" href="insights/staff-leave-management-nigeria.html"><span class="ins-date">26 August 2026</span><h2 class="h4">Staff leave management in Nigeria, and what usually breaks</h2><p>Leave is the first HR process a growing company outgrows, and the spreadsheet rarely survives the second year.</p><span class="ins-read">Read it<svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a></div>
+    <a class="ins-lead" href="site/insights/choosing-hr-software-nigeria.html">
+      <span class="ins-lead-ph ph-frame wash">
+        <img class="ph" src="site/img/huddle-1000.9ce09f3dde.webp" srcset="site/img/huddle-640.d19c346581.webp 640w, site/img/huddle-1000.9ce09f3dde.webp 1000w" sizes="(max-width:940px) 94vw, 620px" width="1000" height="667" alt="" loading="lazy" decoding="async" style="background-image:url(data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAADwAwCdASoUAA4APyF4s1GtJySisAgBoCQJZACdAdwAo39rThEgB9IAAP7qkdk0hq8RIN6AM/aLzOBSmbKppuJllPxi2bIPgybKLK/HVJqTOuv3T8yWQjrpEf9iZAfrdsn3TxtnDhivLdoizRu1KimO4tAAAA==)">
+      </span>
+      <span class="ins-lead-in">
+        <span class="ins-flag">Latest</span>
+        <span class="ins-tag">Buying guide</span>
+        <span class="h2">What to ask before you buy HR software in Nigeria</span>
+        <p class="lead">The demo will look fine. These are the questions that decide whether the thing is still in use a year later.</p>
+        <span class="ins-meta">16 September 2026<i></i>
+          3 min read</span>
+        <span class="ins-read">Read it<svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+      </span>
+    </a>
+  </div>
+</section>
+
+<section class="sec" id="allWriting">
+  <div class="wrap">
+    <div class="fam-bar center-bar ins-filter"><button class="chip on" data-topic="all">All writing</button><button class="chip" data-topic="buying-guide">Buying guide</button><button class="chip" data-topic="approvals">Approvals</button><button class="chip" data-topic="people">People</button></div>
+    <div class="ins-grid"><a class="ins-card" href="site/insights/approval-chain-that-does-not-stall.html" data-topic="approvals"><span class="ins-cover"><img class="ph" src="site/img/boardroom-1600.863f2d59f4.webp" srcset="site/img/boardroom-700.dc1fe49c6b.webp 700w, site/img/boardroom-1100.7a5732ef44.webp 1100w, site/img/boardroom-1600.863f2d59f4.webp 1600w" sizes="(max-width:940px) 92vw, 380px" width="1600" height="900" alt="" loading="lazy" decoding="async" style="background-image:url(data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAABQBACdASoUAAwAPyF4s1GtJySisAgBoCQJYgC7AYvWoadBsTksKMXLdIOAAP5kqxEos7KeFW+JbCg3qoohHtNtM5jyARiAFlonViDAoKH1sM+uf8Gz5dV/aQKR7WeZXNqHzx9mM5ILq7fhm4Q/ohwx8KI9/NNSZD1Q2oAA)"></span><span class="ins-card-in"><span class="ins-tag">Approvals</span><span class="h4">How to design an approval chain that does not stall</span><p>Most approval processes are not badly designed. They are undocumented, and they stop the first week somebody travels.</p><span class="ins-meta">8 September 2026<i></i>3 min read</span></span></a><a class="ins-card" href="site/insights/staff-leave-management-nigeria.html" data-topic="people"><span class="ins-cover"><img class="ph" src="site/img/reviewing-1000.b4b910befe.webp" srcset="site/img/reviewing-640.a31b99b763.webp 640w, site/img/reviewing-1000.b4b910befe.webp 1000w" sizes="(max-width:940px) 92vw, 380px" width="1000" height="667" alt="" loading="lazy" decoding="async" style="background-image:url(data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAADQAwCdASoUAA4APyF4s1GtJySisAgBoCQJZQCw7B6RCB0B/9IS6lAA/gJ+uIlJLNDfC4BX4YG/X6PYba0mPPUfWHs7D54C+WHSyK2tR7W1Rh8+O9Fpl0jvOix+UdcQs2r2ALIAAAA=)"></span><span class="ins-card-in"><span class="ins-tag">People</span><span class="h4">Staff leave management in Nigeria, and what usually breaks</span><p>Leave is the first HR process a growing company outgrows, and the spreadsheet rarely survives the second year.</p><span class="ins-meta">26 August 2026<i></i>3 min read</span></span></a></div>
+    <p class="ins-empty" hidden>Nothing filed under that yet. Pick another topic.</p>
+  </div>
+</section>
+
+<section class="sec-sm">
+  <div class="wrap">
+    <div class="cta cta-ph reveal">
+      <img class="ph" src="site/img/desk-night-1600.36be0cf877.webp" srcset="site/img/desk-night-700.e6f190c6a8.webp 700w, site/img/desk-night-1100.58d1534989.webp 1100w, site/img/desk-night-1600.36be0cf877.webp 1600w" sizes="(max-width:940px) 100vw, 660px" width="1600" height="900" alt="" loading="lazy" decoding="async" style="background-image:url(data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAABQAwCdASoUAAwAPyF6s1GtJ6SisAgBoCQJQBOgAf5wVMaEDAD+Figtde9CCD7qHZwuw6OknwK0vvuWIy3vgvj5aRJOFqedpzyXv8FK/o5/SRDLmIAAAA==)">
+      <div class="cta-in">
+        <h2 class="h2">Bring us your worst process</h2>
+        <p>Reading about approval chains is one thing. Watching yours get
+          configured live on a call is another.</p>
+        <div class="btn-row">
+          <a class="btn btn-w btn-lg" href="contact.html">Book a demo</a>
+          <a class="btn btn-o btn-lg" href="modules.html">See all 28 modules</a>
+        </div>
+      </div>
+    </div>
   </div>
 </section></main></div>
 
@@ -3677,6 +3810,85 @@ html,body{max-width:100%;}
     tilt.addEventListener("mouseleave", function(){
       tilt.classList.remove("live-tilt");
       inner.style.transform = "";
+    });
+  }
+
+  /* ── Insights: filter by topic ──────────────────────────────────────
+     Hidden with a class rather than an inline style so the grid keeps its
+     transition, and the empty state says something useful rather than
+     leaving a blank column. */
+  var topicChips = document.querySelectorAll(".ins-filter .chip[data-topic]");
+  if(topicChips.length){
+    var insCards = document.querySelectorAll(".ins-card[data-topic]");
+    var insEmpty = document.querySelector(".ins-empty");
+    topicChips.forEach(function(c){
+      c.addEventListener("click", function(){
+        var t = c.getAttribute("data-topic");
+        topicChips.forEach(function(x){ x.classList.toggle("on", x === c); });
+        var shown = 0;
+        insCards.forEach(function(card){
+          var hit = (t === "all" || card.getAttribute("data-topic") === t);
+          card.classList.toggle("hide", !hit);
+          if(hit) shown++;
+        });
+        if(insEmpty) insEmpty.hidden = shown > 0;
+      });
+    });
+  }
+
+  /* ── Insights: the contents rail follows the reader ─────────────────
+     Marks the section you are actually in, not merely the last link you
+     clicked. The top bias means a heading counts as current once it is near
+     the top of the viewport rather than when it first appears at the
+     bottom, which is what makes it feel like it is tracking you. */
+  var spy = document.querySelectorAll(".toc-list a[data-spy]");
+  if(spy.length && "IntersectionObserver" in window){
+    var heads = [];
+    spy.forEach(function(a){
+      var h = document.getElementById(a.getAttribute("data-spy"));
+      if(h) heads.push(h);
+    });
+    var current = null;
+    var sio2 = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting) current = e.target.id;
+      });
+      /* Nothing intersecting the band means we are between headings, so the
+         last one seen stays lit rather than the rail going blank. */
+      spy.forEach(function(a){
+        a.classList.toggle("on", a.getAttribute("data-spy") === current);
+      });
+    }, {rootMargin: "-88px 0px -68% 0px", threshold: 0});
+    heads.forEach(function(h){ sio2.observe(h); });
+  }
+
+  /* ── Insights: copy the link ────────────────────────────────────────
+     Falls back to a hidden input and execCommand where the clipboard API is
+     unavailable, which on a phone browser served over anything but https is
+     still common enough to matter. */
+  var copyBtn = document.querySelector(".share-b.copy");
+  if(copyBtn){
+    copyBtn.addEventListener("click", function(){
+      var url = copyBtn.getAttribute("data-copy");
+      var label = copyBtn.querySelector("span");
+      var done = function(){
+        copyBtn.classList.add("done");
+        if(label) label.textContent = "Link copied";
+        setTimeout(function(){
+          copyBtn.classList.remove("done");
+          if(label) label.textContent = "Copy link";
+        }, 2200);
+      };
+      if(navigator.clipboard && window.isSecureContext){
+        navigator.clipboard.writeText(url).then(done, function(){});
+      } else {
+        var t = document.createElement("textarea");
+        t.value = url; t.setAttribute("readonly", "");
+        t.style.position = "absolute"; t.style.left = "-9999px";
+        document.body.appendChild(t); t.select();
+        try { document.execCommand("copy"); done(); } catch(e){}
+        document.body.removeChild(t);
+      }
     });
   }
 })();

@@ -223,9 +223,22 @@ that reason.
 ## News and insights
 
 Articles are fragments in `src/insights/`, with the same header as a page plus
-`date`, `heading` and `summary`. `build.py` renders each to
+`date`, `heading`, `summary`, `topic` and `cover`. The topic drives the filter
+on the hub; the cover names a photograph from the manifest.
+
+**Reading time, heading anchors and the contents rail are derived from the
+prose**, in `prepare()`, not written into the header. An edit to the body
+cannot leave any of the three stale, which is why nobody has to remember to
+update a table of contents. `build.py` renders each to
 `site/insights/<slug>.html`, builds the hub at `site/insights.html`, adds both
 to the sitemap with `lastmod`, and emits Article schema per piece.
+
+The hub leads with the newest piece at full width, then filters the rest by
+topic. Article pages carry a cover in the same navy duotone as the bands, a
+contents rail that marks the section you are actually in rather than the last
+link you clicked, and share buttons with **WhatsApp first**, because that is
+how links move in this market and burying it behind a generic share icon
+loses the share.
 
 **Write article markup as though the page sat at the site root.** They are
 published a level down, and `reroot()` lifts every relative URL by one. Writing

@@ -18,6 +18,7 @@ Run:  python3 marketing/build.py
 """
 import collections
 import hashlib
+import urllib.parse
 import json
 import re
 import pathlib
@@ -631,6 +632,85 @@ SCRIPT = """
       inner.style.transform = "";
     });
   }
+
+  /* ── Insights: filter by topic ──────────────────────────────────────
+     Hidden with a class rather than an inline style so the grid keeps its
+     transition, and the empty state says something useful rather than
+     leaving a blank column. */
+  var topicChips = document.querySelectorAll(".ins-filter .chip[data-topic]");
+  if(topicChips.length){
+    var insCards = document.querySelectorAll(".ins-card[data-topic]");
+    var insEmpty = document.querySelector(".ins-empty");
+    topicChips.forEach(function(c){
+      c.addEventListener("click", function(){
+        var t = c.getAttribute("data-topic");
+        topicChips.forEach(function(x){ x.classList.toggle("on", x === c); });
+        var shown = 0;
+        insCards.forEach(function(card){
+          var hit = (t === "all" || card.getAttribute("data-topic") === t);
+          card.classList.toggle("hide", !hit);
+          if(hit) shown++;
+        });
+        if(insEmpty) insEmpty.hidden = shown > 0;
+      });
+    });
+  }
+
+  /* ── Insights: the contents rail follows the reader ─────────────────
+     Marks the section you are actually in, not merely the last link you
+     clicked. The top bias means a heading counts as current once it is near
+     the top of the viewport rather than when it first appears at the
+     bottom, which is what makes it feel like it is tracking you. */
+  var spy = document.querySelectorAll(".toc-list a[data-spy]");
+  if(spy.length && "IntersectionObserver" in window){
+    var heads = [];
+    spy.forEach(function(a){
+      var h = document.getElementById(a.getAttribute("data-spy"));
+      if(h) heads.push(h);
+    });
+    var current = null;
+    var sio2 = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting) current = e.target.id;
+      });
+      /* Nothing intersecting the band means we are between headings, so the
+         last one seen stays lit rather than the rail going blank. */
+      spy.forEach(function(a){
+        a.classList.toggle("on", a.getAttribute("data-spy") === current);
+      });
+    }, {rootMargin: "-88px 0px -68% 0px", threshold: 0});
+    heads.forEach(function(h){ sio2.observe(h); });
+  }
+
+  /* ── Insights: copy the link ────────────────────────────────────────
+     Falls back to a hidden input and execCommand where the clipboard API is
+     unavailable, which on a phone browser served over anything but https is
+     still common enough to matter. */
+  var copyBtn = document.querySelector(".share-b.copy");
+  if(copyBtn){
+    copyBtn.addEventListener("click", function(){
+      var url = copyBtn.getAttribute("data-copy");
+      var label = copyBtn.querySelector("span");
+      var done = function(){
+        copyBtn.classList.add("done");
+        if(label) label.textContent = "Link copied";
+        setTimeout(function(){
+          copyBtn.classList.remove("done");
+          if(label) label.textContent = "Copy link";
+        }, 2200);
+      };
+      if(navigator.clipboard && window.isSecureContext){
+        navigator.clipboard.writeText(url).then(done, function(){});
+      } else {
+        var t = document.createElement("textarea");
+        t.value = url; t.setAttribute("readonly", "");
+        t.style.position = "absolute"; t.style.left = "-9999px";
+        document.body.appendChild(t); t.select();
+        try { document.execCommand("copy"); done(); } catch(e){}
+        document.body.removeChild(t);
+      }
+    });
+  }
 })();
 </script>"""
 
@@ -1209,11 +1289,12 @@ def read_articles():
         return arts
     for path in sorted(INSIGHTS_DIR.glob("*.html")):
         meta, body = parse(path)
-        for key in ("title", "desc", "slug", "date", "summary", "heading"):
+        for key in ("title", "desc", "slug", "date", "summary", "heading",
+                    "topic", "cover"):
             if key not in meta:
                 raise SystemExit(f"  ! {path.name} is missing '{key}:' in its header")
         meta["body"] = body
-        arts.append(meta)
+        arts.append(prepare(meta))
     arts.sort(key=lambda a: a["date"], reverse=True)
     return arts
 
@@ -1244,41 +1325,126 @@ def pretty_date(iso):
     return f"{int(d)} {months[int(m) - 1]} {y}"
 
 
-def article_page(a, others):
-    """One article, with a short list of the others underneath.
+HEAD_RE = re.compile(r"<h2>(.*?)</h2>", re.S)
 
-    The cross links are not decoration: a page with no route onward is a page
-    search engines treat as a dead end, and a reader who finishes an article
-    is the most likely person on the site to read a second one.
+
+def slugify(text):
+    text = re.sub(r"<[^>]+>", "", text).lower()
+    return re.sub(r"-+", "-", re.sub(r"[^a-z0-9]+", "-", text)).strip("-")
+
+
+def prepare(a):
+    """Reading time, anchored headings and a contents list, from the body.
+
+    All three are derived rather than written into the header, so an edit to
+    the prose cannot leave them stale. That is the whole reason an author
+    never has to remember to update a table of contents here.
     """
+    text = re.sub(r"<[^>]+>", " ", a["body"])
+    words = len(text.split())
+    # 220 words a minute is the usual figure for adults reading prose on a
+    # screen. Rounded up, and never less than one.
+    a["minutes"] = max(1, round(words / 220))
+    a["words"] = words
+
+    toc = []
+    def anchor(m):
+        title = re.sub(r"<[^>]+>", "", m.group(1)).strip()
+        sid = slugify(title)
+        toc.append((sid, title))
+        return f'<h2 id="{sid}">{m.group(1)}</h2>'
+    a["body"] = HEAD_RE.sub(anchor, a["body"])
+    a["toc"] = toc
+    return a
+
+
+def share_links(a):
+    """WhatsApp first, deliberately. It is how links actually move here."""
+    url = f"{DOMAIN}/{INSIGHTS_OUT}/{a['slug']}.html"
+    q = urllib.parse.quote
+    text = q(f"{a['heading']} — {COMPANY}")
+    return f"""
+<div class="share" aria-label="Share this article">
+  <span class="share-l">Share</span>
+  <a class="share-b wa" href="https://wa.me/?text={text}%20{q(url)}"
+     target="_blank" rel="noopener" aria-label="Share on WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1s-.5-.1-.7.1-.7 1-.9 1.2-.3.2-.6.1a8 8 0 0 1-2.4-1.5 9 9 0 0 1-1.6-2c-.2-.3 0-.5.1-.6l.5-.5.3-.5a.6.6 0 0 0 0-.5L9.4 6.9c-.2-.5-.4-.5-.6-.5H8.2a1.3 1.3 0 0 0-1 .4 3.1 3.1 0 0 0-1 2.3 5.4 5.4 0 0 0 1.2 2.9 12.3 12.3 0 0 0 4.7 4.2c1.8.7 2.2.6 2.6.5a2.8 2.8 0 0 0 1.8-1.3 2.3 2.3 0 0 0 .2-1.3zM12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2m0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.2"/></svg>
+    WhatsApp</a>
+  <a class="share-b li" href="https://www.linkedin.com/sharing/share-offsite/?url={q(url)}"
+     target="_blank" rel="noopener" aria-label="Share on LinkedIn">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5M3 9h4v12H3zM9 9h3.8v1.7h.05a4.2 4.2 0 0 1 3.75-2c4 0 4.4 2.6 4.4 6V21h-4v-5.3c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9V21H9z"/></svg>
+    LinkedIn</a>
+  <a class="share-b x" href="https://twitter.com/intent/tweet?text={text}&url={q(url)}"
+     target="_blank" rel="noopener" aria-label="Share on X">
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 2H22l-7 8 8.2 12H17l-5-7.3L6.2 22H3l7.5-8.6L2.6 2H9.3l4.6 6.7zm-1.1 18h1.7L7.3 3.8H5.5z"/></svg>
+    X</a>
+  <button class="share-b copy" type="button" data-copy="{url}"
+          aria-label="Copy link to this article">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="9" y="9" width="12" height="12" rx="2"/>
+      <path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+    <span>Copy link</span></button>
+</div>"""
+
+
+def article_page(a, others):
+    """One article: cover, a contents rail that follows the scroll, the prose,
+    share actions and a route onward. A page with no route onward is a dead
+    end for a reader and for a crawler alike."""
+    toc = "".join(f'<a href="#{sid}" data-spy="{sid}">{title}</a>'
+                  for sid, title in a["toc"])
+    rail = f"""
+      <aside class="toc" aria-label="On this page">
+        <p class="toc-t">On this page</p>
+        <nav class="toc-list">{toc}</nav>
+        {share_links(a)}
+      </aside>""" if len(a["toc"]) > 2 else share_links(a)
+
     more = "".join(
         f'<a class="ins-more-item" href="{INSIGHTS_OUT}/{o["slug"]}.html">'
-        f'<span class="ins-date">{pretty_date(o["date"])}</span>'
-        f'<b>{o["heading"]}</b><p>{o["summary"]}</p></a>'
+        f'<span class="ins-tag">{o["topic"]}</span>'
+        f'<b>{o["heading"]}</b><p>{o["summary"]}</p>'
+        f'<span class="ins-meta">{o["minutes"]} min read</span></a>'
         for o in others[:3])
+
     return f"""
-<article class="sec ins-article">
+<header class="ins-hero band ondark navy-ph">
+  <img data-photo="{a['cover']}" class="navy-bg" sizes="100vw" data-eager>
   <div class="wrap">
     <nav class="crumbs" aria-label="Breadcrumb">
       <a href="index.html">Home</a> <span>/</span>
-      <a href="insights.html">Insights</a>
+      <a href="insights.html">Insights</a> <span>/</span>
+      <span class="here">{a['topic']}</span>
     </nav>
-    <p class="ins-date">{pretty_date(a['date'])}</p>
     <h1 class="h1">{a['heading']}</h1>
     <p class="lead measure-w">{a['summary']}</p>
-    <div class="ins-body">{a['body'].strip()}</div>
-
-    <div class="ins-cta">
-      <h2 class="h3">See it against your own approval chain</h2>
-      <p>A forty minute walkthrough, configured live on the call.</p>
-      <a class="btn btn-p btn-lg" href="contact.html">Book a demo</a>
-    </div>
+    <p class="ins-meta">
+      <span class="ins-tag">{a['topic']}</span>
+      <span>{pretty_date(a['date'])}</span>
+      <span>{a['minutes']} min read</span>
+    </p>
   </div>
-</article>
+</header>
+
+<div class="sec ins-wrap">
+  <div class="wrap ins-layout">
+    {rail}
+    <article class="ins-body">
+      {a['body'].strip()}
+      <div class="ins-cta">
+        <h2 class="h3">See it against your own approval chain</h2>
+        <p>A forty minute walkthrough, configured live on the call. Bring the
+          messiest process you have.</p>
+        <a class="btn btn-p btn-lg" href="contact.html">Book a demo</a>
+      </div>
+    </article>
+  </div>
+</div>
 
 <section class="sec-sm tint">
   <div class="wrap">
-    <h2 class="h3" style="margin-bottom:24px;">More from SavidorHR</h2>
+    <h2 class="h3" style="margin-bottom:24px;">Keep reading</h2>
     <div class="ins-more">{more}</div>
   </div>
 </section>
@@ -1286,14 +1452,28 @@ def article_page(a, others):
 
 
 def insights_hub(arts):
+    lead, rest = arts[0], arts[1:]
+    topics = []
+    for a in arts:
+        if a["topic"] not in topics:
+            topics.append(a["topic"])
+    chips = '<button class="chip on" data-topic="all">All writing</button>' + "".join(
+        f'<button class="chip" data-topic="{slugify(t)}">{t}</button>' for t in topics)
+
     cards = "".join(
-        f'<a class="ins-card" href="{INSIGHTS_OUT}/{a["slug"]}.html">'
-        f'<span class="ins-date">{pretty_date(a["date"])}</span>'
-        f'<h2 class="h4">{a["heading"]}</h2><p>{a["summary"]}</p>'
-        f'<span class="ins-read">Read it{ARROW_S}</span></a>'
-        for a in arts)
+        f'<a class="ins-card" href="{INSIGHTS_OUT}/{a["slug"]}.html" '
+        f'data-topic="{slugify(a["topic"])}">'
+        f'<span class="ins-cover"><img data-photo="{a["cover"]}" '
+        f'sizes="(max-width:940px) 92vw, 380px" alt=""></span>'
+        f'<span class="ins-card-in">'
+        f'<span class="ins-tag">{a["topic"]}</span>'
+        f'<span class="h4">{a["heading"]}</span><p>{a["summary"]}</p>'
+        f'<span class="ins-meta">{pretty_date(a["date"])}'
+        f'<i></i>{a["minutes"]} min read</span></span></a>'
+        for a in rest)
+
     return f"""
-<section class="phero band ondark navy-ph">
+<section class="phero band ondark navy-ph ins-top">
   <img data-photo="talking" class="navy-bg" sizes="100vw" data-eager>
   <div class="wrap rise">
     <span class="eyebrow">News and insights</span>
@@ -1306,9 +1486,47 @@ def insights_hub(arts):
   </div>
 </section>
 
-<section class="sec">
+<section class="sec-sm">
   <div class="wrap">
+    <a class="ins-lead" href="{INSIGHTS_OUT}/{lead['slug']}.html">
+      <span class="ins-lead-ph ph-frame wash">
+        <img data-photo="{lead['cover']}" sizes="(max-width:940px) 94vw, 620px" alt="">
+      </span>
+      <span class="ins-lead-in">
+        <span class="ins-flag">Latest</span>
+        <span class="ins-tag">{lead['topic']}</span>
+        <span class="h2">{lead['heading']}</span>
+        <p class="lead">{lead['summary']}</p>
+        <span class="ins-meta">{pretty_date(lead['date'])}<i></i>
+          {lead['minutes']} min read</span>
+        <span class="ins-read">Read it{ARROW_S}</span>
+      </span>
+    </a>
+  </div>
+</section>
+
+<section class="sec" id="allWriting">
+  <div class="wrap">
+    <div class="fam-bar center-bar ins-filter">{chips}</div>
     <div class="ins-grid">{cards}</div>
+    <p class="ins-empty" hidden>Nothing filed under that yet. Pick another topic.</p>
+  </div>
+</section>
+
+<section class="sec-sm">
+  <div class="wrap">
+    <div class="cta cta-ph">
+      <img data-photo="desk-night" sizes="(max-width:940px) 100vw, 660px">
+      <div class="cta-in">
+        <h2 class="h2">Bring us your worst process</h2>
+        <p>Reading about approval chains is one thing. Watching yours get
+          configured live on a call is another.</p>
+        <div class="btn-row">
+          <a class="btn btn-w btn-lg" href="contact.html">Book a demo</a>
+          <a class="btn btn-o btn-lg" href="modules.html">See all 28 modules</a>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 """
@@ -1649,7 +1867,9 @@ def main():
         (OUT / INSIGHTS_OUT).mkdir(exist_ok=True)
         for a in arts:
             others = [o for o in arts if o["slug"] != a["slug"]]
-            body = add_reveals(article_page(a, others))
+            body = expand_photos(article_page(a, others),
+                                 f"{INSIGHTS_OUT}/{a['slug']}")
+            body = add_reveals(body)
             html = document(a, body, f"{INSIGHTS_OUT}/{a['slug']}",
                             ld=article_ld(a))
             # Published a level down, so every relative URL moves with it.
@@ -1671,6 +1891,9 @@ def main():
     # published path they have inside site/.
     parts = [re.sub(r"(?<![a-z/])img/([a-z0-9-]+\.[0-9a-f]{10}\.webp)",
                     r"site/img/\1", part) for part in parts]
+    # The preview lives at the repo root, so an article link from the hub has
+    # to reach into site/ the same way the photographs do.
+    parts = [p.replace('href="insights/', 'href="site/insights/') for p in parts]
     preview = (f"<title>{COMPANY}</title>\n{JS_FLAG}\n"
                f"<style>\n{preview_css}\n</style>\n{sprite()}\n{header('index', True)}\n"
                + "\n".join(parts) + f"\n{footer(True)}\n{SCRIPT}\n{PREVIEW_SCRIPT}\n")

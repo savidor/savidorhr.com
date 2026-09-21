@@ -25,7 +25,7 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/inter-latin.2cb1fa0bd3.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/jakarta-latin.a604a9e9ad.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.2feb2a11f8.css">
+<link rel="stylesheet" href="site.1116ba16ee.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://savidorhr.com/#organization","name":"SavidorHR","url":"https://savidorhr.com/","logo":{"@type":"ImageObject","url":"https://savidorhr.com/og.jpg"},"email":"hello@savidorhr.com","address":{"@type":"PostalAddress","addressLocality":"Lagos","addressRegion":"Lagos State","addressCountry":"NG"},"areaServed":{"@type":"Country","name":"Nigeria"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://savidorhr.com/"},{"@type":"ListItem","position":2,"name":"Book a demo","item":"https://savidorhr.com/contact.html"}]}]}</script>
 </head>
 <body>
@@ -533,6 +533,85 @@
     tilt.addEventListener("mouseleave", function(){
       tilt.classList.remove("live-tilt");
       inner.style.transform = "";
+    });
+  }
+
+  /* ── Insights: filter by topic ──────────────────────────────────────
+     Hidden with a class rather than an inline style so the grid keeps its
+     transition, and the empty state says something useful rather than
+     leaving a blank column. */
+  var topicChips = document.querySelectorAll(".ins-filter .chip[data-topic]");
+  if(topicChips.length){
+    var insCards = document.querySelectorAll(".ins-card[data-topic]");
+    var insEmpty = document.querySelector(".ins-empty");
+    topicChips.forEach(function(c){
+      c.addEventListener("click", function(){
+        var t = c.getAttribute("data-topic");
+        topicChips.forEach(function(x){ x.classList.toggle("on", x === c); });
+        var shown = 0;
+        insCards.forEach(function(card){
+          var hit = (t === "all" || card.getAttribute("data-topic") === t);
+          card.classList.toggle("hide", !hit);
+          if(hit) shown++;
+        });
+        if(insEmpty) insEmpty.hidden = shown > 0;
+      });
+    });
+  }
+
+  /* ── Insights: the contents rail follows the reader ─────────────────
+     Marks the section you are actually in, not merely the last link you
+     clicked. The top bias means a heading counts as current once it is near
+     the top of the viewport rather than when it first appears at the
+     bottom, which is what makes it feel like it is tracking you. */
+  var spy = document.querySelectorAll(".toc-list a[data-spy]");
+  if(spy.length && "IntersectionObserver" in window){
+    var heads = [];
+    spy.forEach(function(a){
+      var h = document.getElementById(a.getAttribute("data-spy"));
+      if(h) heads.push(h);
+    });
+    var current = null;
+    var sio2 = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting) current = e.target.id;
+      });
+      /* Nothing intersecting the band means we are between headings, so the
+         last one seen stays lit rather than the rail going blank. */
+      spy.forEach(function(a){
+        a.classList.toggle("on", a.getAttribute("data-spy") === current);
+      });
+    }, {rootMargin: "-88px 0px -68% 0px", threshold: 0});
+    heads.forEach(function(h){ sio2.observe(h); });
+  }
+
+  /* ── Insights: copy the link ────────────────────────────────────────
+     Falls back to a hidden input and execCommand where the clipboard API is
+     unavailable, which on a phone browser served over anything but https is
+     still common enough to matter. */
+  var copyBtn = document.querySelector(".share-b.copy");
+  if(copyBtn){
+    copyBtn.addEventListener("click", function(){
+      var url = copyBtn.getAttribute("data-copy");
+      var label = copyBtn.querySelector("span");
+      var done = function(){
+        copyBtn.classList.add("done");
+        if(label) label.textContent = "Link copied";
+        setTimeout(function(){
+          copyBtn.classList.remove("done");
+          if(label) label.textContent = "Copy link";
+        }, 2200);
+      };
+      if(navigator.clipboard && window.isSecureContext){
+        navigator.clipboard.writeText(url).then(done, function(){});
+      } else {
+        var t = document.createElement("textarea");
+        t.value = url; t.setAttribute("readonly", "");
+        t.style.position = "absolute"; t.style.left = "-9999px";
+        document.body.appendChild(t); t.select();
+        try { document.execCommand("copy"); done(); } catch(e){}
+        document.body.removeChild(t);
+      }
     });
   }
 })();
