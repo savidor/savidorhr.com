@@ -1577,9 +1577,10 @@ html,body{max-width:100%;}
   color:var(--ink-2); font-size:1.06rem; line-height:1.74;}
 .ins-body li{margin-bottom:10px;}
 .ins-body li::marker{color:var(--brand); font-weight:700;}
-.ins-body a{color:var(--brand); font-weight:600; text-decoration:underline;
-  text-underline-offset:3px; text-decoration-thickness:1.5px;}
-.ins-body a:hover{color:var(--brand-700);}
+.ins-body a:not(.btn){color:var(--brand); font-weight:600;
+  text-decoration:underline; text-underline-offset:3px;
+  text-decoration-thickness:1.5px;}
+.ins-body a:not(.btn):hover{color:var(--brand-700);}
 .ins-body blockquote{
   margin:32px 0; padding:22px 26px; border-radius:0 18px 18px 0;
   border-left:3px solid var(--accent); background:var(--ok-bg);
@@ -1587,13 +1588,32 @@ html,body{max-width:100%;}
 .ins-body blockquote p{margin:0; color:var(--ink); font-weight:500;
   font-size:1.08rem;}
 .ins-cta{
-  margin-top:52px; padding:34px; border-radius:22px;
-  background:var(--dots) 0 0/30px 30px, var(--glow),
-    linear-gradient(140deg,var(--blue-lt) 0%,var(--brand) 42%,var(--navy) 100%);
+  position:relative; overflow:hidden; isolation:isolate;
+  margin-top:52px; border-radius:22px;
+  background:linear-gradient(140deg,var(--blue-lt) 0%,var(--brand) 42%,var(--navy) 100%);
   box-shadow:0 26px 60px -26px rgba(15,27,97,.55);
 }
-.ins-cta .h3{color:#fff; margin-bottom:8px;}
-.ins-cta p{color:rgba(255,255,255,.88); margin-bottom:22px; font-size:1rem;}
+.ins-cta-in{position:relative; z-index:2; padding:38px;}
+@media (max-width:640px){ .ins-cta-in{padding:28px 24px;} }
+.ins-cta .h3{color:#fff; margin-bottom:8px; max-width:20ch;}
+.ins-cta p{color:rgba(255,255,255,.9); margin-bottom:24px; font-size:1.02rem;
+  max-width:42ch;}
+.ins-cta .btn-p{background:var(--accent); color:#fff;
+  box-shadow:0 10px 26px -10px rgba(22,165,95,.75);}
+.ins-cta .btn-p:hover{background:var(--accent-600);}
+.ins-cta > .navy-bg{opacity:.62; object-position:center 38%;}
+.ins-cta > .navy-scrim{
+  background:linear-gradient(100deg,rgba(9,17,60,.96) 0%,rgba(11,21,72,.9) 38%,
+    rgba(13,28,92,.6) 68%,rgba(15,38,116,.42) 100%);
+}
+.ins-cta > .navy-scrim::after{opacity:.4;}
+@media (max-width:640px){
+  
+  .ins-cta > .navy-scrim{
+    background:linear-gradient(170deg,rgba(9,17,60,.92) 0%,rgba(12,26,86,.84) 100%);
+  }
+  .ins-cta > .navy-bg{opacity:.5;}
+}
 .share{display:flex; flex-direction:column; align-items:flex-start; gap:9px;
   margin-top:34px; padding-top:26px; border-top:1px solid var(--line);}
 .share-l{font-size:.72rem; font-weight:700; letter-spacing:.08em;
@@ -1842,9 +1862,9 @@ html,body{max-width:100%;}
         </div>
       </div>
 
-      <div class="duo-shot pop-l reveal from-r">
+      <div class="duo-shot reveal from-r">
         <div class="ph-frame wash">
-          <img class="ph" src="site/img/reviewing-1000.b4b910befe.webp" srcset="site/img/reviewing-640.a31b99b763.webp 640w, site/img/reviewing-1000.b4b910befe.webp 1000w" sizes="(max-width:940px) 92vw, 560px" width="1000" height="667" alt="A manager looking up from her laptop in a glass walled office" loading="lazy" decoding="async" style="background-image:url(data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAADQAwCdASoUAA4APyF4s1GtJySisAgBoCQJZQCw7B6RCB0B/9IS6lAA/gJ+uIlJLNDfC4BX4YG/X6PYba0mPPUfWHs7D54C+WHSyK2tR7W1Rh8+O9Fpl0jvOix+UdcQs2r2ALIAAAA=)">
+          <img class="ph" src="site/img/signing-1600.1e731a28d3.webp" srcset="site/img/signing-700.68800e5d34.webp 700w, site/img/signing-1100.8948d74df4.webp 1100w, site/img/signing-1600.1e731a28d3.webp 1600w" sizes="(max-width:940px) 92vw, 560px" width="1600" height="900" alt="A hand signing the approval line of a financial request form" loading="lazy" decoding="async" style="background-image:url(data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAACwAwCdASoUAAwAPyF6tVGtJ6UisAgBoCQJQAAIsPNHbZYdrWtgAAD+yLmJv9UoS5G1EejW5dNu6G040Sp07pCcrpfYn94KgUgf+n4n/s79hmvM5vS88OP0+DAAAA==)">
         </div>
         <div class="pop">
           <div class="shot-in">
@@ -1996,7 +2016,7 @@ html,body{max-width:100%;}
 
       <div class="duo-shot reveal from-r">
         <div class="ph-frame wash">
-          <img class="ph" src="site/img/desk-m-1000.019b346e5f.webp" srcset="site/img/desk-m-640.6de3b04df6.webp 640w, site/img/desk-m-1000.019b346e5f.webp 1000w" sizes="(max-width:940px) 92vw, 560px" width="1000" height="667" alt="A director working from his laptop" loading="lazy" decoding="async" style="background-image:url(data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAADwAwCdASoUAA4APyF6s1GtJ6SisAgBoCQJYwCo9Bu05T4loZVaUygAAP7qf7UFbjH1fbICpr8OIEn1Lx8sjDHGkfJBTj2Y3CCG+sfDM9PDlZdCaNjBE9AA)">
+          <img class="ph" src="site/img/desk-night-1600.36be0cf877.webp" srcset="site/img/desk-night-700.e6f190c6a8.webp 700w, site/img/desk-night-1100.58d1534989.webp 1100w, site/img/desk-night-1600.36be0cf877.webp 1600w" sizes="(max-width:940px) 92vw, 560px" width="1600" height="900" alt="" loading="lazy" decoding="async" style="background-image:url(data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAABQAwCdASoUAAwAPyF6s1GtJ6SisAgBoCQJQBOgAf5wVMaEDAD+Figtde9CCD7qHZwuw6OknwK0vvuWIy3vgvj5aRJOFqedpzyXv8FK/o5/SRDLmIAAAA==)">
         </div>
         <div class="pop">
           <div class="shot-in">
@@ -2080,7 +2100,6 @@ html,body{max-width:100%;}
 </section>
 
 <section class="sec band ondark navy-ph">
-  <img class="ph navy-bg" src="site/img/notes-call-1600.adac204e1b.webp" srcset="site/img/notes-call-700.50d6557f10.webp 700w, site/img/notes-call-1100.6291c8e992.webp 1100w, site/img/notes-call-1600.adac204e1b.webp 1600w" sizes="100vw" width="1600" height="900" alt="" loading="lazy" decoding="async" style="background-image:url(data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwBACdASoUAAwAPyF6s1GtJ6SisAgBoCQJZQCzgB0637/96a/XakHbpwAA9wn8YLvfNdmZ2pLvdhm1z5jiEjnZjlz5194mI+dJ+CaG8/TnNfc6/MxNWLbJj0PAAA==)"><i class="navy-scrim" aria-hidden="true"></i>
   <div class="wrap">
     <div class="sec-head center reveal">
       <span class="eyebrow">The full system</span>
@@ -2281,7 +2300,6 @@ html,body{max-width:100%;}
 </section>
 
 <section class="sec band ondark navy-ph" id="builtin">
-  <img class="ph navy-bg" src="site/img/site-work-1400.bd564afef3.webp" srcset="site/img/site-work-600.58b01ae62e.webp 600w, site/img/site-work-900.b141eef957.webp 900w, site/img/site-work-1400.bd564afef3.webp 1400w" sizes="100vw" width="1400" height="788" alt="A crew working on site in safety gear" loading="lazy" decoding="async" style="background-image:url(data:image/webp;base64,UklGRoIAAABXRUJQVlA4IHYAAAAwBACdASoUAAwAPyF4s1GtJySisAgBoCQJbACdAB6QDdjBmX7WuX1QMAAA+Pxg+CkEYVC4oeJcSR/nfgI66qykPMnXRXYeAYvRdoF0ajqA64Pdm/vegTtmfjUDyZunfqyI99JGIq+TanksWHUpW1gClOfqSAAA)"><i class="navy-scrim" aria-hidden="true"></i>
   <div class="wrap">
     <div class="sec-head center reveal">
       <span class="eyebrow">Built in</span>
@@ -2382,7 +2400,7 @@ html,body{max-width:100%;}
 <section class="sec">
   <div class="wrap">
     <div class="cta cta-ph reveal">
-      <img class="ph" src="site/img/boardroom-1600.863f2d59f4.webp" srcset="site/img/boardroom-700.dc1fe49c6b.webp 700w, site/img/boardroom-1100.7a5732ef44.webp 1100w, site/img/boardroom-1600.863f2d59f4.webp 1600w" sizes="(max-width:940px) 100vw, 660px" width="1600" height="900" alt="A management team around a boardroom table in a Lagos office" loading="lazy" decoding="async" style="background-image:url(data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAABQBACdASoUAAwAPyF4s1GtJySisAgBoCQJYgC7AYvWoadBsTksKMXLdIOAAP5kqxEos7KeFW+JbCg3qoohHtNtM5jyARiAFlonViDAoKH1sM+uf8Gz5dV/aQKR7WeZXNqHzx9mM5ILq7fhm4Q/ohwx8KI9/NNSZD1Q2oAA)">
+      <img class="ph" src="site/img/callcentre-1000.9c3873ab5f.webp" srcset="site/img/callcentre-640.d357c7cf2c.webp 640w, site/img/callcentre-1000.9c3873ab5f.webp 1000w" sizes="(max-width:940px) 100vw, 660px" width="1000" height="667" alt="A consultant on a call at her desk, headset on" loading="lazy" decoding="async" style="background-image:url(data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAADQAwCdASoUAA4APyF4s1GtJySisAgBoCQJQBdgA2pjPvXHS9OPiwAA/c6VIlu2WHFXJkKa+gegDGYHj6hh86xwz8ZlvD9aAS6n67rLpBtA5QEQ56tTeRvpemiKMgcte30YGqJ54+LUAAAA)">
       <div class="cta-in">
         <h2 class="h2">Bring us your worst process</h2>
         <p>The one with the exception everybody works around. We will configure
@@ -2534,7 +2552,7 @@ html,body{max-width:100%;}
 <section class="sec">
   <div class="wrap">
     <div class="cta cta-ph reveal">
-      <img class="ph" src="site/img/desk-m-1000.019b346e5f.webp" srcset="site/img/desk-m-640.6de3b04df6.webp 640w, site/img/desk-m-1000.019b346e5f.webp 1000w" sizes="(max-width:940px) 100vw, 660px" width="1000" height="667" alt="A director working from his laptop" loading="lazy" decoding="async" style="background-image:url(data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAADwAwCdASoUAA4APyF6s1GtJ6SisAgBoCQJYwCo9Bu05T4loZVaUygAAP7qf7UFbjH1fbICpr8OIEn1Lx8sjDHGkfJBTj2Y3CCG+sfDM9PDlZdCaNjBE9AA)">
+      <img class="ph" src="site/img/talking-1400.11a450c2ca.webp" srcset="site/img/talking-600.324b6a8d28.webp 600w, site/img/talking-900.efec2ae937.webp 900w, site/img/talking-1400.11a450c2ca.webp 1400w" sizes="(max-width:940px) 100vw, 660px" width="1400" height="788" alt="Colleagues talking in the break area of a Lagos office" loading="lazy" decoding="async" style="background-image:url(data:image/webp;base64,UklGRowAAABXRUJQVlA4IIAAAACwAwCdASoUAAwAPyF4s1GtJySisAgBoCQJYwDE2BDYDCIsJYukAAD+j697B4Lw2Obh5x19Kbna3iwaNpce0scfaXjY9uI9xSvQCEn0LvKkjQQZuGKzKeSG8PtQn8TaAcYxuZ56r+sA+SW5/jlRoI28ACipOr5PQxdCo6imXsAAAA==)">
       <div class="cta-in">
         <h2 class="h2">Not sure which modules you need?</h2>
         <p>Tell us how you approve things today and we will come back with a scope
@@ -2548,7 +2566,7 @@ html,body{max-width:100%;}
   </div>
 </section></main></div>
 <div class="page" id="page-crm" hidden><main><section class="phero band ondark navy-ph">
-  <img class="ph navy-bg" src="site/img/portrait-m-1600.1542e9f50c.webp" srcset="site/img/portrait-m-700.73b861b707.webp 700w, site/img/portrait-m-1100.926fa1a6f1.webp 1100w, site/img/portrait-m-1600.1542e9f50c.webp 1600w" sizes="100vw" width="1600" height="900" alt="A sales manager at his desk with a laptop open" fetchpriority="high" decoding="async" style="background-image:url(data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAACwAwCdASoUAAwAPyF4s1GtJySisAgBoCQJZwAAQnlv3sOk7ZOWAAD+2VhNQmwC4ffb8P7gT5dPQu+rK3sJQMAG97vw6nNzs1no8jKc4qulGWqurt/OtgAA)"><i class="navy-scrim" aria-hidden="true"></i>
+  <img class="ph navy-bg" src="site/img/notes-call-1600.adac204e1b.webp" srcset="site/img/notes-call-700.50d6557f10.webp 700w, site/img/notes-call-1100.6291c8e992.webp 1100w, site/img/notes-call-1600.adac204e1b.webp 1600w" sizes="100vw" width="1600" height="900" alt="" fetchpriority="high" decoding="async" style="background-image:url(data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwBACdASoUAAwAPyF6s1GtJ6SisAgBoCQJZQCzgB0637/96a/XakHbpwAA9wn8YLvfNdmZ2pLvdhm1z5jiEjnZjlz5194mI+dJ+CaG8/TnNfc6/MxNWLbJj0PAAA==)"><i class="navy-scrim" aria-hidden="true"></i>
   <div class="wrap rise">
     <span class="eyebrow">The CRM</span>
     <h1 class="h1 wide">Every lead is called, and every call is recorded as a decision</h1>
@@ -2864,7 +2882,7 @@ html,body{max-width:100%;}
 <section class="sec">
   <div class="wrap">
     <div class="cta cta-ph reveal">
-      <img class="ph" src="site/img/reviewing-1000.b4b910befe.webp" srcset="site/img/reviewing-640.a31b99b763.webp 640w, site/img/reviewing-1000.b4b910befe.webp 1000w" sizes="(max-width:940px) 100vw, 660px" width="1000" height="667" alt="A manager looking up from her laptop in a glass walled office" loading="lazy" decoding="async" style="background-image:url(data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAADQAwCdASoUAA4APyF4s1GtJySisAgBoCQJZQCw7B6RCB0B/9IS6lAA/gJ+uIlJLNDfC4BX4YG/X6PYba0mPPUfWHs7D54C+WHSyK2tR7W1Rh8+O9Fpl0jvOix+UdcQs2r2ALIAAAA=)">
+      <img class="ph" src="site/img/talking-1400.11a450c2ca.webp" srcset="site/img/talking-600.324b6a8d28.webp 600w, site/img/talking-900.efec2ae937.webp 900w, site/img/talking-1400.11a450c2ca.webp 1400w" sizes="(max-width:940px) 100vw, 660px" width="1400" height="788" alt="Colleagues talking in the break area of a Lagos office" loading="lazy" decoding="async" style="background-image:url(data:image/webp;base64,UklGRowAAABXRUJQVlA4IIAAAACwAwCdASoUAAwAPyF4s1GtJySisAgBoCQJYwDE2BDYDCIsJYukAAD+j697B4Lw2Obh5x19Kbna3iwaNpce0scfaXjY9uI9xSvQCEn0LvKkjQQZuGKzKeSG8PtQn8TaAcYxuZ56r+sA+SW5/jlRoI28ACipOr5PQxdCo6imXsAAAA==)">
       <div class="cta-in">
         <h2 class="h2">Bring us the leads you gave up on</h2>
         <p>We will take a slice of your real pipeline and show you what the queue
@@ -3046,7 +3064,7 @@ html,body{max-width:100%;}
   </div>
 </section></main></div>
 <div class="page" id="page-investors" hidden><main><section class="phero band ondark navy-ph">
-  <img class="ph navy-bg" src="site/img/presenting-1600.ea92243fcc.webp" srcset="site/img/presenting-700.ff3cc0f2de.webp 700w, site/img/presenting-1100.dd541dbdc0.webp 1100w, site/img/presenting-1600.ea92243fcc.webp 1600w" sizes="100vw" width="1600" height="900" alt="A team lead presenting figures at a whiteboard" fetchpriority="high" decoding="async" style="background-image:url(data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAAAwAwCdASoUAAwAPyF6s1GtJ6SvMAgB4CQJZwAAVX6izlIAAP3/bGhHb6vYxxvPfbwtZYfwFKTy570UAfxC5XzRMLbaB94+3XDAgAAA)"><i class="navy-scrim" aria-hidden="true"></i>
+  <img class="ph navy-bg" src="site/img/reviewing-1000.b4b910befe.webp" srcset="site/img/reviewing-640.a31b99b763.webp 640w, site/img/reviewing-1000.b4b910befe.webp 1000w" sizes="100vw" width="1000" height="667" alt="A manager looking up from her laptop in a glass walled office" fetchpriority="high" decoding="async" style="background-image:url(data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAADQAwCdASoUAA4APyF4s1GtJySisAgBoCQJZQCw7B6RCB0B/9IS6lAA/gJ+uIlJLNDfC4BX4YG/X6PYba0mPPUfWHs7D54C+WHSyK2tR7W1Rh8+O9Fpl0jvOix+UdcQs2r2ALIAAAA=)"><i class="navy-scrim" aria-hidden="true"></i>
   <div class="wrap rise">
     <span class="eyebrow">Investor overview</span>
     <h1 class="h1">A working product, not a deck</h1>
@@ -3261,7 +3279,7 @@ html,body{max-width:100%;}
 <section class="sec">
   <div class="wrap">
     <div class="cta cta-ph reveal">
-      <img class="ph" src="site/img/portrait-m-1600.1542e9f50c.webp" srcset="site/img/portrait-m-700.73b861b707.webp 700w, site/img/portrait-m-1100.926fa1a6f1.webp 1100w, site/img/portrait-m-1600.1542e9f50c.webp 1600w" sizes="(max-width:940px) 100vw, 660px" width="1600" height="900" alt="A sales manager at his desk with a laptop open" loading="lazy" decoding="async" style="background-image:url(data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAACwAwCdASoUAAwAPyF4s1GtJySisAgBoCQJZwAAQnlv3sOk7ZOWAAD+2VhNQmwC4ffb8P7gT5dPQu+rK3sJQMAG97vw6nNzs1no8jKc4qulGWqurt/OtgAA)">
+      <img class="ph" src="site/img/documents-1600.52c08404b5.webp" srcset="site/img/documents-700.d3eb575793.webp 700w, site/img/documents-1100.898a362b10.webp 1100w, site/img/documents-1600.52c08404b5.webp 1600w" sizes="(max-width:940px) 100vw, 660px" width="1600" height="900" alt="" loading="lazy" decoding="async" style="background-image:url(data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAACQAwCdASoUAAwAPyF6s1GtJ6SisAgBoCQJZwDKAB515/PRRX+gAM4HBeXWsKHEPMWpAW8MI0UWqtys2d/ZWt/Kk9xPPl2ct9w0WP0oUflXOecYkdn0ypLJCdIh9M47xlrq3egAgAA=)">
       <div class="cta-in">
         <h2 class="h2">Request the deck and the data room</h2>
         <p>The deck, the metrics with their definitions, and a guided walkthrough of
@@ -3330,7 +3348,7 @@ html,body{max-width:100%;}
           </div>
 
           <div class="ph-frame wash" style="margin-top:30px;">
-            <img class="ph" src="site/img/site-work-1400.bd564afef3.webp" srcset="site/img/site-work-600.58b01ae62e.webp 600w, site/img/site-work-900.b141eef957.webp 900w, site/img/site-work-1400.bd564afef3.webp 1400w" sizes="(max-width:940px) 92vw, 540px" width="1400" height="788" alt="A crew working on site in safety gear" loading="lazy" decoding="async" style="background-image:url(data:image/webp;base64,UklGRoIAAABXRUJQVlA4IHYAAAAwBACdASoUAAwAPyF4s1GtJySisAgBoCQJbACdAB6QDdjBmX7WuX1QMAAA+Pxg+CkEYVC4oeJcSR/nfgI66qykPMnXRXYeAYvRdoF0ajqA64Pdm/vegTtmfjUDyZunfqyI99JGIq+TanksWHUpW1gClOfqSAAA)">
+            <img class="ph" src="site/img/lagos-1200.c32348e227.webp" srcset="site/img/lagos-560.2707dac336.webp 560w, site/img/lagos-800.ff43b5365a.webp 800w, site/img/lagos-1200.c32348e227.webp 1200w" sizes="(max-width:940px) 92vw, 540px" width="1200" height="675" alt="The Lagos skyline looking out towards the water" loading="lazy" decoding="async" style="background-image:url(data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAAAQBACdASoUAAwAPyF4s1GtJySisAgBoCQJQBOiP/wFr9CQYO6WR8sgoAD42oGH2F43mrofvXdZRb3VH4aA/HPTJyHIIEXq/eWBI1M68mdDGWCRBg2cmuEMBSIARHsDqh2arum/0e/4KK8NLw14QAAA)">
           </div>
         </div>
       </div>
@@ -3461,7 +3479,7 @@ html,body{max-width:100%;}
   </div>
 </section></main></div>
 <div class="page" id="page-insights" hidden><main><section class="phero band ondark navy-ph ins-top">
-  <img class="ph navy-bg" src="site/img/talking-1400.11a450c2ca.webp" srcset="site/img/talking-600.324b6a8d28.webp 600w, site/img/talking-900.efec2ae937.webp 900w, site/img/talking-1400.11a450c2ca.webp 1400w" sizes="100vw" width="1400" height="788" alt="Colleagues talking in the break area of a Lagos office" fetchpriority="high" decoding="async" style="background-image:url(data:image/webp;base64,UklGRowAAABXRUJQVlA4IIAAAACwAwCdASoUAAwAPyF4s1GtJySisAgBoCQJYwDE2BDYDCIsJYukAAD+j697B4Lw2Obh5x19Kbna3iwaNpce0scfaXjY9uI9xSvQCEn0LvKkjQQZuGKzKeSG8PtQn8TaAcYxuZ56r+sA+SW5/jlRoI28ACipOr5PQxdCo6imXsAAAA==)"><i class="navy-scrim" aria-hidden="true"></i>
+  <img class="ph navy-bg" src="site/img/boardroom-1600.863f2d59f4.webp" srcset="site/img/boardroom-700.dc1fe49c6b.webp 700w, site/img/boardroom-1100.7a5732ef44.webp 1100w, site/img/boardroom-1600.863f2d59f4.webp 1600w" sizes="100vw" width="1600" height="900" alt="A management team around a boardroom table in a Lagos office" fetchpriority="high" decoding="async" style="background-image:url(data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAABQBACdASoUAAwAPyF4s1GtJySisAgBoCQJYgC7AYvWoadBsTksKMXLdIOAAP5kqxEos7KeFW+JbCg3qoohHtNtM5jyARiAFlonViDAoKH1sM+uf8Gz5dV/aQKR7WeZXNqHzx9mM5ILq7fhm4Q/ohwx8KI9/NNSZD1Q2oAA)"><i class="navy-scrim" aria-hidden="true"></i>
   <div class="wrap rise">
     <span class="eyebrow">News and insights</span>
     <h1 class="h1">How Nigerian companies approve, hire and pay</h1>
@@ -3503,7 +3521,7 @@ html,body{max-width:100%;}
 <section class="sec-sm">
   <div class="wrap">
     <div class="cta cta-ph reveal">
-      <img class="ph" src="site/img/desk-night-1600.36be0cf877.webp" srcset="site/img/desk-night-700.e6f190c6a8.webp 700w, site/img/desk-night-1100.58d1534989.webp 1100w, site/img/desk-night-1600.36be0cf877.webp 1600w" sizes="(max-width:940px) 100vw, 660px" width="1600" height="900" alt="" loading="lazy" decoding="async" style="background-image:url(data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAABQAwCdASoUAAwAPyF6s1GtJ6SisAgBoCQJQBOgAf5wVMaEDAD+Figtde9CCD7qHZwuw6OknwK0vvuWIy3vgvj5aRJOFqedpzyXv8FK/o5/SRDLmIAAAA==)">
+      <img class="ph" src="site/img/huddle-1000.9ce09f3dde.webp" srcset="site/img/huddle-640.d19c346581.webp 640w, site/img/huddle-1000.9ce09f3dde.webp 1000w" sizes="(max-width:940px) 100vw, 660px" width="1000" height="667" alt="Three colleagues looking at the same laptop screen" loading="lazy" decoding="async" style="background-image:url(data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAADwAwCdASoUAA4APyF4s1GtJySisAgBoCQJZACdAdwAo39rThEgB9IAAP7qkdk0hq8RIN6AM/aLzOBSmbKppuJllPxi2bIPgybKLK/HVJqTOuv3T8yWQjrpEf9iZAfrdsn3TxtnDhivLdoizRu1KimO4tAAAA==)">
       <div class="cta-in">
         <h2 class="h2">Bring us your worst process</h2>
         <p>Reading about approval chains is one thing. Watching yours get

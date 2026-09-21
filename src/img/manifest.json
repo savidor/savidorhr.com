@@ -72,27 +72,6 @@
     "source": "https://www.pexels.com/photo/woman-in-black-blazer-sitting-on-chair-7709242/",
     "w": 1000
   },
-  "desk-m": {
-    "alt": "A director working from his laptop",
-    "aspect": 1.5,
-    "desc": "A director working from his laptop",
-    "files": [
-      {
-        "bytes": 23564,
-        "file": "desk-m-1000.webp",
-        "w": 1000
-      },
-      {
-        "bytes": 12736,
-        "file": "desk-m-640.webp",
-        "w": 640
-      }
-    ],
-    "h": 667,
-    "lqip": "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAADwAwCdASoUAA4APyF6s1GtJ6SisAgBoCQJYwCo9Bu05T4loZVaUygAAP7qf7UFbjH1fbICpr8OIEn1Lx8sjDHGkfJBTj2Y3CCG+sfDM9PDlZdCaNjBE9AA",
-    "source": "https://www.pexels.com/photo/professional-man-working-on-laptop-in-lagos-office-30678211/",
-    "w": 1000
-  },
   "desk-night": {
     "alt": "",
     "aspect": 1.7778,
@@ -302,32 +281,6 @@
     "source": "https://www.pexels.com/photo/woman-in-black-blazer-holding-smartphone-3727469/",
     "w": 1600
   },
-  "portrait-m": {
-    "alt": "A sales manager at his desk with a laptop open",
-    "aspect": 1.7778,
-    "desc": "A sales manager at his desk with a laptop open",
-    "files": [
-      {
-        "bytes": 56958,
-        "file": "portrait-m-1600.webp",
-        "w": 1600
-      },
-      {
-        "bytes": 26768,
-        "file": "portrait-m-1100.webp",
-        "w": 1100
-      },
-      {
-        "bytes": 12402,
-        "file": "portrait-m-700.webp",
-        "w": 700
-      }
-    ],
-    "h": 900,
-    "lqip": "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAACwAwCdASoUAAwAPyF4s1GtJySisAgBoCQJZwAAQnlv3sOk7ZOWAAD+2VhNQmwC4ffb8P7gT5dPQu+rK3sJQMAG97vw6nNzs1no8jKc4qulGWqurt/OtgAA",
-    "source": "https://www.pexels.com/photo/smiling-man-sitting-at-laptop-7794033/",
-    "w": 1600
-  },
   "portrait-w": {
     "alt": "A director standing outside her office building",
     "aspect": 0.8,
@@ -421,32 +374,6 @@
     "lqip": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAACwAwCdASoUAAwAPyF6tVGtJ6UisAgBoCQJQAAIsPNHbZYdrWtgAAD+yLmJv9UoS5G1EejW5dNu6G040Sp07pCcrpfYn94KgUgf+n4n/s79hmvM5vS88OP0+DAAAA==",
     "source": "https://www.pexels.com/photo/person-signing-paper-955393/",
     "w": 1600
-  },
-  "site-work": {
-    "alt": "A crew working on site in safety gear",
-    "aspect": 1.7778,
-    "desc": "A crew working on site in safety gear",
-    "files": [
-      {
-        "bytes": 100744,
-        "file": "site-work-1400.webp",
-        "w": 1400
-      },
-      {
-        "bytes": 54400,
-        "file": "site-work-900.webp",
-        "w": 900
-      },
-      {
-        "bytes": 30800,
-        "file": "site-work-600.webp",
-        "w": 600
-      }
-    ],
-    "h": 788,
-    "lqip": "data:image/webp;base64,UklGRoIAAABXRUJQVlA4IHYAAAAwBACdASoUAAwAPyF4s1GtJySisAgBoCQJbACdAB6QDdjBmX7WuX1QMAAA+Pxg+CkEYVC4oeJcSR/nfgI66qykPMnXRXYeAYvRdoF0ajqA64Pdm/vegTtmfjUDyZunfqyI99JGIq+TanksWHUpW1gClOfqSAAA",
-    "source": "https://www.pexels.com/photo/construction-workers-working-together-5298215/",
-    "w": 1400
   },
   "talking": {
     "alt": "Colleagues talking in the break area of a Lagos office",

@@ -77,11 +77,6 @@ PHOTOS = {
         alt="Colleagues talking in the break area of a Lagos office",
         page="https://www.pexels.com/photo/casual-office-meeting-in-lagos-nigeria-30688593/",
     ),
-    "desk-m": dict(
-        pexels=30678211, aspect=3 / 2, focal=(0.36, 0.48), widths=[1000, 640],
-        alt="A director working from his laptop",
-        page="https://www.pexels.com/photo/professional-man-working-on-laptop-in-lagos-office-30678211/",
-    ),
     "reviewing": dict(
         pexels=5668845, aspect=3 / 2, focal=(0.62, 0.42), widths=[1000, 640],
         alt="A manager looking up from her laptop in a glass walled office",
@@ -98,6 +93,10 @@ PHOTOS = {
         page="https://www.pexels.com/photo/portrait-of-a-woman-in-a-suit-12373136/",
     ),
     # ── Pictures of the thing being described ───────────────────────────
+    # Every photograph here earns its place by depicting the claim of the box
+    # it sits behind. Three were removed rather than reassigned: once the
+    # rule is "it must depict what the box says", a photograph with no such
+    # box is not a spare, it is weight.
     # Added because the set had drifted into five uses of the same boardroom.
     # A photograph that does not depict its subject is decoration, and a
     # reader notices the repetition long before they notice the point.
@@ -116,23 +115,12 @@ PHOTOS = {
         alt="An empty chair at a desk somebody has left for the week",
         page="https://www.pexels.com/photo/an-office-chair-beside-a-work-desk-8546651/",
     ),
-    "site-work": dict(
-        pexels=5298215, aspect=16 / 9, focal=(0.50, 0.50), widths=[1400, 900, 600],
-        q=62,
-        alt="A crew working on site in safety gear",
-        page="https://www.pexels.com/photo/construction-workers-working-together-5298215/",
-    ),
     # Both were vetted earlier and parked when the testimonial came out. They
     # are good photographs of Black professionals and the set needs the range.
     "presenting": dict(
         pexels=9034265, aspect=16 / 9, focal=(0.42, 0.40), widths=[1600, 1100, 700],
         alt="A team lead presenting figures at a whiteboard",
         page="https://www.pexels.com/photo/woman-in-black-dress-presenting-9034265/",
-    ),
-    "portrait-m": dict(
-        pexels=7794033, aspect=16 / 9, focal=(0.50, 0.42), widths=[1600, 1100, 700],
-        alt="A sales manager at his desk with a laptop open",
-        page="https://www.pexels.com/photo/smiling-man-sitting-at-laptop-7794033/",
     ),
 
     # ── Backgrounds for the navy bands ──────────────────────────────────

@@ -179,6 +179,18 @@ photographer's original upload is fetched, not Pexels' own 2400px re-encode,
 because resizing something already compressed once is a second lossy pass for
 nothing. Sources are cached in a gitignored `.photo-cache/`.
 
+**A photograph has to depict what its box says.** That rule outranks
+variety. Where a box makes a claim no photograph can show, it carries no
+photograph at all: "Twenty eight modules, five families" and "The parts
+nobody remembers to ask for" are plain navy bands for that reason, and a
+decorative picture there would be worse than the gap.
+
+The consequence is that repetition now tracks the message. Every call to
+action that says "configured live on the call" carries the same photograph of
+somebody on a call, because it is one component saying one thing. That is not
+the fault the earlier set had, which was the same boardroom behind five
+unrelated claims.
+
 **One photograph per slot, and each depicts its subject.** The set drifted
 into five uses of the same boardroom, which a reader notices long before they
 notice the point being made. Nothing now appears more than twice across the

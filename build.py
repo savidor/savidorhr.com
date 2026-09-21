@@ -1290,7 +1290,7 @@ def read_articles():
     for path in sorted(INSIGHTS_DIR.glob("*.html")):
         meta, body = parse(path)
         for key in ("title", "desc", "slug", "date", "summary", "heading",
-                    "topic", "cover"):
+                    "topic", "cover", "cta"):
             if key not in meta:
                 raise SystemExit(f"  ! {path.name} is missing '{key}:' in its header")
         meta["body"] = body
@@ -1432,11 +1432,15 @@ def article_page(a, others):
     {rail}
     <article class="ins-body">
       {a['body'].strip()}
-      <div class="ins-cta">
-        <h2 class="h3">See it against your own approval chain</h2>
-        <p>A forty minute walkthrough, configured live on the call. Bring the
-          messiest process you have.</p>
-        <a class="btn btn-p btn-lg" href="contact.html">Book a demo</a>
+      <div class="ins-cta navy-ph">
+        <img data-photo="{a['cta']}" class="navy-bg"
+             sizes="(max-width:1000px) 92vw, 700px">
+        <div class="ins-cta-in">
+          <h2 class="h3">See it against your own approval chain</h2>
+          <p>A forty minute walkthrough, configured live on the call. Bring the
+            messiest process you have.</p>
+          <a class="btn btn-p btn-lg" href="contact.html">Book a demo</a>
+        </div>
       </div>
     </article>
   </div>
@@ -1474,7 +1478,7 @@ def insights_hub(arts):
 
     return f"""
 <section class="phero band ondark navy-ph ins-top">
-  <img data-photo="talking" class="navy-bg" sizes="100vw" data-eager>
+  <img data-photo="boardroom" class="navy-bg" sizes="100vw" data-eager>
   <div class="wrap rise">
     <span class="eyebrow">News and insights</span>
     <h1 class="h1">How Nigerian companies approve, hire and pay</h1>
@@ -1516,7 +1520,7 @@ def insights_hub(arts):
 <section class="sec-sm">
   <div class="wrap">
     <div class="cta cta-ph">
-      <img data-photo="desk-night" sizes="(max-width:940px) 100vw, 660px">
+      <img data-photo="huddle" sizes="(max-width:940px) 100vw, 660px">
       <div class="cta-in">
         <h2 class="h2">Bring us your worst process</h2>
         <p>Reading about approval chains is one thing. Watching yours get

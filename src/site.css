@@ -2211,9 +2211,13 @@ html,body{max-width:100%;}
   color:var(--ink-2); font-size:1.06rem; line-height:1.74;}
 .ins-body li{margin-bottom:10px;}
 .ins-body li::marker{color:var(--brand); font-weight:700;}
-.ins-body a{color:var(--brand); font-weight:600; text-decoration:underline;
-  text-underline-offset:3px; text-decoration-thickness:1.5px;}
-.ins-body a:hover{color:var(--brand-700);}
+/* `:not(.btn)` is load bearing. `.ins-body a` outranks `.btn-p` on
+   specificity, so without it the call to action button rendered its label in
+   brand blue on a brand blue panel and read as an empty rectangle. */
+.ins-body a:not(.btn){color:var(--brand); font-weight:600;
+  text-decoration:underline; text-underline-offset:3px;
+  text-decoration-thickness:1.5px;}
+.ins-body a:not(.btn):hover{color:var(--brand-700);}
 .ins-body blockquote{
   margin:32px 0; padding:22px 26px; border-radius:0 18px 18px 0;
   border-left:3px solid var(--accent); background:var(--ok-bg);
@@ -2222,13 +2226,39 @@ html,body{max-width:100%;}
   font-size:1.08rem;}
 
 .ins-cta{
-  margin-top:52px; padding:34px; border-radius:22px;
-  background:var(--dots) 0 0/30px 30px, var(--glow),
-    linear-gradient(140deg,var(--blue-lt) 0%,var(--brand) 42%,var(--navy) 100%);
+  position:relative; overflow:hidden; isolation:isolate;
+  margin-top:52px; border-radius:22px;
+  background:linear-gradient(140deg,var(--blue-lt) 0%,var(--brand) 42%,var(--navy) 100%);
   box-shadow:0 26px 60px -26px rgba(15,27,97,.55);
 }
-.ins-cta .h3{color:#fff; margin-bottom:8px;}
-.ins-cta p{color:rgba(255,255,255,.88); margin-bottom:22px; font-size:1rem;}
+.ins-cta-in{position:relative; z-index:2; padding:38px;}
+@media (max-width:640px){ .ins-cta-in{padding:28px 24px;} }
+.ins-cta .h3{color:#fff; margin-bottom:8px; max-width:20ch;}
+.ins-cta p{color:rgba(255,255,255,.9); margin-bottom:24px; font-size:1.02rem;
+  max-width:42ch;}
+/* The button sits on navy, so it takes the green that means "do a thing"
+   everywhere else on the site rather than the blue it would otherwise
+   inherit, which on this panel is nearly invisible. */
+.ins-cta .btn-p{background:var(--accent); color:#fff;
+  box-shadow:0 10px 26px -10px rgba(22,165,95,.75);}
+.ins-cta .btn-p:hover{background:var(--accent-600);}
+
+/* The shared band scrim is tuned for a full width band and buries a
+   photograph this small. Here it runs sideways instead: solid where the
+   words are, opening up on the right so the picture is worth its bytes. */
+.ins-cta > .navy-bg{opacity:.62; object-position:center 38%;}
+.ins-cta > .navy-scrim{
+  background:linear-gradient(100deg,rgba(9,17,60,.96) 0%,rgba(11,21,72,.9) 38%,
+    rgba(13,28,92,.6) 68%,rgba(15,38,116,.42) 100%);
+}
+.ins-cta > .navy-scrim::after{opacity:.4;}
+@media (max-width:640px){
+  /* Stacked and narrow, the words need the whole panel. */
+  .ins-cta > .navy-scrim{
+    background:linear-gradient(170deg,rgba(9,17,60,.92) 0%,rgba(12,26,86,.84) 100%);
+  }
+  .ins-cta > .navy-bg{opacity:.5;}
+}
 
 /* ── Share ─────────────────────────────────────────────────────────── */
 /* WhatsApp is first on purpose. It is how links actually move in this

@@ -12,19 +12,16 @@ exists so each one can be traced back, not because credit is owed.
 | `boardroom` | A management team around a boardroom table in a Lagos office | <https://www.pexels.com/photo/business-meeting-in-lagos-office-setting-30688596/> |
 | `calculator` | Working out a figure on a calculator beside a notepad | <https://www.pexels.com/photo/woman-uses-calculator-7491011/> |
 | `callcentre` | A consultant on a call at her desk, headset on | <https://www.pexels.com/photo/woman-in-black-blazer-sitting-on-chair-7709242/> |
-| `desk-m` | A director working from his laptop | <https://www.pexels.com/photo/professional-man-working-on-laptop-in-lagos-office-30678211/> |
 | `desk-night` | A consultant on the phone at her desk, late light | <https://www.pexels.com/photo/a-woman-talking-on-a-phone-in-the-office-5685959/> |
 | `documents` | Hands turning the pages of a document at a desk | <https://www.pexels.com/photo/black-woman-working-with-documents-in-office-5668879/> |
 | `empty-desk` | An empty chair at a desk somebody has left for the week | <https://www.pexels.com/photo/an-office-chair-beside-a-work-desk-8546651/> |
 | `huddle` | Three colleagues looking at the same laptop screen | <https://www.pexels.com/photo/team-collaboration-meeting-in-lagos-office-30689114/> |
 | `lagos` | The Lagos skyline looking out towards the water | <https://www.pexels.com/photo/aerial-view-of-lagos-cityscape-with-ocean-horizon-32656347/> |
 | `notes-call` | A consultant taking notes during a phone call | <https://www.pexels.com/photo/woman-in-black-blazer-holding-smartphone-3727469/> |
-| `portrait-m` | A sales manager at his desk with a laptop open | <https://www.pexels.com/photo/smiling-man-sitting-at-laptop-7794033/> |
 | `portrait-w` | A director standing outside her office building | <https://www.pexels.com/photo/portrait-of-a-woman-in-a-suit-12373136/> |
 | `presenting` | A team lead presenting figures at a whiteboard | <https://www.pexels.com/photo/woman-in-black-dress-presenting-9034265/> |
 | `reviewing` | A manager looking up from her laptop in a glass walled office | <https://www.pexels.com/photo/thoughtful-black-businesswoman-working-on-project-in-office-5668845/> |
 | `signing` | A hand signing the approval line of a financial request form | <https://www.pexels.com/photo/person-signing-paper-955393/> |
-| `site-work` | A crew working on site in safety gear | <https://www.pexels.com/photo/construction-workers-working-together-5298215/> |
 | `talking` | Colleagues talking in the break area of a Lagos office | <https://www.pexels.com/photo/casual-office-meeting-in-lagos-nigeria-30688593/> |
 | `window-laptop` | A manager at her laptop against a bright office window | <https://www.pexels.com/photo/african-american-woman-employee-facial-expression-furnitures-1181649/> |
 
