@@ -42,6 +42,15 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# The photographs are content hashed by build.py exactly as the stylesheet and
+# the fonts are, so the same long cache is safe on them. They are by far the
+# largest thing the site downloads, and without this rule they fell through to
+# the default and were revalidated on every single visit.
+[[headers]]
+  for = "/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
 # HTML must always be revalidated, or a cached page keeps pointing at a
 # stylesheet that has since been replaced. This is the pairing that makes
 # immutable caching of the hashed assets above safe.
