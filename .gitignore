@@ -6,3 +6,7 @@ __MACOSX/
 
 # Leftover diagnostic from an earlier hosting attempt, not part of the site.
 hosting-test.html
+
+# Source photographs, re-downloaded on demand by tools/build_images.py.
+# The optimised results under src/img are what gets committed.
+.photo-cache/

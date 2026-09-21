@@ -10,9 +10,13 @@ src/            source you edit
   site.css        the whole design system
   favicon.svg     browser tab icon
   fonts/*.woff2   the two self-hosted webfonts, subset
+  img/*.webp      the photographs, cropped and sized
+  img/manifest.json  what build.py reads to write the <img> tags
+  img/CREDITS.md  where each photograph came from, generated
   pages/*.html    one fragment per page
 tools/          not part of the build
   build_fonts.py  regenerates src/fonts, run by hand
+  build_images.py regenerates src/img, run by hand
 build.py        assembles everything
 site/           build output, what Netlify publishes
 _preview.html   all six pages in one file, for sharing a preview link
@@ -76,13 +80,19 @@ heading.
 
 ## Before it goes live
 
-Three things are placeholders.
+Two things are placeholders.
 
 | What | Where | Note |
 |---|---|---|
 | Domain and contact details | `build.py`, the constants block at the top | Change `DOMAIN`, `EMAIL`, `EMAIL_INV`, `PHONE`, then rebuild. They propagate to every page, the footer, the sitemap and the social tags. |
 | Logo | `build.py`, `LOGO_MARK` | The three node triangle. It paints its own colours rather than inheriting `currentColor`, so it keeps a white tile on dark grounds. Also replace `src/favicon.svg` if you change it. |
-| Testimonial | `src/pages/index.html`, the `.quote` block | Labelled "Illustrative customer quote". Replace with a real attributed one, or delete the section. |
+
+**There is no testimonial section.** It was removed rather than shipped with an
+invented quote. To bring it back once you have a real, attributed reference:
+restore the `.quote q-photo` block in `src/pages/index.html` and uncomment
+`huddle-p` and `face-2` in `tools/build_images.py`. The styles for it are still
+in `site.css`. Use a photograph of the person actually being quoted, not one of
+the stock faces, for the reason in `src/img/CREDITS.md`.
 
 Investor traction figures on `investors.html` are intentionally blank. Fill them
 only with numbers you can evidence.
@@ -92,6 +102,61 @@ only with numbers you can evidence.
 `og.png` is referenced in the page head but not included. Until you add a
 1200x630 PNG at the web root, links shared on WhatsApp, LinkedIn and X will show
 no preview image. Everything else works without it.
+
+## Photography
+
+Every photograph is **served from our own origin**, for the same reason the
+fonts are. They are cropped, resized and converted by `tools/build_images.py`,
+which is run by hand and whose output is committed under `src/img/`.
+
+Pages never write a srcset. They write one tag naming a photo:
+
+```html
+<img data-photo="boardroom" sizes="(max-width:940px) 100vw, 660px">
+```
+
+`build.py` turns that into the full responsive tag: every width in the srcset,
+the intrinsic size so nothing shifts as it loads, lazy loading, and the 20px
+placeholder inlined as the image's own background so a slot shows the
+photograph's colours rather than a white hole. Naming a photo the manifest does
+not carry stops the build. Add `data-eager` to a photo that should be fetched
+for the first paint; nothing currently needs it, because the hero is a mockup.
+
+To change, add or recrop a photo, edit the `PHOTOS` table at the top of
+`tools/build_images.py` and run it:
+
+```
+brew install webp        # once, for cwebp
+python3 tools/build_images.py
+```
+
+Each entry takes the Pexels id, the target aspect, a focal point as a fraction
+of the source, an optional `zoom` and `q`, and the widths to publish. The crop
+is built around the focal point rather than the centre, which is what keeps
+faces whole; the face crops would otherwise be a whole person at 44px. The
+photographer's original upload is fetched, not Pexels' own 2400px re-encode,
+because resizing something already compressed once is a second lossy pass for
+nothing. Sources are cached in a gitignored `.photo-cache/`.
+
+**These are launch ready.** The backbone is one photographer's Lagos series, so
+the set reads as one shoot rather than a scrapbook, and every photograph is of
+Black professionals, which is who this product sells to. Swap in photographs of
+your own people and sites when you have them, but nothing here is a placeholder.
+
+**Which photographs can carry a product card.** The `.duo-shot` pattern lays a
+mockup over one corner of a photo, so it only suits photographs with an empty
+corner: `reviewing` and `callcentre` (subject right, use `pop-l`), `desk-m`
+(subject left), `portrait-w` (subject right, use `pop-l`). `boardroom`,
+`huddle` and `talking` fill their frames edge to edge and are used whole, in a
+band, a closing panel or a plain frame. Putting a card on one of those covers
+the very people the photograph is there for.
+
+Licence terms and the one real limit are in `src/img/CREDITS.md`, generated
+alongside the images. The short version: free commercially, no attribution
+needed, but **do not put one of these faces beside a named customer
+testimonial** — the licence forbids implying that a person in the imagery
+endorses the product. The home page testimonial is labelled illustrative for
+that reason.
 
 ## Fonts
 
@@ -130,8 +195,13 @@ to set a handful of figures inside screenshot mockups.
 
 ## Notes
 
-- Fonts load from Google Fonts. The site renders correctly on the fallback stack
-  if that is ever blocked.
+- Nothing is fetched from a third party origin. Fonts and photographs are both
+  served from our own, which is what keeps the page to one connection.
+- Motion carries no information anywhere on the site, so
+  `prefers-reduced-motion` turns all of it off rather than merely shortening it.
+  Anything that starts hidden for the sake of an animation is gated behind a
+  `js` class set in the `<head>`, so JavaScript being off gives you the finished
+  page rather than a blank one.
 - Light theme only, which is the convention for this category. Every colour is
   painted explicitly, so it does not inherit a dark background anywhere.
 - `robots.txt` and `sitemap.xml` are generated from `DOMAIN`, so they cannot

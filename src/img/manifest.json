@@ -1,0 +1,237 @@
+{
+  "boardroom": {
+    "alt": "A management team around a boardroom table in a Lagos office",
+    "aspect": 1.7778,
+    "files": [
+      {
+        "bytes": 80654,
+        "file": "boardroom-1600.webp",
+        "w": 1600
+      },
+      {
+        "bytes": 49210,
+        "file": "boardroom-1100.webp",
+        "w": 1100
+      },
+      {
+        "bytes": 26826,
+        "file": "boardroom-700.webp",
+        "w": 700
+      }
+    ],
+    "h": 900,
+    "lqip": "data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAABQBACdASoUAAwAPyF4s1GtJySisAgBoCQJYgC7AYvWoadBsTksKMXLdIOAAP5kqxEos7KeFW+JbCg3qoohHtNtM5jyARiAFlonViDAoKH1sM+uf8Gz5dV/aQKR7WeZXNqHzx9mM5ILq7fhm4Q/ohwx8KI9/NNSZD1Q2oAA",
+    "source": "https://www.pexels.com/photo/business-meeting-in-lagos-office-setting-30688596/",
+    "w": 1600
+  },
+  "callcentre": {
+    "alt": "A consultant on a call at her desk, headset on",
+    "aspect": 1.5,
+    "files": [
+      {
+        "bytes": 20580,
+        "file": "callcentre-1000.webp",
+        "w": 1000
+      },
+      {
+        "bytes": 10958,
+        "file": "callcentre-640.webp",
+        "w": 640
+      }
+    ],
+    "h": 667,
+    "lqip": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAADQAwCdASoUAA4APyF4s1GtJySisAgBoCQJQBdgA2pjPvXHS9OPiwAA/c6VIlu2WHFXJkKa+gegDGYHj6hh86xwz8ZlvD9aAS6n67rLpBtA5QEQ56tTeRvpemiKMgcte30YGqJ54+LUAAAA",
+    "source": "https://www.pexels.com/photo/woman-in-black-blazer-sitting-on-chair-7709242/",
+    "w": 1000
+  },
+  "desk-m": {
+    "alt": "A director working from his laptop",
+    "aspect": 1.5,
+    "files": [
+      {
+        "bytes": 23564,
+        "file": "desk-m-1000.webp",
+        "w": 1000
+      },
+      {
+        "bytes": 12736,
+        "file": "desk-m-640.webp",
+        "w": 640
+      }
+    ],
+    "h": 667,
+    "lqip": "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAADwAwCdASoUAA4APyF6s1GtJ6SisAgBoCQJYwCo9Bu05T4loZVaUygAAP7qf7UFbjH1fbICpr8OIEn1Lx8sjDHGkfJBTj2Y3CCG+sfDM9PDlZdCaNjBE9AA",
+    "source": "https://www.pexels.com/photo/professional-man-working-on-laptop-in-lagos-office-30678211/",
+    "w": 1000
+  },
+  "face-1": {
+    "alt": "Portrait",
+    "aspect": 1,
+    "files": [
+      {
+        "bytes": 3588,
+        "file": "face-1-160.webp",
+        "w": 160
+      },
+      {
+        "bytes": 1734,
+        "file": "face-1-96.webp",
+        "w": 96
+      }
+    ],
+    "h": 160,
+    "lqip": "data:image/webp;base64,UklGRowAAABXRUJQVlA4IIAAAADwBACdASoUABQAPyF6t1QtJyUjMBgIAaAkCWMAxwX/4B4Fe+6U46T7VmJr7zL51RgA/hDti0AAYHQXSnTGUs6lCmpSSUWleL6F0TgB19C1VWpvclObXLFFoMcForRmuFbPh4DRNpD58/OaRO/m0rUpSpPmDx8yQz2TZkKxwOO4AA==",
+    "source": "",
+    "w": 160
+  },
+  "face-3": {
+    "alt": "Portrait",
+    "aspect": 1,
+    "files": [
+      {
+        "bytes": 3826,
+        "file": "face-3-160.webp",
+        "w": 160
+      },
+      {
+        "bytes": 1898,
+        "file": "face-3-96.webp",
+        "w": 96
+      }
+    ],
+    "h": 160,
+    "lqip": "data:image/webp;base64,UklGRqQAAABXRUJQVlA4IJgAAAAQBQCdASoUABQAPyGGuVctKKWjqAgBoCQJZACxHxgBqggAEStA6E8RQnfRJjjIbHhAAP6E9gSn8JkK6rA/gxtwS5oS53sssM0a5AXynTw15qvgxjSs1lpsrvYHLNulGDwWa+LjCBFOMQmTs0deLaf2wRCmb5FwgVdmZZsgJjEO5Z7QI9+pKUdakjRMg+DoN51+E/C0AwwAAA==",
+    "source": "",
+    "w": 160
+  },
+  "face-4": {
+    "alt": "Portrait",
+    "aspect": 1,
+    "files": [
+      {
+        "bytes": 2844,
+        "file": "face-4-160.webp",
+        "w": 160
+      },
+      {
+        "bytes": 1508,
+        "file": "face-4-96.webp",
+        "w": 96
+      }
+    ],
+    "h": 160,
+    "lqip": "data:image/webp;base64,UklGRpoAAABXRUJQVlA4II4AAACwBACdASoUABQAPyGAtFQtKCSjKA1RoCQJQBfPbIAliYeV4feJjOfHVWCfbxDAAP4WauCT2Y1evgudTIlxCz1nRO5RsGv8KlU5Lhkai19qxV4nXZnW+9yxkuZEYGbiYH3iUOFLaum67GsGqZ8dgvxZWQks9d1bIB7BVIy4Qcmm8Trc774VfI1yAD7AAAAA",
+    "source": "",
+    "w": 160
+  },
+  "huddle": {
+    "alt": "Three colleagues looking at the same laptop screen",
+    "aspect": 1.5,
+    "files": [
+      {
+        "bytes": 43006,
+        "file": "huddle-1000.webp",
+        "w": 1000
+      },
+      {
+        "bytes": 20848,
+        "file": "huddle-640.webp",
+        "w": 640
+      }
+    ],
+    "h": 667,
+    "lqip": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAADwAwCdASoUAA4APyF4s1GtJySisAgBoCQJZACdAdwAo39rThEgB9IAAP7qkdk0hq8RIN6AM/aLzOBSmbKppuJllPxi2bIPgybKLK/HVJqTOuv3T8yWQjrpEf9iZAfrdsn3TxtnDhivLdoizRu1KimO4tAAAA==",
+    "source": "https://www.pexels.com/photo/team-collaboration-meeting-in-lagos-office-30689114/",
+    "w": 1000
+  },
+  "lagos": {
+    "alt": "The Lagos skyline looking out towards the water",
+    "aspect": 1.7778,
+    "files": [
+      {
+        "bytes": 96230,
+        "file": "lagos-1200.webp",
+        "w": 1200
+      },
+      {
+        "bytes": 50086,
+        "file": "lagos-800.webp",
+        "w": 800
+      },
+      {
+        "bytes": 28022,
+        "file": "lagos-560.webp",
+        "w": 560
+      }
+    ],
+    "h": 675,
+    "lqip": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAAAQBACdASoUAAwAPyF4s1GtJySisAgBoCQJQBOiP/wFr9CQYO6WR8sgoAD42oGH2F43mrofvXdZRb3VH4aA/HPTJyHIIEXq/eWBI1M68mdDGWCRBg2cmuEMBSIARHsDqh2arum/0e/4KK8NLw14QAAA",
+    "source": "https://www.pexels.com/photo/aerial-view-of-lagos-cityscape-with-ocean-horizon-32656347/",
+    "w": 1200
+  },
+  "portrait-w": {
+    "alt": "A director standing outside her office building",
+    "aspect": 0.8,
+    "files": [
+      {
+        "bytes": 46646,
+        "file": "portrait-w-760.webp",
+        "w": 760
+      },
+      {
+        "bytes": 23782,
+        "file": "portrait-w-480.webp",
+        "w": 480
+      }
+    ],
+    "h": 950,
+    "lqip": "data:image/webp;base64,UklGRqAAAABXRUJQVlA4IJQAAABwBQCdASoUABkAPyGCuVUtKCWjKAqpoCQJZQDI1BEKtUCY8VvYu2h5SiHZqFusgNrqtFAAAP7UVX3j6Wim+atHs6vIsTYl6CrykB40jn2k3nnitfC7LlccugcycbTuQ66tXCLTmHuJowR34VBwJK2HgL1iUDAu9LZ4Y6lXesoTyQIZJiux9OcJVZTHkp5MgL1FJEAA",
+    "source": "https://www.pexels.com/photo/portrait-of-a-woman-in-a-suit-12373136/",
+    "w": 760
+  },
+  "reviewing": {
+    "alt": "A manager looking up from her laptop in a glass walled office",
+    "aspect": 1.5,
+    "files": [
+      {
+        "bytes": 18148,
+        "file": "reviewing-1000.webp",
+        "w": 1000
+      },
+      {
+        "bytes": 10548,
+        "file": "reviewing-640.webp",
+        "w": 640
+      }
+    ],
+    "h": 667,
+    "lqip": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAADQAwCdASoUAA4APyF4s1GtJySisAgBoCQJZQCw7B6RCB0B/9IS6lAA/gJ+uIlJLNDfC4BX4YG/X6PYba0mPPUfWHs7D54C+WHSyK2tR7W1Rh8+O9Fpl0jvOix+UdcQs2r2ALIAAAA=",
+    "source": "https://www.pexels.com/photo/thoughtful-black-businesswoman-working-on-project-in-office-5668845/",
+    "w": 1000
+  },
+  "talking": {
+    "alt": "Colleagues talking in the break area of a Lagos office",
+    "aspect": 1.7778,
+    "files": [
+      {
+        "bytes": 71608,
+        "file": "talking-1400.webp",
+        "w": 1400
+      },
+      {
+        "bytes": 40580,
+        "file": "talking-900.webp",
+        "w": 900
+      },
+      {
+        "bytes": 23572,
+        "file": "talking-600.webp",
+        "w": 600
+      }
+    ],
+    "h": 788,
+    "lqip": "data:image/webp;base64,UklGRowAAABXRUJQVlA4IIAAAACwAwCdASoUAAwAPyF4s1GtJySisAgBoCQJYwDE2BDYDCIsJYukAAD+j697B4Lw2Obh5x19Kbna3iwaNpce0scfaXjY9uI9xSvQCEn0LvKkjQQZuGKzKeSG8PtQn8TaAcYxuZ56r+sA+SW5/jlRoI28ACipOr5PQxdCo6imXsAAAA==",
+    "source": "https://www.pexels.com/photo/casual-office-meeting-in-lagos-nigeria-30688593/",
+    "w": 1400
+  }
+}

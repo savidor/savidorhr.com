@@ -18,6 +18,7 @@ Run:  python3 marketing/build.py
 """
 import collections
 import hashlib
+import json
 import re
 import pathlib
 
@@ -121,6 +122,14 @@ ICONS = {
              '<path d="M9 19h4a4 4 0 0 0 4-4V9"/>',
     "build": '<path d="M14.7 6.3a4 4 0 0 1 5 5L8.5 22.5 2 24l1.5-6.5z"/><line x1="12" y1="9" x2="18" y2="15"/>',
 }
+
+
+# Set in the <head>, before anything paints. Everything that starts hidden
+# for the sake of an animation is gated behind this class, so a visitor with
+# JavaScript off is served the finished page rather than an empty one. It has
+# to run here and not with the rest of the script at the end of the body, or
+# the hidden things would flash visible during the parse and then disappear.
+JS_FLAG = '<script>document.documentElement.className+=" js";</script>'
 
 
 ARROW_S = ('<svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
@@ -473,6 +482,127 @@ SCRIPT = """
           }
         }
       });
+    });
+  }
+
+  /* ── Numbers that count up ──────────────────────────────────────────
+     A figure sitting still reads as a label. The same figure arriving at
+     its value reads as a measurement, which is what these are. The
+     original text is kept on the node, so the animation can never leave a
+     half counted number behind if it is interrupted. */
+  function countUp(el){
+    var raw = el.getAttribute("data-n");
+    if(raw === null){ raw = el.textContent; el.setAttribute("data-n", raw); }
+    var m = raw.match(/^(\\D*?)([\\d,]+(?:\\.\\d+)?)(.*)$/);
+    if(!m){ return; }
+    var pre = m[1], body = m[2], post = m[3];
+    var target = parseFloat(body.replace(/,/g, ""));
+    if(!isFinite(target)) return;
+    var dp = (body.split(".")[1] || "").length;
+    var grouped = body.indexOf(",") > -1;
+    el.classList.add("count");
+
+    /* Under a second and a half, or it stops being a flourish and starts
+       being something the reader is waiting for. */
+    var dur = 1100, t0 = 0;
+    function frame(ts){
+      if(!t0) t0 = ts;
+      var p = Math.min((ts - t0) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      var v = (target * eased).toFixed(dp);
+      if(grouped) v = (+v).toLocaleString("en-US", {
+        minimumFractionDigits: dp, maximumFractionDigits: dp });
+      el.textContent = pre + v + post;
+      if(p < 1) requestAnimationFrame(frame);
+      else el.textContent = raw;
+    }
+    requestAnimationFrame(frame);
+  }
+
+  var figures = document.querySelectorAll(".stat b, .mini b, .pb-fact b");
+  if(figures.length && !still && "IntersectionObserver" in window){
+    var fio = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(!e.isIntersecting) return;
+        countUp(e.target);
+        fio.unobserve(e.target);
+      });
+    }, {threshold:.6});
+    figures.forEach(function(el){ fio.observe(el); });
+  }
+
+  /* ── The signature chain signs itself ───────────────────────────────
+     The rows arrive in the order a real request collects its signatures.
+     It is the one piece of motion on the page that is worth more than
+     decoration, which is exactly why the same table is readable in full
+     the instant it lands for anyone who has motion turned off. */
+  var seqs = document.querySelectorAll(".seq");
+  if(seqs.length){
+    if(still || !("IntersectionObserver" in window)){
+      seqs.forEach(function(s){ s.classList.add("go"); });
+    } else {
+      var sio = new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(!e.isIntersecting) return;
+          e.target.classList.add("go");
+          sio.unobserve(e.target);
+        });
+      }, {threshold:.25});
+      seqs.forEach(function(s){ sio.observe(s); });
+    }
+  }
+
+  /* ── Photographs drift as you pass them ─────────────────────────────
+     Bound to the scroll handler already running rather than a second
+     listener, and written as a transform so it never triggers layout. */
+  var plx = Array.prototype.slice.call(document.querySelectorAll(".plx"));
+  function parallax(){
+    if(still || !plx.length) return;
+    var vh = window.innerHeight || 800;
+    plx.forEach(function(el){
+      var r = el.parentNode.getBoundingClientRect();
+      if(r.bottom < -80 || r.top > vh + 80) return;
+      /* -1 well below the fold, +1 well above it. */
+      var t = ((vh - r.top) / (vh + r.height)) * 2 - 1;
+      el.style.transform = "translate3d(0," + (t * -5.5).toFixed(2) + "%,0)";
+    });
+  }
+  if(plx.length && !still){
+    window.addEventListener("scroll", function(){
+      if(!ticking){ ticking = true; requestAnimationFrame(function(){
+        parallax(); ticking = false; }); }
+    }, {passive:true});
+    window.addEventListener("resize", parallax, {passive:true});
+    parallax();
+  }
+
+  /* ── The hero mockup follows the pointer ────────────────────────────
+     Two degrees, no more. Enough that the screenshot reads as an object
+     held in front of you, little enough that nobody notices it happening.
+     Touch pointers are excluded: there is no hover there to justify it,
+     and the handler would only fire on a tap. */
+  var tilt = document.querySelector(".tilt");
+  var fine = window.matchMedia && window.matchMedia("(hover:hover) and (pointer:fine)").matches;
+  if(tilt && fine && !still){
+    var inner = tilt.querySelector(".tilt-in");
+    var pending = false, px = 0, py = 0;
+    tilt.addEventListener("mousemove", function(e){
+      var r = tilt.getBoundingClientRect();
+      px = (e.clientX - r.left) / r.width - .5;
+      py = (e.clientY - r.top) / r.height - .5;
+      tilt.classList.add("live-tilt");
+      if(pending) return;
+      pending = true;
+      requestAnimationFrame(function(){
+        inner.style.transform =
+          "rotateY(" + (px * 4).toFixed(2) + "deg) rotateX(" +
+          (-py * 2.6).toFixed(2) + "deg) translateZ(0)";
+        pending = false;
+      });
+    }, {passive:true});
+    tilt.addEventListener("mouseleave", function(){
+      tilt.classList.remove("live-tilt");
+      inner.style.transform = "";
     });
   }
 })();
@@ -883,6 +1013,7 @@ def document(meta, body, slug):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{JS_FLAG}
 <title>{meta.get('title', COMPANY)}</title>
 <meta name="description" content="{meta.get('desc', '')}">
 <link rel="canonical" href="{DOMAIN}/{'' if slug == 'index' else slug + '.html'}">{noindex}
@@ -962,6 +1093,144 @@ def install_fonts(css):
     return css, published
 
 
+# ── Photography ───────────────────────────────────────────────────────────────
+# Regenerated by tools/build_images.py and committed under src/img/, the same
+# arrangement as the fonts and for the same reason: nothing on a page should
+# depend on a third party origin we do not control.
+#
+# Pages do not write out srcsets. They write one tag naming a photo:
+#
+#     <img data-photo="boardroom" sizes="100vw" class="ph-band">
+#
+# and this fills in the srcset, the intrinsic size, the lazy loading and the
+# placeholder. Widths and file names live in the manifest, so adding a size to
+# a photo changes no page.
+IMAGES = {}
+
+
+def install_images(manifest_path):
+    """Publish src/img under hashed names, keyed by photo then width."""
+    if not manifest_path.exists():
+        raise SystemExit(f"  ! missing {manifest_path}\n"
+                         f"    Run tools/build_images.py")
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+
+    dest_dir = OUT / "img"
+    dest_dir.mkdir(parents=True, exist_ok=True)
+
+    keep = set()
+    for name, spec in manifest.items():
+        for f in spec["files"]:
+            src = manifest_path.parent / f["file"]
+            if not src.exists():
+                raise SystemExit(f"  ! manifest lists {f['file']}, which is "
+                                 f"not in src/img. Run tools/build_images.py")
+            data = src.read_bytes()
+            digest = hashlib.md5(data).hexdigest()[:10]
+            out_name = f"{src.stem}.{digest}.webp"
+            (dest_dir / out_name).write_bytes(data)
+            keep.add(out_name)
+            f["url"] = f"img/{out_name}"
+
+    for stale in dest_dir.glob("*.webp"):
+        if stale.name not in keep:
+            stale.unlink()
+    return manifest
+
+
+# Blocks that fade up as they are reached. Listed here rather than typed
+# into every page: a rule about how the whole site behaves belongs in one
+# place, and an element that should not do it says so with `no-reveal`.
+REVEAL_AT = {"sec-head", "card", "stat", "tier", "quote", "cta", "ph-band",
+             "feat-t", "mosaic", "form-card", "faq", "mod-card"}
+CLASS_ATTR = re.compile(r'(<[a-z][a-z0-9]*\b[^>]*?\bclass=")([^"]*)(")')
+
+
+def add_reveals(html):
+    def one(m):
+        classes = m.group(2).split()
+        if ("reveal" in classes or "no-reveal" in classes
+                or not REVEAL_AT.intersection(classes)):
+            return m.group(0)
+        return m.group(1) + " ".join(classes + ["reveal"]) + m.group(3)
+    return CLASS_ATTR.sub(one, html)
+
+
+# A marquee needs its list twice: the track slides exactly half its width,
+# and the second copy is what is under the viewport as the first leaves it.
+# Duplicating it here rather than in the page keeps one list to edit, and
+# hides the copy from screen readers so the sectors are announced once.
+MQ = re.compile(r"<!--MQ-->(.*?)<!--/MQ-->", re.S)
+
+
+def fill_marquee(html):
+    return MQ.sub(
+        lambda m: (f'<div class="mq-set">{m.group(1)}</div>'
+                   f'<div class="mq-set" aria-hidden="true">{m.group(1)}</div>'),
+        html)
+
+
+def esc(s):
+    return (s.replace("&", "&amp;").replace("<", "&lt;")
+             .replace(">", "&gt;").replace('"', "&quot;"))
+
+
+ATTR = re.compile(r'([a-zA-Z-]+)(?:="([^"]*)")?')
+IMG_TAG = re.compile(r"<img\b([^>]*?)/?>")
+
+
+def expand_photos(html, slug=""):
+    """Turn every <img data-photo="..."> into a full responsive tag.
+
+    A name the manifest does not carry stops the build. A silently broken
+    image is the kind of thing that ships and is noticed by a customer.
+    """
+    def one(m):
+        attrs = {k: (v or "") for k, v in ATTR.findall(m.group(1))}
+        name = attrs.pop("data-photo", "")
+        if not name:
+            return m.group(0)
+        if name not in IMAGES:
+            raise SystemExit(f"  ! {slug}: no photo named '{name}'. "
+                             f"Known: {', '.join(sorted(IMAGES))}")
+
+        spec = IMAGES[name]
+        files = sorted(spec["files"], key=lambda f: f["w"])
+        srcset = ", ".join(f"{f['url']} {f['w']}w" for f in files)
+
+        # The hero photograph is wanted in the first paint, so it says so.
+        # Everything else waits until it is nearly on screen.
+        eager = "data-eager" in attrs
+        attrs.pop("data-eager", None)
+
+        cls = " ".join(x for x in ["ph", attrs.pop("class", "")] if x)
+        alt = attrs.pop("alt", None)
+        if alt is None:
+            alt = spec["alt"]
+        sizes = attrs.pop("sizes", "100vw")
+
+        # The 20px placeholder sits behind the image as its own background, so
+        # a slot shows the photograph's colours the moment the HTML lands and
+        # never a white hole. Scaling it to cover is what blurs it; no filter
+        # is involved, which matters because a filter would blur the real
+        # image once it painted on top.
+        style = (f"background-image:url({spec['lqip']})"
+                 + (";" + attrs.pop("style") if attrs.get("style") else ""))
+        attrs.pop("style", None)
+
+        rest = "".join(f' {k}="{v}"' if v else f" {k}"
+                       for k, v in attrs.items())
+        return (
+            f'<img class="{cls}" src="{files[-1]["url"]}" srcset="{srcset}" '
+            f'sizes="{esc(sizes)}" width="{spec["w"]}" height="{spec["h"]}" '
+            f'alt="{esc(alt)}" '
+            + ('fetchpriority="high" decoding="async"' if eager
+               else 'loading="lazy" decoding="async"')
+            + f' style="{style}"{rest}>')
+
+    return IMG_TAG.sub(one, html)
+
+
 def strip_css_comments(css):
     """Drop comments from the published stylesheet.
 
@@ -983,6 +1252,13 @@ def strip_css_comments(css):
 
 def main():
     OUT.mkdir(exist_ok=True)
+
+    global IMAGES
+    IMAGES = install_images(SRC / "img" / "manifest.json")
+    shipped = sum(f["bytes"] for m in IMAGES.values() for f in m["files"])
+    print(f"  published {len(IMAGES)} photos into site/img "
+          f"({shipped / 1024:.0f}KB across every size)")
+
     css = (SRC / "site.css").read_text(encoding="utf-8")
     css, font_paths = install_fonts(css)
     css = strip_css_comments(css)
@@ -1022,6 +1298,9 @@ def main():
         body = body.replace("<!--MODULE_COUNT-->", str(len(MODULES)))
         body = body.replace("<!--TIER_TABLE-->", tier_table())
         body = body.replace("<!--MODULE_EXPLORER-->", module_explorer())
+        body = expand_photos(body, slug)
+        body = fill_marquee(body)
+        body = add_reveals(body)
         frags[slug] = (meta, body)
         (OUT / f"{slug}.html").write_text(document(meta, body, slug), encoding="utf-8")
         print(f"  wrote site/{slug}.html")
@@ -1036,7 +1315,11 @@ def main():
     # _preview.html sits at the repo root while the fonts are published inside
     # site/, so the relative URLs in the inlined CSS need one level added.
     preview_css = css.replace('url("fonts/', 'url("site/fonts/')
-    preview = (f"<title>{COMPANY}</title>\n"
+    # Same for the photographs, which the expanded tags reference by the
+    # published path they have inside site/.
+    parts = [re.sub(r"(?<![a-z/])img/([a-z0-9-]+\.[0-9a-f]{10}\.webp)",
+                    r"site/img/\1", part) for part in parts]
+    preview = (f"<title>{COMPANY}</title>\n{JS_FLAG}\n"
                f"<style>\n{preview_css}\n</style>\n{sprite()}\n{header('index', True)}\n"
                + "\n".join(parts) + f"\n{footer(True)}\n{SCRIPT}\n{PREVIEW_SCRIPT}\n")
     (HERE / "_preview.html").write_text(preview, encoding="utf-8")
