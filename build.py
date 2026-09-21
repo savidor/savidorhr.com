@@ -1220,13 +1220,19 @@ def expand_photos(html, slug=""):
 
         rest = "".join(f' {k}="{v}"' if v else f" {k}"
                        for k, v in attrs.items())
+
+        # A navy background photo is never alone: it needs the scrim that
+        # holds the headline's contrast. Pairing them here rather than in
+        # every page means the two can never be separated by an edit.
+        scrim = '<i class="navy-scrim" aria-hidden="true"></i>' if "navy-bg" in cls else ""
+
         return (
             f'<img class="{cls}" src="{files[-1]["url"]}" srcset="{srcset}" '
             f'sizes="{esc(sizes)}" width="{spec["w"]}" height="{spec["h"]}" '
             f'alt="{esc(alt)}" '
             + ('fetchpriority="high" decoding="async"' if eager
                else 'loading="lazy" decoding="async"')
-            + f' style="{style}"{rest}>')
+            + f' style="{style}"{rest}>' + scrim)
 
     return IMG_TAG.sub(one, html)
 

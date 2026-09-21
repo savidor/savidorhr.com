@@ -97,6 +97,35 @@ PHOTOS = {
         alt="A director standing outside her office building",
         page="https://www.pexels.com/photo/portrait-of-a-woman-in-a-suit-12373136/",
     ),
+    # ── Backgrounds for the navy bands ──────────────────────────────────
+    # Chosen to be submerged, not looked at: strong shapes, a clear light
+    # source and plenty of dark. Fine detail is wasted here, because the
+    # duotone throws most of it away.
+    "window-laptop": dict(
+        pexels=1181649, aspect=16 / 9, focal=(0.50, 0.46), widths=[1600, 1100, 700],
+        q=68,
+        alt="", desc="A manager at her laptop against a bright office window",
+        page="https://www.pexels.com/photo/african-american-woman-employee-facial-expression-furnitures-1181649/",
+    ),
+    "notes-call": dict(
+        pexels=3727469, aspect=16 / 9, focal=(0.52, 0.52), widths=[1600, 1100, 700],
+        q=68,
+        alt="", desc="A consultant taking notes during a phone call",
+        page="https://www.pexels.com/photo/woman-in-black-blazer-holding-smartphone-3727469/",
+    ),
+    "desk-night": dict(
+        pexels=5685959, aspect=16 / 9, focal=(0.58, 0.50), widths=[1600, 1100, 700],
+        q=68,
+        alt="", desc="A consultant on the phone at her desk, late light",
+        page="https://www.pexels.com/photo/a-woman-talking-on-a-phone-in-the-office-5685959/",
+    ),
+    "documents": dict(
+        pexels=5668879, aspect=16 / 9, focal=(0.50, 0.44), widths=[1600, 1100, 700],
+        q=68,
+        alt="", desc="Hands turning the pages of a document at a desk",
+        page="https://www.pexels.com/photo/black-woman-working-with-documents-in-office-5668879/",
+    ),
+
     "lagos": dict(
         pexels=32656347, aspect=16 / 9, focal=(0.50, 0.46), widths=[1200, 800, 560],
         q=60,
@@ -211,6 +240,9 @@ def main():
 
         manifest[name] = {
             "alt": spec["alt"], "source": spec["page"],
+            # Background photographs carry alt="" because they are decorative;
+            # `desc` is what the credits table prints for them instead.
+            "desc": spec.get("desc") or spec["alt"] or "(decorative background)",
             "w": spec["widths"][0],
             "h": round(spec["widths"][0] / spec["aspect"]),
             "aspect": round(spec["aspect"], 4),
@@ -246,7 +278,7 @@ def write_credits(manifest):
         spec = manifest[name]
         if not spec["source"]:
             continue
-        rows.append(f"| `{name}` | {spec['alt']} | <{spec['source']}> |")
+        rows.append(f"| `{name}` | {spec.get('desc') or spec['alt']} | <{spec['source']}> |")
 
     faces = ", ".join(f"`{n}`" for n in sorted(manifest) if not manifest[n]["source"])
     (OUT / "CREDITS.md").write_text(f"""# Photograph credits

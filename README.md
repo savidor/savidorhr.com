@@ -143,6 +143,27 @@ the set reads as one shoot rather than a scrapbook, and every photograph is of
 Black professionals, which is who this product sells to. Swap in photographs of
 your own people and sites when you have them, but nothing here is a placeholder.
 
+**Photographs submerged in the navy.** The blue panels, the page hero and
+the six inner page heroes all use one mechanism, taken from the brand's own
+social graphics: the photograph supplies only luminance and the navy supplies
+every hue, which is what `mix-blend-mode:luminosity` does and why it is a
+real duotone rather than a picture under a blue sheet. Put `navy-ph` on the
+section and `navy-bg` on the photograph; `build.py` pairs the scrim element
+to it automatically, so the two can never be separated by an edit.
+
+The scrim is what holds the headline's contrast, and it is not decorative.
+Measured against the live backdrop, white text sits at 9.1:1 on the home
+hero and 9.5 to 10.5:1 on the bands, and the mint accent words at 5.5:1,
+against a 4.5:1 requirement. If you lift `opacity` on `.navy-bg`, re-measure
+rather than trusting the eye: a photograph with a bright window in it can
+move the worst pixel a long way.
+
+**Amber marks, green acts.** Also from the social graphics: on the navy
+bands the icon tiles are amber and only buttons are green, so an icon and a
+button never carry the same signal. The five family hues still apply to the
+module grid, which is not on a navy band. The override has to be written at
+`nth-child` weight, because that is how the family hues are set.
+
 **Which photographs can carry a product card.** The `.duo-shot` pattern lays a
 mockup over one corner of a photo, so it only suits photographs with an empty
 corner: `reviewing` and `callcentre` (subject right, use `pop-l`), `desk-m`

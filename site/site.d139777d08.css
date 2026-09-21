@@ -1414,27 +1414,49 @@ html,body{max-width:100%;}
   .cta-in .btn-row{justify-content:center;}
 }
 @media (max-width:560px){ .cta-in{padding:130px 24px 40px;} }
-.phero{position:relative; overflow:hidden; isolation:isolate;}
-.phero > .ph{
+.navy-ph{position:relative; overflow:hidden; isolation:isolate;}
+.navy-ph > .navy-bg{
   position:absolute; inset:0; width:100%; height:100%;
-  object-fit:cover; object-position:center 38%;
-  z-index:0; opacity:.5;
+  object-fit:cover; object-position:center 42%;
+  z-index:0; mix-blend-mode:luminosity; opacity:.6;
 }
-.phero::before{
-  content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+.navy-ph > .navy-scrim{
+  position:absolute; inset:0; z-index:1; pointer-events:none; display:block;
   background:
-    radial-gradient(120% 90% at 50% 42%, rgba(11,20,70,.9) 0%,
-      rgba(13,28,92,.72) 46%, rgba(15,40,120,.5) 100%),
-    linear-gradient(180deg, rgba(15,27,97,.55) 0%, rgba(15,27,97,.3) 40%,
-      rgba(15,27,97,.72) 100%);
+    radial-gradient(115% 85% at 50% 45%, rgba(10,18,62,.82) 0%,
+      rgba(12,24,80,.66) 45%, rgba(14,32,100,.5) 100%),
+    linear-gradient(180deg, rgba(10,18,62,.6) 0%, rgba(10,18,62,.2) 35%,
+      rgba(10,18,62,.25) 65%, rgba(10,18,62,.7) 100%);
 }
-.phero > .wrap{position:relative; z-index:2;}
-.phero::after{
-  content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
-  background:var(--dots) 0 0/34px 34px; opacity:.5;
+.navy-ph > .wrap{position:relative; z-index:2;}
+.navy-ph > .navy-scrim::after{
+  content:""; position:absolute; inset:0;
+  background:var(--dots) 0 0/34px 34px; opacity:.55;
 }
+.hero.navy-ph > .navy-bg{opacity:.5;}
 @media (max-width:640px){
   
-  .phero > .ph{object-position:center 42%; opacity:.42;}
-  .phero::after{display:none;}
+  .navy-ph > .navy-bg{object-position:center 45%; opacity:.46;}
+  .navy-ph > .navy-scrim::after{display:none;}
 }
+@supports not (mix-blend-mode:luminosity){
+  .navy-ph > .navy-bg{opacity:.3;}
+}
+.ondark .cards .card:nth-child(5n+1) .ic,
+.ondark .cards .card:nth-child(5n+2) .ic,
+.ondark .cards .card:nth-child(5n+3) .ic,
+.ondark .cards .card:nth-child(5n+4) .ic,
+.ondark .cards .card:nth-child(5n+5) .ic{
+  background:linear-gradient(140deg,var(--amber),#E09A20);
+  border-color:transparent;
+  box-shadow:0 8px 20px -8px rgba(245,179,63,.7);
+}
+.ondark .cards .card .ic svg{color:#4A2D05;}
+.ondark .cards .card.card-go:nth-child(5n+1) .ic,
+.ondark .cards .card.card-go:nth-child(5n+2) .ic,
+.ondark .cards .card.card-go:nth-child(5n+3) .ic,
+.ondark .cards .card.card-go:nth-child(5n+4) .ic,
+.ondark .cards .card.card-go:nth-child(5n+5) .ic{
+  background:rgba(255,255,255,.2); box-shadow:none;
+}
+.ondark .cards .card.card-go .ic svg{color:#fff;}

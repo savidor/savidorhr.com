@@ -12,11 +12,15 @@ exists so each one can be traced back, not because credit is owed.
 | `boardroom` | A management team around a boardroom table in a Lagos office | <https://www.pexels.com/photo/business-meeting-in-lagos-office-setting-30688596/> |
 | `callcentre` | A consultant on a call at her desk, headset on | <https://www.pexels.com/photo/woman-in-black-blazer-sitting-on-chair-7709242/> |
 | `desk-m` | A director working from his laptop | <https://www.pexels.com/photo/professional-man-working-on-laptop-in-lagos-office-30678211/> |
+| `desk-night` | A consultant on the phone at her desk, late light | <https://www.pexels.com/photo/a-woman-talking-on-a-phone-in-the-office-5685959/> |
+| `documents` | Hands turning the pages of a document at a desk | <https://www.pexels.com/photo/black-woman-working-with-documents-in-office-5668879/> |
 | `huddle` | Three colleagues looking at the same laptop screen | <https://www.pexels.com/photo/team-collaboration-meeting-in-lagos-office-30689114/> |
 | `lagos` | The Lagos skyline looking out towards the water | <https://www.pexels.com/photo/aerial-view-of-lagos-cityscape-with-ocean-horizon-32656347/> |
+| `notes-call` | A consultant taking notes during a phone call | <https://www.pexels.com/photo/woman-in-black-blazer-holding-smartphone-3727469/> |
 | `portrait-w` | A director standing outside her office building | <https://www.pexels.com/photo/portrait-of-a-woman-in-a-suit-12373136/> |
 | `reviewing` | A manager looking up from her laptop in a glass walled office | <https://www.pexels.com/photo/thoughtful-black-businesswoman-working-on-project-in-office-5668845/> |
 | `talking` | Colleagues talking in the break area of a Lagos office | <https://www.pexels.com/photo/casual-office-meeting-in-lagos-nigeria-30688593/> |
+| `window-laptop` | A manager at her laptop against a bright office window | <https://www.pexels.com/photo/african-american-woman-employee-facial-expression-furnitures-1181649/> |
 
 `face-1`, `face-3`, `face-4` are square crops of the photographs above, for the avatars.
 

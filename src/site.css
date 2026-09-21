@@ -1980,45 +1980,91 @@ html,body{max-width:100%;}
 
 
 /* ═══════════════════════════════════════════════════════════════════════
-   PHOTOGRAPHY BEHIND THE INNER PAGE HEROES
-   The home page hero has the product mockup to carry it. Every other page
-   opened on a flat blue panel, which is the part that read as unfinished.
-   A photograph goes behind the blue instead, dimmed into it rather than
-   sitting on top, so the band still reads as the same brand surface.
+   PHOTOGRAPHS SUBMERGED IN THE NAVY
+   Taken from the brand's own social graphics: the photograph is not a
+   picture you look at, it is where the light in the panel comes from. Navy
+   supplies every hue, the photograph supplies only luminance, which is what
+   `mix-blend-mode:luminosity` means and why this is a real duotone rather
+   than a picture with a blue sheet over it.
+
+   One mechanism for all of it: the page hero, the mid page bands, and the
+   six inner page heroes. Add `navy-ph` to a section and `navy-bg` to the
+   photograph; build.py pairs the scrim to it automatically.
    ═══════════════════════════════════════════════════════════════════════ */
-.phero{position:relative; overflow:hidden; isolation:isolate;}
+.navy-ph{position:relative; overflow:hidden; isolation:isolate;}
 
-/* Sits above the section's own gradient and below the scrim. Held well under
-   full strength on purpose: at full opacity the photograph competes with the
-   headline, and this band exists to carry words. */
-.phero > .ph{
+/* `isolation:isolate` on the section is what makes the blend legal: it
+   confines the blending to this section, so the photograph mixes with the
+   section's own navy and never with whatever is painted behind it. */
+.navy-ph > .navy-bg{
   position:absolute; inset:0; width:100%; height:100%;
-  object-fit:cover; object-position:center 38%;
-  z-index:0; opacity:.5;
+  object-fit:cover; object-position:center 42%;
+  z-index:0; mix-blend-mode:luminosity; opacity:.6;
 }
 
-/* Two layers again. The linear scrim buries the middle where the headline
-   sits; the radial one keeps the corners bright so the photograph is still
-   legible as a photograph rather than a texture. */
-.phero::before{
-  content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+/* The scrim carries the contrast. Two stops again: a radial one that sinks
+   the middle where the headline sits, and a vertical one that keeps the top
+   and bottom edges dark enough to meet the sections either side. */
+.navy-ph > .navy-scrim{
+  position:absolute; inset:0; z-index:1; pointer-events:none; display:block;
   background:
-    radial-gradient(120% 90% at 50% 42%, rgba(11,20,70,.9) 0%,
-      rgba(13,28,92,.72) 46%, rgba(15,40,120,.5) 100%),
-    linear-gradient(180deg, rgba(15,27,97,.55) 0%, rgba(15,27,97,.3) 40%,
-      rgba(15,27,97,.72) 100%);
+    radial-gradient(115% 85% at 50% 45%, rgba(10,18,62,.82) 0%,
+      rgba(12,24,80,.66) 45%, rgba(14,32,100,.5) 100%),
+    linear-gradient(180deg, rgba(10,18,62,.6) 0%, rgba(10,18,62,.2) 35%,
+      rgba(10,18,62,.25) 65%, rgba(10,18,62,.7) 100%);
 }
-.phero > .wrap{position:relative; z-index:2;}
+.navy-ph > .wrap{position:relative; z-index:2;}
 
-/* The dot field belongs on top of the photograph, not under it, or the band
-   stops matching the others on the page. */
-.phero::after{
-  content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
-  background:var(--dots) 0 0/34px 34px; opacity:.5;
+/* Without this the dot field would sit under the photograph and vanish,
+   and the band would stop matching the ones that carry no photograph. */
+.navy-ph > .navy-scrim::after{
+  content:""; position:absolute; inset:0;
+  background:var(--dots) 0 0/34px 34px; opacity:.55;
 }
+
+/* The home page hero holds the product mockup over the top, so it takes the
+   photograph a shade further down: the mockup and its three moment cards are
+   the subject there, and the room behind them is only depth. */
+.hero.navy-ph > .navy-bg{opacity:.5;}
+
 @media (max-width:640px){
-  /* A wide crop at phone width is mostly wall, and the text needs the
+  /* A wide crop at phone width is mostly wall, and the headline needs the
      contrast more than the picture needs the room. */
-  .phero > .ph{object-position:center 42%; opacity:.42;}
-  .phero::after{display:none;}
+  .navy-ph > .navy-bg{object-position:center 45%; opacity:.46;}
+  .navy-ph > .navy-scrim::after{display:none;}
 }
+
+/* Safari and Firefox both support luminosity, but if it ever fails the
+   photograph would sit there at full colour under a thin scrim. Dropping it
+   further in that case keeps the headline readable rather than pretty. */
+@supports not (mix-blend-mode:luminosity){
+  .navy-ph > .navy-bg{opacity:.3;}
+}
+
+/* ── Amber on the icon tiles ──────────────────────────────────────────
+   From the same graphics: amber marks a thing, green means do a thing. On
+   the navy bands the two were both green, so an icon and a button carried
+   the same signal. Only the buttons stay green now. */
+/* The five family hues are set per nth-child further up, which outranks a
+   plain `.card .ic`, so the override has to be written at the same weight or
+   it silently loses. */
+.ondark .cards .card:nth-child(5n+1) .ic,
+.ondark .cards .card:nth-child(5n+2) .ic,
+.ondark .cards .card:nth-child(5n+3) .ic,
+.ondark .cards .card:nth-child(5n+4) .ic,
+.ondark .cards .card:nth-child(5n+5) .ic{
+  background:linear-gradient(140deg,var(--amber),#E09A20);
+  border-color:transparent;
+  box-shadow:0 8px 20px -8px rgba(245,179,63,.7);
+}
+.ondark .cards .card .ic svg{color:#4A2D05;}
+/* The one card that is itself an action keeps the green it always had, so
+   amber never ends up meaning "press me". */
+.ondark .cards .card.card-go:nth-child(5n+1) .ic,
+.ondark .cards .card.card-go:nth-child(5n+2) .ic,
+.ondark .cards .card.card-go:nth-child(5n+3) .ic,
+.ondark .cards .card.card-go:nth-child(5n+4) .ic,
+.ondark .cards .card.card-go:nth-child(5n+5) .ic{
+  background:rgba(255,255,255,.2); box-shadow:none;
+}
+.ondark .cards .card.card-go .ic svg{color:#fff;}

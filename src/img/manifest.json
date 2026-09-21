@@ -2,6 +2,7 @@
   "boardroom": {
     "alt": "A management team around a boardroom table in a Lagos office",
     "aspect": 1.7778,
+    "desc": "A management team around a boardroom table in a Lagos office",
     "files": [
       {
         "bytes": 80654,
@@ -27,6 +28,7 @@
   "callcentre": {
     "alt": "A consultant on a call at her desk, headset on",
     "aspect": 1.5,
+    "desc": "A consultant on a call at her desk, headset on",
     "files": [
       {
         "bytes": 20580,
@@ -47,6 +49,7 @@
   "desk-m": {
     "alt": "A director working from his laptop",
     "aspect": 1.5,
+    "desc": "A director working from his laptop",
     "files": [
       {
         "bytes": 23564,
@@ -64,9 +67,62 @@
     "source": "https://www.pexels.com/photo/professional-man-working-on-laptop-in-lagos-office-30678211/",
     "w": 1000
   },
+  "desk-night": {
+    "alt": "",
+    "aspect": 1.7778,
+    "desc": "A consultant on the phone at her desk, late light",
+    "files": [
+      {
+        "bytes": 28282,
+        "file": "desk-night-1600.webp",
+        "w": 1600
+      },
+      {
+        "bytes": 16842,
+        "file": "desk-night-1100.webp",
+        "w": 1100
+      },
+      {
+        "bytes": 9392,
+        "file": "desk-night-700.webp",
+        "w": 700
+      }
+    ],
+    "h": 900,
+    "lqip": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAABQAwCdASoUAAwAPyF6s1GtJ6SisAgBoCQJQBOgAf5wVMaEDAD+Figtde9CCD7qHZwuw6OknwK0vvuWIy3vgvj5aRJOFqedpzyXv8FK/o5/SRDLmIAAAA==",
+    "source": "https://www.pexels.com/photo/a-woman-talking-on-a-phone-in-the-office-5685959/",
+    "w": 1600
+  },
+  "documents": {
+    "alt": "",
+    "aspect": 1.7778,
+    "desc": "Hands turning the pages of a document at a desk",
+    "files": [
+      {
+        "bytes": 53964,
+        "file": "documents-1600.webp",
+        "w": 1600
+      },
+      {
+        "bytes": 25100,
+        "file": "documents-1100.webp",
+        "w": 1100
+      },
+      {
+        "bytes": 13132,
+        "file": "documents-700.webp",
+        "w": 700
+      }
+    ],
+    "h": 900,
+    "lqip": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAACQAwCdASoUAAwAPyF6s1GtJ6SisAgBoCQJZwDKAB515/PRRX+gAM4HBeXWsKHEPMWpAW8MI0UWqtys2d/ZWt/Kk9xPPl2ct9w0WP0oUflXOecYkdn0ypLJCdIh9M47xlrq3egAgAA=",
+    "source": "https://www.pexels.com/photo/black-woman-working-with-documents-in-office-5668879/",
+    "w": 1600
+  },
   "face-1": {
     "alt": "Portrait",
     "aspect": 1,
+    "desc": "Portrait",
     "files": [
       {
         "bytes": 3588,
@@ -87,6 +143,7 @@
   "face-3": {
     "alt": "Portrait",
     "aspect": 1,
+    "desc": "Portrait",
     "files": [
       {
         "bytes": 3826,
@@ -107,6 +164,7 @@
   "face-4": {
     "alt": "Portrait",
     "aspect": 1,
+    "desc": "Portrait",
     "files": [
       {
         "bytes": 2844,
@@ -127,6 +185,7 @@
   "huddle": {
     "alt": "Three colleagues looking at the same laptop screen",
     "aspect": 1.5,
+    "desc": "Three colleagues looking at the same laptop screen",
     "files": [
       {
         "bytes": 43006,
@@ -147,6 +206,7 @@
   "lagos": {
     "alt": "The Lagos skyline looking out towards the water",
     "aspect": 1.7778,
+    "desc": "The Lagos skyline looking out towards the water",
     "files": [
       {
         "bytes": 96230,
@@ -169,9 +229,36 @@
     "source": "https://www.pexels.com/photo/aerial-view-of-lagos-cityscape-with-ocean-horizon-32656347/",
     "w": 1200
   },
+  "notes-call": {
+    "alt": "",
+    "aspect": 1.7778,
+    "desc": "A consultant taking notes during a phone call",
+    "files": [
+      {
+        "bytes": 49094,
+        "file": "notes-call-1600.webp",
+        "w": 1600
+      },
+      {
+        "bytes": 25452,
+        "file": "notes-call-1100.webp",
+        "w": 1100
+      },
+      {
+        "bytes": 12380,
+        "file": "notes-call-700.webp",
+        "w": 700
+      }
+    ],
+    "h": 900,
+    "lqip": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAAAwBACdASoUAAwAPyF6s1GtJ6SisAgBoCQJZQCzgB0637/96a/XakHbpwAA9wn8YLvfNdmZ2pLvdhm1z5jiEjnZjlz5194mI+dJ+CaG8/TnNfc6/MxNWLbJj0PAAA==",
+    "source": "https://www.pexels.com/photo/woman-in-black-blazer-holding-smartphone-3727469/",
+    "w": 1600
+  },
   "portrait-w": {
     "alt": "A director standing outside her office building",
     "aspect": 0.8,
+    "desc": "A director standing outside her office building",
     "files": [
       {
         "bytes": 46646,
@@ -192,6 +279,7 @@
   "reviewing": {
     "alt": "A manager looking up from her laptop in a glass walled office",
     "aspect": 1.5,
+    "desc": "A manager looking up from her laptop in a glass walled office",
     "files": [
       {
         "bytes": 18148,
@@ -212,6 +300,7 @@
   "talking": {
     "alt": "Colleagues talking in the break area of a Lagos office",
     "aspect": 1.7778,
+    "desc": "Colleagues talking in the break area of a Lagos office",
     "files": [
       {
         "bytes": 71608,
@@ -233,5 +322,31 @@
     "lqip": "data:image/webp;base64,UklGRowAAABXRUJQVlA4IIAAAACwAwCdASoUAAwAPyF4s1GtJySisAgBoCQJYwDE2BDYDCIsJYukAAD+j697B4Lw2Obh5x19Kbna3iwaNpce0scfaXjY9uI9xSvQCEn0LvKkjQQZuGKzKeSG8PtQn8TaAcYxuZ56r+sA+SW5/jlRoI28ACipOr5PQxdCo6imXsAAAA==",
     "source": "https://www.pexels.com/photo/casual-office-meeting-in-lagos-nigeria-30688593/",
     "w": 1400
+  },
+  "window-laptop": {
+    "alt": "",
+    "aspect": 1.7778,
+    "desc": "A manager at her laptop against a bright office window",
+    "files": [
+      {
+        "bytes": 38320,
+        "file": "window-laptop-1600.webp",
+        "w": 1600
+      },
+      {
+        "bytes": 23634,
+        "file": "window-laptop-1100.webp",
+        "w": 1100
+      },
+      {
+        "bytes": 13462,
+        "file": "window-laptop-700.webp",
+        "w": 700
+      }
+    ],
+    "h": 900,
+    "lqip": "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAADQAwCdASoUAAwAPyF4s1GtJySisAgBoCQJZwAAN8mngA6QQFXEAAAAzhov4c4DzNWFXLt0PubY19FVAR35XoQthQvxPVc7WCN6kZgiQeczV5Xsv9oFrh3Ohz9thr2WgJOAsX5BQ5xwAA==",
+    "source": "https://www.pexels.com/photo/african-american-woman-employee-facial-expression-furnitures-1181649/",
+    "w": 1600
   }
 }
