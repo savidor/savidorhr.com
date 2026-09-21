@@ -97,6 +97,44 @@ PHOTOS = {
         alt="A director standing outside her office building",
         page="https://www.pexels.com/photo/portrait-of-a-woman-in-a-suit-12373136/",
     ),
+    # ── Pictures of the thing being described ───────────────────────────
+    # Added because the set had drifted into five uses of the same boardroom.
+    # A photograph that does not depict its subject is decoration, and a
+    # reader notices the repetition long before they notice the point.
+    "signing": dict(
+        pexels=955393, aspect=16 / 9, focal=(0.48, 0.52), widths=[1600, 1100, 700],
+        alt="A hand signing the approval line of a financial request form",
+        page="https://www.pexels.com/photo/person-signing-paper-955393/",
+    ),
+    "calculator": dict(
+        pexels=7491011, aspect=16 / 9, focal=(0.46, 0.52), widths=[1600, 1100, 700],
+        alt="Working out a figure on a calculator beside a notepad",
+        page="https://www.pexels.com/photo/woman-uses-calculator-7491011/",
+    ),
+    "empty-desk": dict(
+        pexels=8546651, aspect=3 / 2, focal=(0.55, 0.56), widths=[1200, 760],
+        alt="An empty chair at a desk somebody has left for the week",
+        page="https://www.pexels.com/photo/an-office-chair-beside-a-work-desk-8546651/",
+    ),
+    "site-work": dict(
+        pexels=5298215, aspect=16 / 9, focal=(0.50, 0.50), widths=[1400, 900, 600],
+        q=62,
+        alt="A crew working on site in safety gear",
+        page="https://www.pexels.com/photo/construction-workers-working-together-5298215/",
+    ),
+    # Both were vetted earlier and parked when the testimonial came out. They
+    # are good photographs of Black professionals and the set needs the range.
+    "presenting": dict(
+        pexels=9034265, aspect=16 / 9, focal=(0.42, 0.40), widths=[1600, 1100, 700],
+        alt="A team lead presenting figures at a whiteboard",
+        page="https://www.pexels.com/photo/woman-in-black-dress-presenting-9034265/",
+    ),
+    "portrait-m": dict(
+        pexels=7794033, aspect=16 / 9, focal=(0.50, 0.42), widths=[1600, 1100, 700],
+        alt="A sales manager at his desk with a laptop open",
+        page="https://www.pexels.com/photo/smiling-man-sitting-at-laptop-7794033/",
+    ),
+
     # ── Backgrounds for the navy bands ──────────────────────────────────
     # Chosen to be submerged, not looked at: strong shapes, a clear light
     # source and plenty of dark. Fine detail is wasted here, because the

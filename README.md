@@ -179,6 +179,30 @@ photographer's original upload is fetched, not Pexels' own 2400px re-encode,
 because resizing something already compressed once is a second lossy pass for
 nothing. Sources are cached in a gitignored `.photo-cache/`.
 
+**One photograph per slot, and each depicts its subject.** The set drifted
+into five uses of the same boardroom, which a reader notices long before they
+notice the point being made. Nothing now appears more than twice across the
+site, nothing appears twice on one page, and the article covers show what the
+article is about: a hand signing an approval form, an empty chair at a desk
+somebody has left, colleagues evaluating something together. An article cover
+shown as a thumbnail on the insights hub is the same article, not a repeat.
+
+If you add a page, check the reuse before you ship it:
+
+```
+python3 - <<'EOF'
+import re, pathlib, collections
+use = collections.defaultdict(list)
+for f in sorted(list(pathlib.Path('src/pages').glob('*.html'))
+                + list(pathlib.Path('src/insights').glob('*.html'))):
+    t = f.read_text()
+    for m in re.findall(r'data-photo="([a-z0-9-]+)"', t): use[m].append(f.stem)
+    for m in re.findall(r'^cover: (\S+)', t, re.M):      use[m].append(f.stem)
+for k in sorted(use, key=lambda k: -len(use[k])):
+    print(f'{k:<14} x{len(use[k])}  {", ".join(use[k])}')
+EOF
+```
+
 **These are launch ready.** The backbone is one photographer's Lagos series, so
 the set reads as one shoot rather than a scrapbook, and every photograph is of
 Black professionals, which is who this product sells to. Swap in photographs of

@@ -25,6 +25,32 @@
     "source": "https://www.pexels.com/photo/business-meeting-in-lagos-office-setting-30688596/",
     "w": 1600
   },
+  "calculator": {
+    "alt": "Working out a figure on a calculator beside a notepad",
+    "aspect": 1.7778,
+    "desc": "Working out a figure on a calculator beside a notepad",
+    "files": [
+      {
+        "bytes": 73260,
+        "file": "calculator-1600.webp",
+        "w": 1600
+      },
+      {
+        "bytes": 39398,
+        "file": "calculator-1100.webp",
+        "w": 1100
+      },
+      {
+        "bytes": 20648,
+        "file": "calculator-700.webp",
+        "w": 700
+      }
+    ],
+    "h": 900,
+    "lqip": "data:image/webp;base64,UklGRooAAABXRUJQVlA4IH4AAABQBACdASoUAAwAPyF4s1GtJySisAgBoCQJbACsKAAAeF/ZJ7EuI96bndYAAP5ew4tvHGv8EVINvcrwrEwUsSb2sixLnGZvGCjRjJDHjjHZ1KTqc25vCdVSO8lOyohGhjxLbTjmOcvjZZ4STHs0ZaB0n6GQkyM78RoKHcQAAAA=",
+    "source": "https://www.pexels.com/photo/woman-uses-calculator-7491011/",
+    "w": 1600
+  },
   "callcentre": {
     "alt": "A consultant on a call at her desk, headset on",
     "aspect": 1.5,
@@ -118,6 +144,27 @@
     "lqip": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAACQAwCdASoUAAwAPyF6s1GtJ6SisAgBoCQJZwDKAB515/PRRX+gAM4HBeXWsKHEPMWpAW8MI0UWqtys2d/ZWt/Kk9xPPl2ct9w0WP0oUflXOecYkdn0ypLJCdIh9M47xlrq3egAgAA=",
     "source": "https://www.pexels.com/photo/black-woman-working-with-documents-in-office-5668879/",
     "w": 1600
+  },
+  "empty-desk": {
+    "alt": "An empty chair at a desk somebody has left for the week",
+    "aspect": 1.5,
+    "desc": "An empty chair at a desk somebody has left for the week",
+    "files": [
+      {
+        "bytes": 26230,
+        "file": "empty-desk-1200.webp",
+        "w": 1200
+      },
+      {
+        "bytes": 15030,
+        "file": "empty-desk-760.webp",
+        "w": 760
+      }
+    ],
+    "h": 800,
+    "lqip": "data:image/webp;base64,UklGRn4AAABXRUJQVlA4IHIAAADQAwCdASoUAA4APyF4s1GtJySisAgBoCQJZwAAO0YemPY2yqPgagAA/rBquyQ8PtGim3yqp8nS/RcrzEojcDMGVeO1R0XGEnh9J+1WtVuK5pWbVQ5HgHgKvmveETTT7LGIXzH3v3HhCblX15XBLrvkAAA=",
+    "source": "https://www.pexels.com/photo/an-office-chair-beside-a-work-desk-8546651/",
+    "w": 1200
   },
   "face-1": {
     "alt": "Portrait",
@@ -255,6 +302,32 @@
     "source": "https://www.pexels.com/photo/woman-in-black-blazer-holding-smartphone-3727469/",
     "w": 1600
   },
+  "portrait-m": {
+    "alt": "A sales manager at his desk with a laptop open",
+    "aspect": 1.7778,
+    "desc": "A sales manager at his desk with a laptop open",
+    "files": [
+      {
+        "bytes": 56958,
+        "file": "portrait-m-1600.webp",
+        "w": 1600
+      },
+      {
+        "bytes": 26768,
+        "file": "portrait-m-1100.webp",
+        "w": 1100
+      },
+      {
+        "bytes": 12402,
+        "file": "portrait-m-700.webp",
+        "w": 700
+      }
+    ],
+    "h": 900,
+    "lqip": "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAACwAwCdASoUAAwAPyF4s1GtJySisAgBoCQJZwAAQnlv3sOk7ZOWAAD+2VhNQmwC4ffb8P7gT5dPQu+rK3sJQMAG97vw6nNzs1no8jKc4qulGWqurt/OtgAA",
+    "source": "https://www.pexels.com/photo/smiling-man-sitting-at-laptop-7794033/",
+    "w": 1600
+  },
   "portrait-w": {
     "alt": "A director standing outside her office building",
     "aspect": 0.8,
@@ -276,6 +349,32 @@
     "source": "https://www.pexels.com/photo/portrait-of-a-woman-in-a-suit-12373136/",
     "w": 760
   },
+  "presenting": {
+    "alt": "A team lead presenting figures at a whiteboard",
+    "aspect": 1.7778,
+    "desc": "A team lead presenting figures at a whiteboard",
+    "files": [
+      {
+        "bytes": 40048,
+        "file": "presenting-1600.webp",
+        "w": 1600
+      },
+      {
+        "bytes": 20166,
+        "file": "presenting-1100.webp",
+        "w": 1100
+      },
+      {
+        "bytes": 8826,
+        "file": "presenting-700.webp",
+        "w": 700
+      }
+    ],
+    "h": 900,
+    "lqip": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAAAwAwCdASoUAAwAPyF6s1GtJ6SvMAgB4CQJZwAAVX6izlIAAP3/bGhHb6vYxxvPfbwtZYfwFKTy570UAfxC5XzRMLbaB94+3XDAgAAA",
+    "source": "https://www.pexels.com/photo/woman-in-black-dress-presenting-9034265/",
+    "w": 1600
+  },
   "reviewing": {
     "alt": "A manager looking up from her laptop in a glass walled office",
     "aspect": 1.5,
@@ -296,6 +395,58 @@
     "lqip": "data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAADQAwCdASoUAA4APyF4s1GtJySisAgBoCQJZQCw7B6RCB0B/9IS6lAA/gJ+uIlJLNDfC4BX4YG/X6PYba0mPPUfWHs7D54C+WHSyK2tR7W1Rh8+O9Fpl0jvOix+UdcQs2r2ALIAAAA=",
     "source": "https://www.pexels.com/photo/thoughtful-black-businesswoman-working-on-project-in-office-5668845/",
     "w": 1000
+  },
+  "signing": {
+    "alt": "A hand signing the approval line of a financial request form",
+    "aspect": 1.7778,
+    "desc": "A hand signing the approval line of a financial request form",
+    "files": [
+      {
+        "bytes": 36370,
+        "file": "signing-1600.webp",
+        "w": 1600
+      },
+      {
+        "bytes": 22240,
+        "file": "signing-1100.webp",
+        "w": 1100
+      },
+      {
+        "bytes": 12008,
+        "file": "signing-700.webp",
+        "w": 700
+      }
+    ],
+    "h": 900,
+    "lqip": "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAACwAwCdASoUAAwAPyF6tVGtJ6UisAgBoCQJQAAIsPNHbZYdrWtgAAD+yLmJv9UoS5G1EejW5dNu6G040Sp07pCcrpfYn94KgUgf+n4n/s79hmvM5vS88OP0+DAAAA==",
+    "source": "https://www.pexels.com/photo/person-signing-paper-955393/",
+    "w": 1600
+  },
+  "site-work": {
+    "alt": "A crew working on site in safety gear",
+    "aspect": 1.7778,
+    "desc": "A crew working on site in safety gear",
+    "files": [
+      {
+        "bytes": 100744,
+        "file": "site-work-1400.webp",
+        "w": 1400
+      },
+      {
+        "bytes": 54400,
+        "file": "site-work-900.webp",
+        "w": 900
+      },
+      {
+        "bytes": 30800,
+        "file": "site-work-600.webp",
+        "w": 600
+      }
+    ],
+    "h": 788,
+    "lqip": "data:image/webp;base64,UklGRoIAAABXRUJQVlA4IHYAAAAwBACdASoUAAwAPyF4s1GtJySisAgBoCQJbACdAB6QDdjBmX7WuX1QMAAA+Pxg+CkEYVC4oeJcSR/nfgI66qykPMnXRXYeAYvRdoF0ajqA64Pdm/vegTtmfjUDyZunfqyI99JGIq+TanksWHUpW1gClOfqSAAA",
+    "source": "https://www.pexels.com/photo/construction-workers-working-together-5298215/",
+    "w": 1400
   },
   "talking": {
     "alt": "Colleagues talking in the break area of a Lagos office",
