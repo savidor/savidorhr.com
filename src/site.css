@@ -737,7 +737,8 @@ html,body{max-width:100%;}
    track child min-width:0 lets it shrink and wrap instead. */
 .hero-grid > *, .feat > *, .cards > *, .stats > *, .tiers > *,
 .ftr-grid > *, .f2 > *, .two > *, .app > *, .mini > *, .slots > *,
-.briefs > *, .a-grid > *, .fam-bar > *, .logo-row > *{min-width:0;}
+.briefs > *, .a-grid > *, .fam-bar > *, .logo-row > *,
+.exp-grid > *, .ph-band-in > *, .duo-shot > *, .q-photo > *{min-width:0;}
 
 /* The pill is the specific offender: inline-flex with a full sentence in it. */
 .pill{flex-wrap:wrap; max-width:100%; text-align:left;}
@@ -1186,6 +1187,29 @@ html,body{max-width:100%;}
   .exp-grid{grid-template-columns:1fr; gap:30px;}
   /* The frame leads on a phone: you see what it looks like, then read. */
   .exp-side{position:static; order:-1;}
+}
+
+/* The frames in the explorer carry short three column tables, so on a phone
+   they are better wrapped than scrolled. The 460px floor exists for the wide
+   mockups elsewhere; here it only guaranteed that the status column, which is
+   the one thing these tables are showing you, sat outside the visible box. */
+@media (max-width:640px){
+  .exp-mock .t-scroll table.t{min-width:0;}
+  .exp-mock table.t td{padding-right:6px;}
+  .exp-mock table.t .m{font-size:.7rem;}
+}
+
+/* Where a table genuinely is too wide to wrap, say so. Without this a clipped
+   edge reads as a layout bug rather than as something you can push sideways. */
+.t-scroll{position:relative;}
+@media (max-width:860px){
+  .t-scroll{
+    -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 26px),transparent);
+    mask-image:linear-gradient(90deg,#000 calc(100% - 26px),transparent);
+  }
+  /* Once it is scrolled to the end there is nothing more to hint at. */
+  .t-scroll:not(:has(table)){-webkit-mask-image:none; mask-image:none;}
+  .exp-mock .t-scroll{-webkit-mask-image:none; mask-image:none;}
 }
 @media (prefers-reduced-motion: reduce){
   .exp-body{transition:none;}
@@ -1665,9 +1689,14 @@ html,body{max-width:100%;}
   border-radius:15px; padding:15px 17px;
   backdrop-filter:saturate(150%) blur(14px);
 }
-.pb-fact b{display:block; font-family:var(--f-d); font-size:1.5rem; font-weight:800;
-  letter-spacing:-.03em; color:#fff; line-height:1.05; font-variant-numeric:tabular-nums;}
-.pb-fact span{display:block; font-size:.86rem; color:rgba(255,255,255,.84); margin-top:3px;}
+/* Scoped to the text block on purpose. `.pb-fact span` also matched the icon
+   tile, which is a span, and beat `.fn-ic{display:grid}` on specificity: the
+   tile lost its centring and the glyph sat against its top edge. */
+.pb-fact > div > b{display:block; font-family:var(--f-d); font-size:1.5rem;
+  font-weight:800; letter-spacing:-.03em; color:#fff; line-height:1.05;
+  font-variant-numeric:tabular-nums;}
+.pb-fact > div > span{display:block; font-size:.86rem;
+  color:rgba(255,255,255,.84); margin-top:3px;}
 .pb-fact .fn-ic{background:rgba(255,255,255,.16); border-color:rgba(255,255,255,.2);}
 .pb-fact .fn-ic svg{color:var(--mint);}
 
@@ -1777,6 +1806,13 @@ html,body{max-width:100%;}
    doing the same thing. */
 .js .reveal.from-l{transform:translateX(-26px);}
 .js .reveal.from-r{transform:translateX(26px);}
+/* Sideways only where there is room to move sideways. On a phone the columns
+   are stacked, so the offset buys nothing and the transformed box sticks out
+   past the viewport, where `overflow-x:clip` on the document silently cuts it
+   off rather than scrolling to it. */
+@media (max-width:940px){
+  .js .reveal.from-l,.js .reveal.from-r{transform:translateY(20px);}
+}
 .js .reveal.from-s{transform:scale(.955);}
 .js .reveal.from-l.in,.js .reveal.from-r.in,.js .reveal.from-s.in{transform:none;}
 
@@ -1890,7 +1926,7 @@ html,body{max-width:100%;}
 .logos .mq{margin-top:4px;}
 
 /* Facts on a photo band that are phrases rather than figures. */
-.pb-fact.words b{font-size:1.04rem; letter-spacing:-.016em;}
+.pb-fact.words > div > b{font-size:1.04rem; letter-spacing:-.016em;}
 
 /* ── The testimonial, with a face in it ────────────────────────────── */
 .q-photo{display:grid; grid-template-columns:300px minmax(0,1fr); gap:46px;
@@ -1941,3 +1977,48 @@ html,body{max-width:100%;}
 }
 @media (max-width:560px){ .cta-in{padding:130px 24px 40px;} }
 
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   PHOTOGRAPHY BEHIND THE INNER PAGE HEROES
+   The home page hero has the product mockup to carry it. Every other page
+   opened on a flat blue panel, which is the part that read as unfinished.
+   A photograph goes behind the blue instead, dimmed into it rather than
+   sitting on top, so the band still reads as the same brand surface.
+   ═══════════════════════════════════════════════════════════════════════ */
+.phero{position:relative; overflow:hidden; isolation:isolate;}
+
+/* Sits above the section's own gradient and below the scrim. Held well under
+   full strength on purpose: at full opacity the photograph competes with the
+   headline, and this band exists to carry words. */
+.phero > .ph{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; object-position:center 38%;
+  z-index:0; opacity:.5;
+}
+
+/* Two layers again. The linear scrim buries the middle where the headline
+   sits; the radial one keeps the corners bright so the photograph is still
+   legible as a photograph rather than a texture. */
+.phero::before{
+  content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:
+    radial-gradient(120% 90% at 50% 42%, rgba(11,20,70,.9) 0%,
+      rgba(13,28,92,.72) 46%, rgba(15,40,120,.5) 100%),
+    linear-gradient(180deg, rgba(15,27,97,.55) 0%, rgba(15,27,97,.3) 40%,
+      rgba(15,27,97,.72) 100%);
+}
+.phero > .wrap{position:relative; z-index:2;}
+
+/* The dot field belongs on top of the photograph, not under it, or the band
+   stops matching the others on the page. */
+.phero::after{
+  content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:var(--dots) 0 0/34px 34px; opacity:.5;
+}
+@media (max-width:640px){
+  /* A wide crop at phone width is mostly wall, and the text needs the
+     contrast more than the picture needs the room. */
+  .phero > .ph{object-position:center 42%; opacity:.42;}
+  .phero::after{display:none;}
+}

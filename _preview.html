@@ -569,7 +569,8 @@ html,body{max-width:100%;}
 }
 .hero-grid > *, .feat > *, .cards > *, .stats > *, .tiers > *,
 .ftr-grid > *, .f2 > *, .two > *, .app > *, .mini > *, .slots > *,
-.briefs > *, .a-grid > *, .fam-bar > *, .logo-row > *{min-width:0;}
+.briefs > *, .a-grid > *, .fam-bar > *, .logo-row > *,
+.exp-grid > *, .ph-band-in > *, .duo-shot > *, .q-photo > *{min-width:0;}
 .pill{flex-wrap:wrap; max-width:100%; text-align:left;}
 .pill b{flex:0 0 auto;}
 .lead, .hero-note, .card p, .mod-card p, .ticks li, .brief p{overflow-wrap:break-word;}
@@ -911,6 +912,21 @@ html,body{max-width:100%;}
   
   .exp-side{position:static; order:-1;}
 }
+@media (max-width:640px){
+  .exp-mock .t-scroll table.t{min-width:0;}
+  .exp-mock table.t td{padding-right:6px;}
+  .exp-mock table.t .m{font-size:.7rem;}
+}
+.t-scroll{position:relative;}
+@media (max-width:860px){
+  .t-scroll{
+    -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 26px),transparent);
+    mask-image:linear-gradient(90deg,#000 calc(100% - 26px),transparent);
+  }
+  
+  .t-scroll:not(:has(table)){-webkit-mask-image:none; mask-image:none;}
+  .exp-mock .t-scroll{-webkit-mask-image:none; mask-image:none;}
+}
 @media (prefers-reduced-motion: reduce){
   .exp-body{transition:none;}
   .exp-mock.on{animation:none;}
@@ -1217,9 +1233,11 @@ html,body{max-width:100%;}
   border-radius:15px; padding:15px 17px;
   backdrop-filter:saturate(150%) blur(14px);
 }
-.pb-fact b{display:block; font-family:var(--f-d); font-size:1.5rem; font-weight:800;
-  letter-spacing:-.03em; color:#fff; line-height:1.05; font-variant-numeric:tabular-nums;}
-.pb-fact span{display:block; font-size:.86rem; color:rgba(255,255,255,.84); margin-top:3px;}
+.pb-fact > div > b{display:block; font-family:var(--f-d); font-size:1.5rem;
+  font-weight:800; letter-spacing:-.03em; color:#fff; line-height:1.05;
+  font-variant-numeric:tabular-nums;}
+.pb-fact > div > span{display:block; font-size:.86rem;
+  color:rgba(255,255,255,.84); margin-top:3px;}
 .pb-fact .fn-ic{background:rgba(255,255,255,.16); border-color:rgba(255,255,255,.2);}
 .pb-fact .fn-ic svg{color:var(--mint);}
 .duo-shot{position:relative;}
@@ -1290,6 +1308,9 @@ html,body{max-width:100%;}
 }
 .js .reveal.from-l{transform:translateX(-26px);}
 .js .reveal.from-r{transform:translateX(26px);}
+@media (max-width:940px){
+  .js .reveal.from-l,.js .reveal.from-r{transform:translateY(20px);}
+}
 .js .reveal.from-s{transform:scale(.955);}
 .js .reveal.from-l.in,.js .reveal.from-r.in,.js .reveal.from-s.in{transform:none;}
 .count{font-variant-numeric:tabular-nums;}
@@ -1358,7 +1379,7 @@ html,body{max-width:100%;}
 .mq-set{display:flex; align-items:center; gap:56px; padding-right:56px;}
 @media (max-width:640px){ .mq-set{gap:34px; padding-right:34px;} }
 .logos .mq{margin-top:4px;}
-.pb-fact.words b{font-size:1.04rem; letter-spacing:-.016em;}
+.pb-fact.words > div > b{font-size:1.04rem; letter-spacing:-.016em;}
 .q-photo{display:grid; grid-template-columns:300px minmax(0,1fr); gap:46px;
   align-items:center;}
 .q-photo .q-ph{border-radius:20px;}
@@ -1396,6 +1417,30 @@ html,body{max-width:100%;}
   .cta-in .btn-row{justify-content:center;}
 }
 @media (max-width:560px){ .cta-in{padding:130px 24px 40px;} }
+.phero{position:relative; overflow:hidden; isolation:isolate;}
+.phero > .ph{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; object-position:center 38%;
+  z-index:0; opacity:.5;
+}
+.phero::before{
+  content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:
+    radial-gradient(120% 90% at 50% 42%, rgba(11,20,70,.9) 0%,
+      rgba(13,28,92,.72) 46%, rgba(15,40,120,.5) 100%),
+    linear-gradient(180deg, rgba(15,27,97,.55) 0%, rgba(15,27,97,.3) 40%,
+      rgba(15,27,97,.72) 100%);
+}
+.phero > .wrap{position:relative; z-index:2;}
+.phero::after{
+  content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:var(--dots) 0 0/34px 34px; opacity:.5;
+}
+@media (max-width:640px){
+  
+  .phero > .ph{object-position:center 42%; opacity:.42;}
+  .phero::after{display:none;}
+}
 
 </style>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol><symbol id="i-check-c" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="16 10 11 15 8 12"/></symbol><symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></symbol><symbol id="i-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></symbol><symbol id="i-wallet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></symbol><symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></symbol><symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol><symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol><symbol id="i-award" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5 17 22l-5-3-5 3 1.5-8.5"/></symbol><symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol><symbol id="i-case" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol><symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22 6 12 13 2 6"/></symbol><symbol id="i-mega" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1z"/><path d="M16 8a5 5 0 0 1 0 8"/><path d="M19 5a9 9 0 0 1 0 14"/></symbol><symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol><symbol id="i-laptop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><line x1="2" y1="20" x2="22" y2="20"/></symbol><symbol id="i-car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3v-5l2-5h14l2 5v5h-2"/><circle cx="7.5" cy="17" r="2"/><circle cx="16.5" cy="17" r="2"/><line x1="9.5" y1="17" x2="14.5" y2="17"/></symbol><symbol id="i-screen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></symbol><symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></symbol><symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol><symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol><symbol id="i-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></symbol><symbol id="i-db" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.7-4 3-9 3s-9-1.3-9-3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/></symbol><symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol><symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></symbol><symbol id="i-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol><symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol><symbol id="i-route" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"/><circle cx="18" cy="5" r="3"/><path d="M9 19h4a4 4 0 0 0 4-4V9"/></symbol><symbol id="i-build" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 1 5 5L8.5 22.5 2 24l1.5-6.5z"/><line x1="12" y1="9" x2="18" y2="15"/></symbol></svg>
@@ -1939,6 +1984,7 @@ html,body{max-width:100%;}
   </div>
 </section></main></div>
 <div class="page" id="page-product" hidden><main><section class="phero band ondark">
+  <img class="ph phero-bg" src="site/img/boardroom-1600.863f2d59f4.webp" srcset="site/img/boardroom-700.dc1fe49c6b.webp 700w, site/img/boardroom-1100.7a5732ef44.webp 1100w, site/img/boardroom-1600.863f2d59f4.webp 1600w" sizes="100vw" width="1600" height="900" alt="A management team around a boardroom table in a Lagos office" fetchpriority="high" decoding="async" style="background-image:url(data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAABQBACdASoUAAwAPyF4s1GtJySisAgBoCQJYgC7AYvWoadBsTksKMXLdIOAAP5kqxEos7KeFW+JbCg3qoohHtNtM5jyARiAFlonViDAoKH1sM+uf8Gz5dV/aQKR7WeZXNqHzx9mM5ILq7fhm4Q/ohwx8KI9/NNSZD1Q2oAA)">
   <div class="wrap rise">
     <span class="eyebrow">How it works</span>
     <h1 class="h1">Your approval chain, stored as settings</h1>
@@ -2160,6 +2206,7 @@ html,body{max-width:100%;}
   </div>
 </section></main></div>
 <div class="page" id="page-modules" hidden><main><section class="phero band ondark">
+  <img class="ph phero-bg" src="site/img/talking-1400.11a450c2ca.webp" srcset="site/img/talking-600.324b6a8d28.webp 600w, site/img/talking-900.efec2ae937.webp 900w, site/img/talking-1400.11a450c2ca.webp 1400w" sizes="100vw" width="1400" height="788" alt="Colleagues talking in the break area of a Lagos office" fetchpriority="high" decoding="async" style="background-image:url(data:image/webp;base64,UklGRowAAABXRUJQVlA4IIAAAACwAwCdASoUAAwAPyF4s1GtJySisAgBoCQJYwDE2BDYDCIsJYukAAD+j697B4Lw2Obh5x19Kbna3iwaNpce0scfaXjY9uI9xSvQCEn0LvKkjQQZuGKzKeSG8PtQn8TaAcYxuZ56r+sA+SW5/jlRoI28ACipOr5PQxdCo6imXsAAAA==)">
   <div class="wrap rise">
     <span class="eyebrow">The full system</span>
     <h1 class="h1 wide">Twenty eight modules, one permission model</h1>
@@ -2311,6 +2358,7 @@ html,body{max-width:100%;}
   </div>
 </section></main></div>
 <div class="page" id="page-crm" hidden><main><section class="phero band ondark">
+  <img class="ph phero-bg" src="site/img/boardroom-1600.863f2d59f4.webp" srcset="site/img/boardroom-700.dc1fe49c6b.webp 700w, site/img/boardroom-1100.7a5732ef44.webp 1100w, site/img/boardroom-1600.863f2d59f4.webp 1600w" sizes="100vw" width="1600" height="900" alt="A management team around a boardroom table in a Lagos office" fetchpriority="high" decoding="async" style="background-image:url(data:image/webp;base64,UklGRogAAABXRUJQVlA4IHwAAABQBACdASoUAAwAPyF4s1GtJySisAgBoCQJYgC7AYvWoadBsTksKMXLdIOAAP5kqxEos7KeFW+JbCg3qoohHtNtM5jyARiAFlonViDAoKH1sM+uf8Gz5dV/aQKR7WeZXNqHzx9mM5ILq7fhm4Q/ohwx8KI9/NNSZD1Q2oAA)">
   <div class="wrap rise">
     <span class="eyebrow">The CRM</span>
     <h1 class="h1 wide">Every lead is called, and every call is recorded as a decision</h1>
@@ -2639,6 +2687,7 @@ html,body{max-width:100%;}
   </div>
 </section></main></div>
 <div class="page" id="page-pricing" hidden><main><section class="phero band ondark">
+  <img class="ph phero-bg" src="site/img/reviewing-1000.b4b910befe.webp" srcset="site/img/reviewing-640.a31b99b763.webp 640w, site/img/reviewing-1000.b4b910befe.webp 1000w" sizes="100vw" width="1000" height="667" alt="A manager looking up from her laptop in a glass walled office" fetchpriority="high" decoding="async" style="background-image:url(data:image/webp;base64,UklGRnIAAABXRUJQVlA4IGYAAADQAwCdASoUAA4APyF4s1GtJySisAgBoCQJZQCw7B6RCB0B/9IS6lAA/gJ+uIlJLNDfC4BX4YG/X6PYba0mPPUfWHs7D54C+WHSyK2tR7W1Rh8+O9Fpl0jvOix+UdcQs2r2ALIAAAA=)">
   <div class="wrap rise">
     <span class="eyebrow">Pricing</span>
     <h1 class="h1">Priced on what you switch on</h1>
@@ -2806,6 +2855,7 @@ html,body{max-width:100%;}
   </div>
 </section></main></div>
 <div class="page" id="page-investors" hidden><main><section class="phero band ondark">
+  <img class="ph phero-bg" src="site/img/talking-1400.11a450c2ca.webp" srcset="site/img/talking-600.324b6a8d28.webp 600w, site/img/talking-900.efec2ae937.webp 900w, site/img/talking-1400.11a450c2ca.webp 1400w" sizes="100vw" width="1400" height="788" alt="Colleagues talking in the break area of a Lagos office" fetchpriority="high" decoding="async" style="background-image:url(data:image/webp;base64,UklGRowAAABXRUJQVlA4IIAAAACwAwCdASoUAAwAPyF4s1GtJySisAgBoCQJYwDE2BDYDCIsJYukAAD+j697B4Lw2Obh5x19Kbna3iwaNpce0scfaXjY9uI9xSvQCEn0LvKkjQQZuGKzKeSG8PtQn8TaAcYxuZ56r+sA+SW5/jlRoI28ACipOr5PQxdCo6imXsAAAA==)">
   <div class="wrap rise">
     <span class="eyebrow">Investor overview</span>
     <h1 class="h1">A working product, not a deck</h1>
@@ -3034,6 +3084,7 @@ html,body{max-width:100%;}
   </div>
 </section></main></div>
 <div class="page" id="page-contact" hidden><main><section class="phero band ondark">
+  <img class="ph phero-bg" src="site/img/huddle-1000.9ce09f3dde.webp" srcset="site/img/huddle-640.d19c346581.webp 640w, site/img/huddle-1000.9ce09f3dde.webp 1000w" sizes="100vw" width="1000" height="667" alt="Three colleagues looking at the same laptop screen" fetchpriority="high" decoding="async" style="background-image:url(data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAADwAwCdASoUAA4APyF4s1GtJySisAgBoCQJZACdAdwAo39rThEgB9IAAP7qkdk0hq8RIN6AM/aLzOBSmbKppuJllPxi2bIPgybKLK/HVJqTOuv3T8yWQjrpEf9iZAfrdsn3TxtnDhivLdoizRu1KimO4tAAAA==)">
   <div class="wrap rise">
     <span class="eyebrow">Book a demo</span>
     <h1 class="h1">Forty minutes, on your own process</h1>
