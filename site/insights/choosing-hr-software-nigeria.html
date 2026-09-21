@@ -25,7 +25,7 @@
 <link rel="icon" href="../favicon.svg" type="image/svg+xml">
 <link rel="preload" href="../fonts/inter-latin.2cb1fa0bd3.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../fonts/jakarta-latin.a604a9e9ad.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../site.4453af53b9.css">
+<link rel="stylesheet" href="../site.0cabbbeb95.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"What to ask before you buy HR software in Nigeria","description":"Fourteen questions worth asking any HR software vendor in Nigeria, covering approvals, data ownership, deployment time, pricing and what happens when you leave.","datePublished":"2026-09-16","dateModified":"2026-09-16","inLanguage":"en-NG","mainEntityOfPage":{"@type":"WebPage","@id":"https://savidorhr.com/insights/choosing-hr-software-nigeria.html"},"author":{"@type":"Organization","name":"SavidorHR","url":"https://savidorhr.com/"},"publisher":{"@type":"Organization","name":"SavidorHR","logo":{"@type":"ImageObject","url":"https://savidorhr.com/og.jpg"}}}</script>
 </head>
 <body>
@@ -571,6 +571,294 @@
      Falls back to a hidden input and execCommand where the clipboard API is
      unavailable, which on a phone browser served over anything but https is
      still common enough to matter. */
+
+  /* ── The module picker ──────────────────────────────────────────────
+     A native select cannot offer "the whole People family, plus two
+     modules from Revenue". So the <select multiple> stays the control that
+     submits, and this builds a panel over it. Everything is read from and
+     written back to that select, which means there is no second copy of
+     the module list to drift, and no state to lose if the form is
+     re-rendered.
+
+     With JavaScript off none of this runs and the native select is what the
+     visitor gets, which is why it is hidden by `.js` rather than by an
+     attribute in the markup. */
+  var msSel = document.querySelector("select[data-picker]");
+  if(msSel){
+    var TICK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+    var EX = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>';
+
+    /* Options outside any optgroup answer the whole question on their own,
+       so choosing one clears everything else and vice versa. */
+    var loose = [], fams = [];
+    Array.prototype.forEach.call(msSel.children, function(node){
+      if(node.tagName === "OPTION") loose.push(node);
+      else if(node.tagName === "OPTGROUP"){
+        fams.push({label: node.label,
+                   opts: Array.prototype.slice.call(node.children)});
+      }
+    });
+
+    var wrap = document.createElement("div");
+    wrap.className = "ms";
+    msSel.parentNode.insertBefore(wrap, msSel.nextSibling);
+
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "ms-btn";
+    btn.setAttribute("aria-haspopup", "listbox");
+    btn.setAttribute("aria-expanded", "false");
+    btn.setAttribute("aria-labelledby", "ivLabel");
+    wrap.appendChild(btn);
+
+    var panel = document.createElement("div");
+    panel.className = "ms-panel";
+    panel.hidden = true;
+    panel.innerHTML =
+      '<div class="ms-search"><input type="text" placeholder="Search modules"'
+      + ' aria-label="Search modules" autocomplete="off"></div>'
+      + '<div class="ms-list" role="listbox" aria-multiselectable="true"></div>'
+      + '<div class="ms-foot"><span class="ms-count"></span>'
+      + '<button type="button" class="ms-clear">Clear</button>'
+      + '<button type="button" class="ms-done">Done</button></div>';
+    wrap.appendChild(panel);
+
+    var list = panel.querySelector(".ms-list");
+    var search = panel.querySelector(".ms-search input");
+    var count = panel.querySelector(".ms-count");
+    var rows = [];
+
+    function row(label, cls, opt, fam){
+      var r = document.createElement("button");
+      r.type = "button";
+      r.className = "ms-opt" + (cls ? " " + cls : "");
+      r.setAttribute("role", "option");
+      r.setAttribute("aria-selected", "false");
+      r.innerHTML = '<span class="ms-box">' + TICK + "</span><span>" + label + "</span>";
+      r._opt = opt; r._fam = fam;
+      rows.push(r);
+      return r;
+    }
+
+    loose.forEach(function(o){ list.appendChild(row(o.textContent, "ms-loose", o, null)); });
+
+    fams.forEach(function(f){
+      var g = document.createElement("div");
+      g.className = "ms-group";
+      var head = row(f.label, "ms-head", null, f);
+      head.insertAdjacentHTML("beforeend",
+        '<span class="ms-n">' + f.opts.length + "</span>");
+      g.appendChild(head);
+      f.head = head;
+      f.rows = f.opts.map(function(o){
+        var r = row(o.textContent, null, o, f);
+        g.appendChild(r);
+        return r;
+      });
+      list.appendChild(g);
+    });
+
+    var empty = document.createElement("p");
+    empty.className = "ms-empty";
+    empty.textContent = "No module matches that.";
+    empty.hidden = true;
+    list.appendChild(empty);
+
+    function selected(){
+      return Array.prototype.filter.call(msSel.options, function(o){ return o.selected; });
+    }
+
+    function paint(){
+      var sel = selected();
+      loose.forEach(function(o, i){
+        list.querySelectorAll(".ms-loose")[i]
+            .setAttribute("aria-selected", o.selected ? "true" : "false");
+      });
+      fams.forEach(function(f){
+        var on = f.opts.filter(function(o){ return o.selected; }).length;
+        f.rows.forEach(function(r){
+          r.setAttribute("aria-selected", r._opt.selected ? "true" : "false");
+        });
+        f.head.setAttribute("aria-selected", on === f.opts.length && on ? "true" : "false");
+        if(on && on < f.opts.length) f.head.setAttribute("data-part", "1");
+        else f.head.removeAttribute("data-part");
+      });
+
+      /* A family that is fully chosen reads as one chip, not as four. That
+         is the difference the reader cares about. */
+      var chips = [];
+      loose.forEach(function(o){ if(o.selected) chips.push({t: o.textContent, fam: false, o: o}); });
+      fams.forEach(function(f){
+        var on = f.opts.filter(function(o){ return o.selected; });
+        if(on.length === f.opts.length && on.length) chips.push({t: f.label, fam: true, f: f});
+        else on.forEach(function(o){ chips.push({t: o.textContent, fam: false, o: o}); });
+      });
+
+      btn.innerHTML = "";
+      if(!chips.length){
+        btn.innerHTML = '<span class="ms-ph">Pick modules or a whole family</span>';
+      } else {
+        chips.slice(0, 4).forEach(function(c){
+          var el = document.createElement("span");
+          el.className = "ms-chip" + (c.fam ? " fam" : "");
+          el.innerHTML = "<span>" + c.t + '</span><span class="ms-x" role="button" tabindex="-1"'
+            + ' aria-label="Remove ' + c.t + '">' + EX + "</span>";
+          el.querySelector(".ms-x").addEventListener("click", function(e){
+            e.stopPropagation();
+            if(c.fam) c.f.opts.forEach(function(o){ o.selected = false; });
+            else c.o.selected = false;
+            paint();
+          });
+          btn.appendChild(el);
+        });
+        if(chips.length > 4){
+          var more = document.createElement("span");
+          more.className = "ms-more";
+          more.textContent = "+" + (chips.length - 4) + " more";
+          btn.appendChild(more);
+        }
+      }
+      btn.insertAdjacentHTML("beforeend",
+        '<svg class="ms-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor"'
+        + ' stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">'
+        + '<polyline points="6 9 12 15 18 9"/></svg>');
+
+      var n = sel.length;
+      count.textContent = n ? n + " selected" : "Nothing selected";
+    }
+
+    function choose(r){
+      if(r._fam && !r._opt){
+        /* A group row: if the family is already whole, this clears it. */
+        var on = r._fam.opts.filter(function(o){ return o.selected; }).length;
+        var want = on !== r._fam.opts.length;
+        r._fam.opts.forEach(function(o){ o.selected = want; });
+        if(want) loose.forEach(function(o){ o.selected = false; });
+      } else if(loose.indexOf(r._opt) > -1){
+        var was = r._opt.selected;
+        Array.prototype.forEach.call(msSel.options, function(o){ o.selected = false; });
+        r._opt.selected = !was;
+      } else {
+        r._opt.selected = !r._opt.selected;
+        if(r._opt.selected) loose.forEach(function(o){ o.selected = false; });
+      }
+      paint();
+    }
+
+    rows.forEach(function(r){
+      r.addEventListener("click", function(e){ e.preventDefault(); choose(r); });
+    });
+
+    /* On a phone the panel is a sheet pinned to the bottom of the screen,
+       which means position:fixed. That only resolves against the viewport if
+       no ancestor has a transform, and this form sits inside a card that
+       carries the scroll reveal transform, so fixed was resolving against
+       the card and putting the sheet a thousand pixels down the page. The
+       sheet is therefore moved to <body> while it is open, and moved back
+       when it closes. The desktop panel is absolute inside the control and
+       needs none of this. */
+    var sheetQ = window.matchMedia("(max-width:560px)");
+    var back = document.createElement("div");
+    back.className = "ms-backdrop";
+    back.addEventListener("click", function(){ close(); });
+
+    function portal(on){
+      if(on){
+        document.body.appendChild(back);
+        document.body.appendChild(panel);
+        panel.classList.add("sheet");
+      } else {
+        panel.classList.remove("sheet");
+        if(back.parentNode) back.parentNode.removeChild(back);
+        wrap.appendChild(panel);
+      }
+    }
+
+    function open(){
+      wrap.classList.add("open");
+      if(sheetQ.matches) portal(true);
+      panel.hidden = false;
+      btn.setAttribute("aria-expanded", "true");
+      search.value = ""; filter("");
+      if(!sheetQ.matches) search.focus();
+    }
+    function close(){
+      wrap.classList.remove("open");
+      panel.hidden = true;
+      portal(false);
+      btn.setAttribute("aria-expanded", "false");
+      rows.forEach(function(r){ r.classList.remove("cursor"); });
+    }
+    /* Rotating the phone mid-selection must not strand the panel in the
+       wrong place. */
+    (sheetQ.addEventListener ? sheetQ.addEventListener.bind(sheetQ, "change")
+                             : sheetQ.addListener.bind(sheetQ))(function(){
+      if(wrap.classList.contains("open")){ close(); }
+    });
+    btn.addEventListener("click", function(){
+      wrap.classList.contains("open") ? close() : open();
+    });
+    panel.querySelector(".ms-done").addEventListener("click", close);
+    panel.querySelector(".ms-clear").addEventListener("click", function(){
+      Array.prototype.forEach.call(msSel.options, function(o){ o.selected = false; });
+      paint();
+    });
+
+    function filter(q){
+      q = q.trim().toLowerCase();
+      var any = false;
+      fams.forEach(function(f){
+        var hitFam = f.label.toLowerCase().indexOf(q) > -1;
+        var shown = 0;
+        f.rows.forEach(function(r){
+          var hit = !q || hitFam || r._opt.textContent.toLowerCase().indexOf(q) > -1;
+          r.hidden = !hit;
+          if(hit) shown++;
+        });
+        f.head.hidden = !!q && !hitFam && !shown;
+        if(shown || hitFam) any = true;
+      });
+      list.querySelectorAll(".ms-loose").forEach(function(r){
+        var hit = !q || r.textContent.toLowerCase().indexOf(q) > -1;
+        r.hidden = !hit;
+        if(hit) any = true;
+      });
+      empty.hidden = any;
+    }
+    search.addEventListener("input", function(){ filter(search.value); });
+
+    /* Keyboard: the panel is a listbox, so it moves with the arrows and
+       commits with Enter or Space, and Escape gives the control back. */
+    function onKey(e){
+      if(e.key === "Escape" && wrap.classList.contains("open")){
+        e.preventDefault(); close(); btn.focus(); return;
+      }
+      if(!wrap.classList.contains("open")) return;
+      var live = rows.filter(function(r){ return !r.hidden; });
+      var at = -1;
+      live.forEach(function(r, i){ if(r.classList.contains("cursor")) at = i; });
+      if(e.key === "ArrowDown" || e.key === "ArrowUp"){
+        e.preventDefault();
+        var next = e.key === "ArrowDown" ? at + 1 : at - 1;
+        if(next < 0) next = live.length - 1;
+        if(next >= live.length) next = 0;
+        live.forEach(function(r){ r.classList.remove("cursor"); });
+        if(live[next]){ live[next].classList.add("cursor"); live[next].scrollIntoView({block: "nearest"}); }
+      } else if((e.key === "Enter" || e.key === " ") && at > -1){
+        e.preventDefault(); choose(live[at]);
+      }
+    }
+    wrap.addEventListener("keydown", onKey);
+    panel.addEventListener("keydown", onKey);
+
+    document.addEventListener("click", function(e){
+      if(wrap.classList.contains("open")
+         && !wrap.contains(e.target) && !panel.contains(e.target)) close();
+    });
+
+    paint();
+  }
+
   var copyBtn = document.querySelector(".share-b.copy");
   if(copyBtn){
     copyBtn.addEventListener("click", function(){

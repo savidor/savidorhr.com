@@ -77,6 +77,30 @@ If sending ever fails the function still returns 200 and logs the reason, becaus
 the submission is already safely stored. Nothing is lost; check *Forms* in the
 dashboard and the function log.
 
+### The module picker
+
+"Interested in" is a `<select multiple>` with an optgroup per family. The page
+script builds a custom panel over it and writes selections back into that
+select, so there is no second copy of the module list to drift and the native
+control is what submits. With JavaScript off the native select is what the
+visitor gets, which is why it is hidden by the `js` class rather than by an
+attribute.
+
+A family row selects or clears its whole family and shows a dash when only
+part of it is chosen. A fully chosen family collapses to one chip rather than
+four. "The whole system" and "Not sure yet" are exclusive: choosing either
+clears everything else, and choosing a module clears them.
+
+On a phone the panel becomes a bottom sheet, and the script moves it to
+`<body>` while it is open. That is not decoration: `position:fixed` resolves
+against the nearest transformed ancestor, the form card carries the scroll
+reveal transform, and without the move the sheet rendered about 1800px down
+the page instead of at the bottom of the screen.
+
+A multiple select submits repeated values for one name, so
+`netlify/functions/submission-created.mjs` joins arrays with ", " rather than
+letting `String()` produce "A,B,C".
+
 Adding a field to the form needs no code change: unknown fields appear in the
 email automatically. Add a label to `LABELS` in the function to give it a nicer
 heading.

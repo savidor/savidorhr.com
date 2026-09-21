@@ -95,22 +95,27 @@ slug: contact
             <label for="co">Company</label>
             <input id="co" name="company" type="text" required placeholder="Your company name">
           </div>
-          <div class="f2">
-            <div class="fld">
-              <label for="hc">Headcount</label>
-              <select id="hc" name="headcount">
-                <option>Under 50</option>
-                <option selected>50 to 250</option>
-                <option>250 to 1,000</option>
-                <option>Over 1,000</option>
-              </select>
-            </div>
-            <div class="fld">
-              <label for="iv">Interested in</label>
-              <select id="iv" name="interest">
-                <!--MODULE_OPTIONS-->
-              </select>
-            </div>
+          <div class="fld">
+            <label for="hc">Headcount</label>
+            <select id="hc" name="headcount">
+              <option>Under 50</option>
+              <option selected>50 to 250</option>
+              <option>250 to 1,000</option>
+              <option>Over 1,000</option>
+            </select>
+          </div>
+          <!-- Its own row: this field holds chips that wrap, so half a row
+               put one chip on each line and made the control grow taller the
+               more somebody chose. -->
+          <div class="fld ms-fld">
+            <label for="iv" id="ivLabel">Interested in</label>
+            <!-- The real control. A custom picker is built over it by the
+                 page script; with JavaScript off this is what submits, and
+                 it is what Netlify detects when it parses the built HTML. -->
+            <select id="iv" name="interest" multiple size="1" data-picker>
+              <!--MODULE_OPTIONS-->
+            </select>
+            <p class="fld-hint">Pick a whole family or single modules, as many as you like.</p>
           </div>
           <div class="fld">
             <label for="ms">What process gives you the most trouble?</label>

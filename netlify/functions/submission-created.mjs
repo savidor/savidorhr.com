@@ -45,7 +45,11 @@ function orderedFields(data) {
   const extra = Object.keys(data).filter(
     (k) => !(k in LABELS) && !k.startsWith("bot-") && k !== "form-name" && data[k]
   );
-  return [...known, ...extra].map((k) => [LABELS[k] || k, String(data[k])]);
+  // A multiple select arrives as an array. String() on one gives
+  // "A,B,C" with no spaces, which reads badly in an email, so join it
+  // properly rather than letting the default coercion decide.
+  const show = (v) => (Array.isArray(v) ? v.join(", ") : String(v));
+  return [...known, ...extra].map((k) => [LABELS[k] || k, show(data[k])]);
 }
 
 function buildHtml(data, meta) {
