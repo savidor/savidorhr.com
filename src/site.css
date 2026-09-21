@@ -2068,3 +2068,92 @@ html,body{max-width:100%;}
   background:rgba(255,255,255,.2); box-shadow:none;
 }
 .ondark .cards .card.card-go .ic svg{color:#fff;}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   NEWS AND INSIGHTS
+   The product pages answer "is this the right tool". These answer the
+   questions people type long before they know a tool exists, which is where
+   search traffic to a site this size actually comes from.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* ── The hub ───────────────────────────────────────────────────────── */
+.ins-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+@media (max-width:940px){ .ins-grid{grid-template-columns:repeat(2,1fr);} }
+@media (max-width:640px){ .ins-grid{grid-template-columns:1fr;} }
+.ins-card{
+  display:flex; flex-direction:column; background:#fff;
+  border:1px solid var(--line); border-radius:18px; padding:26px;
+  box-shadow:var(--sh-sm);
+  transition:box-shadow .2s, transform .2s, border-color .2s;
+}
+.ins-card:hover{box-shadow:var(--sh-lg); transform:translateY(-3px);
+  border-color:var(--line-2);}
+.ins-card .h4{margin:10px 0 10px;}
+.ins-card p{font-size:.95rem; color:var(--ink-2); flex:1;}
+.ins-date{
+  font-size:.76rem; font-weight:700; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--ink-4);
+}
+.ins-read{
+  display:inline-flex; align-items:center; gap:7px; margin-top:18px;
+  font-size:.9rem; font-weight:600; color:var(--brand);
+}
+.ins-read .ar{width:15px; height:15px; transition:transform .2s;}
+.ins-card:hover .ins-read .ar{transform:translateX(4px);}
+
+/* ── One article ───────────────────────────────────────────────────── */
+.crumbs{font-size:.86rem; color:var(--ink-3); margin-bottom:26px;}
+.crumbs a{color:var(--ink-2); font-weight:500;}
+.crumbs a:hover{color:var(--brand);}
+.crumbs span{margin:0 6px; color:var(--ink-4);}
+
+.ins-article .h1{margin:10px 0 18px; max-width:20ch;}
+.ins-article .lead{margin-bottom:8px;}
+
+/* A measure this narrow is the whole reason long copy gets read. Anything
+   past about 70 characters a line and the eye loses its place returning. */
+.ins-body{max-width:68ch; margin-top:38px;}
+.ins-body h2{
+  font-family:var(--f-d); font-size:1.5rem; font-weight:800;
+  letter-spacing:-.022em; margin:44px 0 14px; color:var(--ink);
+}
+.ins-body h3{
+  font-family:var(--f-d); font-size:1.14rem; font-weight:700;
+  letter-spacing:-.016em; margin:32px 0 10px; color:var(--ink);
+}
+.ins-body p{margin-bottom:18px; color:var(--ink-2); font-size:1.04rem;
+  line-height:1.72;}
+.ins-body strong{color:var(--ink); font-weight:600;}
+.ins-body ul,.ins-body ol{margin:0 0 20px; padding-left:22px;
+  color:var(--ink-2); font-size:1.04rem; line-height:1.72;}
+.ins-body li{margin-bottom:9px;}
+.ins-body li::marker{color:var(--brand);}
+.ins-body a{color:var(--brand); font-weight:600; text-decoration:underline;
+  text-underline-offset:2px;}
+.ins-body a:hover{color:var(--brand-700);}
+.ins-body blockquote{
+  margin:28px 0; padding:18px 24px; border-left:3px solid var(--brand);
+  background:var(--brand-50); border-radius:0 var(--r) var(--r) 0;
+}
+.ins-body blockquote p{margin:0; color:var(--ink); font-weight:500;}
+
+.ins-cta{
+  max-width:68ch; margin-top:48px; padding:32px;
+  border:1px solid var(--line); border-radius:20px; background:var(--bg-2);
+}
+.ins-cta .h3{margin-bottom:8px;}
+.ins-cta p{color:var(--ink-2); margin-bottom:20px;}
+
+/* ── Where to go next ──────────────────────────────────────────────── */
+.ins-more{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+@media (max-width:940px){ .ins-more{grid-template-columns:1fr;} }
+.ins-more-item{
+  display:block; background:#fff; border:1px solid var(--line);
+  border-radius:16px; padding:22px; box-shadow:var(--sh-sm);
+  transition:box-shadow .2s, transform .2s;
+}
+.ins-more-item:hover{box-shadow:var(--sh-lg); transform:translateY(-2px);}
+.ins-more-item b{display:block; margin:8px 0 6px; font-family:var(--f-d);
+  font-size:1rem; font-weight:700; color:var(--ink); line-height:1.35;}
+.ins-more-item p{font-size:.9rem; color:var(--ink-2); line-height:1.55;}

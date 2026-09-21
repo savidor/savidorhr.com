@@ -36,13 +36,36 @@ EMAIL = "hello@savidorhr.com"
 EMAIL_INV = "invest@savidorhr.com"
 PHONE = "+234 000 000 0000"
 
+# ── Search ───────────────────────────────────────────────────────────────
+# Where the company is, in the terms a search engine understands. The city
+# and country are a real ranking signal for "HR software Nigeria" and the
+# like, and they are true, so they are stated in the markup rather than only
+# in the footer prose.
+CITY = "Lagos"
+REGION = "Lagos State"
+COUNTRY = "NG"
+LOCALE = "en-NG"
+
+# Deliberately no <meta name="keywords">. Google has ignored it since 2009
+# and stuffing it is a spam signal, not a ranking one. Keywords earn their
+# place in titles, headings, body copy, link text and alt text instead.
+
 # Reachable, but deliberately absent from the nav, the sitemap and the preview.
 UNLISTED = {"thanks"}
+
+# ── News and insights ────────────────────────────────────────────────────
+# Articles live in src/insights/ and are published under /insights/. This is
+# the part of a marketing site that earns search traffic over time: the
+# product pages answer "is this the right tool", articles answer the
+# questions people type long before they know a tool exists.
+INSIGHTS_DIR = HERE / "src" / "insights"
+INSIGHTS_OUT = "insights"
 
 NAV = [
     ("product", "Product", "product.html"),
     ("modules", "Modules", "modules.html"),
     ("pricing", "Pricing", "pricing.html"),
+    ("insights", "Insights", "insights.html"),
     ("investors", "Investors", "investors.html"),
 ]
 
@@ -303,6 +326,9 @@ def footer(preview):
         a("pricing", "Pricing", "pricing.html"),
     ])
     comp = "".join([
+        # Linked from the footer as well as the nav, so every page on the site
+        # passes authority to the articles rather than only the top level.
+        a("insights", "News and insights", "insights.html"),
         a("investors", "Investors", "investors.html"),
         a("contact", "Contact", "contact.html"),
         f'<li><a href="mailto:{EMAIL}">Support</a></li>',
@@ -991,6 +1017,149 @@ def module_explorer():
 </div>"""
 
 
+# ── Structured data ───────────────────────────────────────────────────────
+# What the page is, in the vocabulary search engines actually parse. This is
+# the part that earns a rich result rather than a blue link, and unlike copy
+# it cannot be written persuasively: every claim here has to be checkable
+# against the page it sits on, or it is a manual action waiting to happen.
+#
+# Deliberately absent: aggregateRating and review. Inventing either is the
+# fastest way to a structured data penalty, and there are no real ones yet.
+
+# Page titles and descriptions carry the search terms; these are the terms
+# each page genuinely serves. Nothing here names payroll, because there is
+# no payroll module and ranking for a promise the product does not keep
+# costs more in bounces than the position is worth.
+BREADCRUMB = {
+    "product": "How it works",
+    "modules": "Modules",
+    "crm": "CRM and guided calling",
+    "pricing": "Pricing",
+    "investors": "Investors",
+    "contact": "Book a demo",
+    "insights": "News and insights",
+}
+
+
+def _org():
+    return {
+        "@type": "Organization",
+        "@id": f"{DOMAIN}/#organization",
+        "name": COMPANY,
+        "url": f"{DOMAIN}/",
+        "logo": {"@type": "ImageObject", "url": f"{DOMAIN}/og.jpg"},
+        "email": EMAIL,
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": CITY,
+            "addressRegion": REGION,
+            "addressCountry": COUNTRY,
+        },
+        "areaServed": {"@type": "Country", "name": "Nigeria"},
+    }
+
+
+def _software():
+    """The product itself. `applicationCategory` is what puts it in the
+    business-software bucket rather than being guessed from prose."""
+    return {
+        "@type": "SoftwareApplication",
+        "@id": f"{DOMAIN}/#software",
+        "name": COMPANY,
+        "applicationCategory": "BusinessApplication",
+        "applicationSubCategory": "Human Resources Management Software",
+        "operatingSystem": "Web browser, iOS, Android",
+        "url": f"{DOMAIN}/",
+        "publisher": {"@id": f"{DOMAIN}/#organization"},
+        "areaServed": {"@type": "Country", "name": "Nigeria"},
+        "featureList": [
+            "Leave management and entitlement accrual",
+            "Requisition and procurement approval workflow",
+            "Staff appraisals and performance reviews",
+            "Attendance and employee lifecycle records",
+            "Recruitment, job portal and offer letters",
+            "CRM, guided calling and sales commissions",
+            "Audit trail on every view and decision",
+        ],
+        # A real offer with no price is honest and still parseable: it says
+        # the thing is sold and quoted, which is exactly the case.
+        "offers": {
+            "@type": "Offer",
+            "priceCurrency": "NGN",
+            "availability": "https://schema.org/InStock",
+            "url": f"{DOMAIN}/pricing.html",
+            "description": "Priced on headcount and the modules switched on. "
+                           "Written quote within one working day.",
+        },
+    }
+
+
+# Scoped to the `.faq` container on purpose. The pricing page's comparison
+# table is built from <details> too, and an unscoped pattern swallowed the
+# whole tier table into the first "question".
+FAQ_BLOCK = re.compile(r'<div class="faq[^"]*"[^>]*>(.*?)</div>\s*</div>', re.S)
+FAQ_RE = re.compile(
+    r"<details[^>]*>\s*<summary>(.*?)</summary>\s*<p>(.*?)</p>", re.S)
+
+
+def _faqs(body):
+    """Lift the FAQ block straight out of the page.
+
+    Read from the rendered markup rather than kept in a second list, because
+    a FAQPage whose answers have drifted from the visible ones is the exact
+    thing Google issues manual actions for.
+    """
+    out = []
+    pairs = []
+    for block in FAQ_BLOCK.findall(body):
+        pairs += FAQ_RE.findall(block)
+    for q, a in pairs:
+        q = re.sub(r"<[^>]+>", "", q).strip()
+        a = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", a)).strip()
+        if q and a:
+            out.append({"@type": "Question", "name": q,
+                        "acceptedAnswer": {"@type": "Answer", "text": a}})
+    return out
+
+
+def json_ld(slug, meta, body):
+    graph = [_org()]
+    url = f"{DOMAIN}/{'' if slug == 'index' else slug + '.html'}"
+
+    if slug == "index":
+        graph.append({
+            "@type": "WebSite",
+            "@id": f"{DOMAIN}/#website",
+            "url": f"{DOMAIN}/",
+            "name": COMPANY,
+            "inLanguage": LOCALE,
+            "publisher": {"@id": f"{DOMAIN}/#organization"},
+        })
+    if slug in ("index", "product", "modules", "pricing"):
+        graph.append(_software())
+
+    if slug not in ("index",) and slug in BREADCRUMB:
+        graph.append({
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "Home",
+                 "item": f"{DOMAIN}/"},
+                {"@type": "ListItem", "position": 2, "name": BREADCRUMB[slug],
+                 "item": url},
+            ],
+        })
+
+    faqs = _faqs(body)
+    if faqs:
+        graph.append({"@type": "FAQPage", "@id": f"{url}#faq",
+                      "mainEntity": faqs})
+
+    return ('<script type="application/ld+json">'
+            + json.dumps({"@context": "https://schema.org", "@graph": graph},
+                         separators=(",", ":"))
+            + "</script>")
+
+
 def parse(path):
     """Fragment header: <!-- title / desc / slug --> then the markup."""
     raw = path.read_text(encoding="utf-8")
@@ -1005,11 +1174,151 @@ def parse(path):
     return meta, body
 
 
-def document(meta, body, slug):
+# ── Articles ──────────────────────────────────────────────────────────────
+# Each file in src/insights/ carries the same header as a page, plus a date
+# and a one line summary for the hub. They are published into a subfolder, so
+# every relative URL in the shared header, footer, stylesheet link and photo
+# srcset has to be lifted a level. That is done once, on the finished HTML,
+# rather than by threading a prefix through every function that emits a path.
+REL_ATTR = re.compile(r'(\s(?:href|src)=")(?!https?:|mailto:|tel:|#|/|data:)')
+REL_SRCSET = re.compile(r'(\ssrcset=")([^"]+)(")')
+
+
+def reroot(html, prefix="../"):
+    """Article markup is written as if the page sat at the site root, and
+    this lifts every relative URL by one level. Nothing upstream may write
+    `../` itself, or it gets lifted twice and 404s."""
+    html = REL_ATTR.sub(lambda m: m.group(1) + prefix, html)
+
+    def fix_set(m):
+        parts = []
+        for cand in m.group(2).split(","):
+            cand = cand.strip()
+            if cand and not cand.startswith(("http", "/", "data:")):
+                cand = prefix + cand
+            parts.append(cand)
+        return m.group(1) + ", ".join(parts) + m.group(3)
+
+    return REL_SRCSET.sub(fix_set, html)
+
+
+def read_articles():
+    """Newest first. A missing date stops the build rather than sorting oddly."""
+    arts = []
+    if not INSIGHTS_DIR.exists():
+        return arts
+    for path in sorted(INSIGHTS_DIR.glob("*.html")):
+        meta, body = parse(path)
+        for key in ("title", "desc", "slug", "date", "summary", "heading"):
+            if key not in meta:
+                raise SystemExit(f"  ! {path.name} is missing '{key}:' in its header")
+        meta["body"] = body
+        arts.append(meta)
+    arts.sort(key=lambda a: a["date"], reverse=True)
+    return arts
+
+
+def article_ld(a):
+    url = f"{DOMAIN}/{INSIGHTS_OUT}/{a['slug']}.html"
+    return ('<script type="application/ld+json">' + json.dumps({
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": a["heading"],
+        "description": a["desc"],
+        "datePublished": a["date"],
+        "dateModified": a.get("updated", a["date"]),
+        "inLanguage": LOCALE,
+        "mainEntityOfPage": {"@type": "WebPage", "@id": url},
+        "author": {"@type": "Organization", "name": COMPANY, "url": f"{DOMAIN}/"},
+        "publisher": {
+            "@type": "Organization", "name": COMPANY,
+            "logo": {"@type": "ImageObject", "url": f"{DOMAIN}/og.jpg"},
+        },
+    }, separators=(",", ":")) + "</script>")
+
+
+def pretty_date(iso):
+    y, m, d = iso.split("-")
+    months = ["January", "February", "March", "April", "May", "June", "July",
+              "August", "September", "October", "November", "December"]
+    return f"{int(d)} {months[int(m) - 1]} {y}"
+
+
+def article_page(a, others):
+    """One article, with a short list of the others underneath.
+
+    The cross links are not decoration: a page with no route onward is a page
+    search engines treat as a dead end, and a reader who finishes an article
+    is the most likely person on the site to read a second one.
+    """
+    more = "".join(
+        f'<a class="ins-more-item" href="{INSIGHTS_OUT}/{o["slug"]}.html">'
+        f'<span class="ins-date">{pretty_date(o["date"])}</span>'
+        f'<b>{o["heading"]}</b><p>{o["summary"]}</p></a>'
+        for o in others[:3])
+    return f"""
+<article class="sec ins-article">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="index.html">Home</a> <span>/</span>
+      <a href="insights.html">Insights</a>
+    </nav>
+    <p class="ins-date">{pretty_date(a['date'])}</p>
+    <h1 class="h1">{a['heading']}</h1>
+    <p class="lead measure-w">{a['summary']}</p>
+    <div class="ins-body">{a['body'].strip()}</div>
+
+    <div class="ins-cta">
+      <h2 class="h3">See it against your own approval chain</h2>
+      <p>A forty minute walkthrough, configured live on the call.</p>
+      <a class="btn btn-p btn-lg" href="contact.html">Book a demo</a>
+    </div>
+  </div>
+</article>
+
+<section class="sec-sm tint">
+  <div class="wrap">
+    <h2 class="h3" style="margin-bottom:24px;">More from SavidorHR</h2>
+    <div class="ins-more">{more}</div>
+  </div>
+</section>
+"""
+
+
+def insights_hub(arts):
+    cards = "".join(
+        f'<a class="ins-card" href="{INSIGHTS_OUT}/{a["slug"]}.html">'
+        f'<span class="ins-date">{pretty_date(a["date"])}</span>'
+        f'<h2 class="h4">{a["heading"]}</h2><p>{a["summary"]}</p>'
+        f'<span class="ins-read">Read it{ARROW_S}</span></a>'
+        for a in arts)
+    return f"""
+<section class="phero band ondark navy-ph">
+  <img data-photo="talking" class="navy-bg" sizes="100vw" data-eager>
+  <div class="wrap rise">
+    <span class="eyebrow">News and insights</span>
+    <h1 class="h1">How Nigerian companies approve, hire and pay</h1>
+    <p class="lead measure-w">
+      Practical writing on approval chains, staff leave, procurement and
+      choosing HR software in Nigeria. Written from what we see inside real
+      companies, not from a keyword list.
+    </p>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="ins-grid">{cards}</div>
+  </div>
+</section>
+"""
+
+
+def document(meta, body, slug, ld=None):
     noindex = ('\n<meta name="robots" content="noindex,follow">'
                if meta.get("noindex") else "")
     return f"""<!doctype html>
-<html lang="en">
+<html lang="{LOCALE}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -1023,11 +1332,19 @@ def document(meta, body, slug):
 <meta property="og:url" content="{DOMAIN}/{'' if slug == 'index' else slug + '.html'}">
 <meta property="og:title" content="{meta.get('title', COMPANY)}">
 <meta property="og:description" content="{meta.get('desc', '')}">
-<meta property="og:image" content="{DOMAIN}/og.png">
+<meta property="og:image" content="{DOMAIN}/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{COMPANY}, HR and approval software for Nigerian companies">
+<meta property="og:locale" content="en_NG">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{meta.get('title', COMPANY)}">
+<meta name="twitter:description" content="{meta.get('desc', '')}">
+<meta name="twitter:image" content="{DOMAIN}/og.jpg">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 {FONT_TAGS}
 <link rel="stylesheet" href="{CSS_NAME}">
+{ld if ld is not None else json_ld(slug, meta, body)}
 </head>
 <body>
 {sprite()}
@@ -1289,6 +1606,10 @@ def main():
     (OUT / CSS_NAME).write_text(css, encoding="utf-8")
     (OUT / "favicon.svg").write_text(
         (SRC / "favicon.svg").read_text(encoding="utf-8"), encoding="utf-8")
+    og = SRC / "og.jpg"
+    if not og.exists():
+        raise SystemExit("  ! src/og.jpg is missing. Run tools/build_og.py")
+    (OUT / "og.jpg").write_bytes(og.read_bytes())
 
     order = ["index", "product", "modules", "crm", "pricing", "investors",
              "contact", "thanks"]
@@ -1310,6 +1631,31 @@ def main():
         frags[slug] = (meta, body)
         (OUT / f"{slug}.html").write_text(document(meta, body, slug), encoding="utf-8")
         print(f"  wrote site/{slug}.html")
+
+    # ── News and insights ────────────────────────────────────────────
+    arts = read_articles()
+    if arts:
+        hub_meta = {
+            "title": "HR Insights for Nigerian Companies | SavidorHR",
+            "desc": "Practical writing on approval chains, staff leave, "
+                    "procurement and choosing HR software in Nigeria.",
+        }
+        hub_body = add_reveals(expand_photos(insights_hub(arts), "insights"))
+        (OUT / "insights.html").write_text(
+            document(hub_meta, hub_body, "insights"), encoding="utf-8")
+        frags["insights"] = (hub_meta, hub_body)
+        print("  wrote site/insights.html")
+
+        (OUT / INSIGHTS_OUT).mkdir(exist_ok=True)
+        for a in arts:
+            others = [o for o in arts if o["slug"] != a["slug"]]
+            body = add_reveals(article_page(a, others))
+            html = document(a, body, f"{INSIGHTS_OUT}/{a['slug']}",
+                            ld=article_ld(a))
+            # Published a level down, so every relative URL moves with it.
+            (OUT / INSIGHTS_OUT / f"{a['slug']}.html").write_text(
+                reroot(html), encoding="utf-8")
+            print(f"  wrote site/{INSIGHTS_OUT}/{a['slug']}.html")
 
     # Single-file preview: every page, switched client side.
     parts = []
@@ -1337,7 +1683,15 @@ def main():
     urls = "".join(
         f"  <url><loc>{DOMAIN}/{'' if s == 'index' else s + '.html'}</loc>"
         f"<priority>{'1.0' if s == 'index' else '0.8'}</priority></url>\n"
-        for s in order if s in frags and s not in UNLISTED
+        for s in order + ["insights"] if s in frags and s not in UNLISTED
+    )
+    # `lastmod` on the articles only. Claiming it for pages that did not
+    # change is how a sitemap stops being believed.
+    urls += "".join(
+        f"  <url><loc>{DOMAIN}/{INSIGHTS_OUT}/{a['slug']}.html</loc>"
+        f"<lastmod>{a.get('updated', a['date'])}</lastmod>"
+        f"<priority>0.7</priority></url>\n"
+        for a in arts
     )
     (OUT / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n'

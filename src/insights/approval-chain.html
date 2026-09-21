@@ -1,0 +1,116 @@
+<!--
+title: How to Design an Approval Chain That Does Not Stall | SavidorHR
+desc: A practical guide to building a requisition approval process that survives contact with a real company: thresholds, deputies, escalation and what to write down.
+slug: approval-chain-that-does-not-stall
+date: 2026-09-08
+heading: How to design an approval chain that does not stall
+summary: Most approval processes are not badly designed. They are undocumented, and they stop the first week somebody travels.
+-->
+
+<p>
+  Almost every company we meet already has an approval process. Somebody can
+  recite it. What they do not have is a written version that survives the week
+  the Executive Director travels, and that gap is where requests go to die.
+</p>
+
+<h2>Start from what already happens, not from what should</h2>
+<p>
+  The instinct when documenting approvals is to design the correct process.
+  Resist it. Write down what actually happens today, including the parts
+  nobody is proud of: the requests that skip a stage because they are urgent,
+  the manager who approves by voice note, the supplier who is paid before the
+  paperwork catches up.
+</p>
+<p>
+  You cannot enforce a process you have not described, and you cannot describe
+  one while you are also arguing about whether it is right. Separate the two.
+  Describe first. Improve second.
+</p>
+
+<h2>Thresholds are the backbone</h2>
+<p>
+  Nearly every workable chain is a set of amount bands. Under some figure, a
+  supervisor closes it. Above that, the same request keeps travelling. The
+  mistake is treating the bands as a formality rather than deciding them
+  deliberately.
+</p>
+<p>Two questions settle most of it:</p>
+<ul>
+  <li><strong>What is the largest amount a supervisor can approve without
+    anyone else seeing it?</strong> If the honest answer is "it depends",
+    the band is not set yet.</li>
+  <li><strong>At what point does the Managing Director need to see it
+    personally?</strong> Set this too low and the MD becomes the bottleneck.
+    Too high and the board asks why nobody was watching.</li>
+</ul>
+
+<h2>Rules that differ by site are normal, not a special case</h2>
+<p>
+  A group running a property development, a workshop and a facilities arm does
+  not have one approval process. It has three that look similar. A joint
+  venture property may need the MD on every request regardless of amount,
+  because a partner is watching. A workshop may need two vendor quotes over a
+  quarter of a million naira because that is where the leakage was found.
+</p>
+<p>
+  Treat that as the normal case. A process that only works when every site is
+  identical will be worked around within a month.
+</p>
+
+<h2>The deputy problem</h2>
+<p>
+  This is what actually stalls chains. One person is out, and every request
+  needing their signature waits. A written process that does not name a deputy
+  for each approver is incomplete, however elegant the rest of it is.
+</p>
+<p>For each stage, decide three things:</p>
+<ul>
+  <li>Who signs when the usual approver is unavailable.</li>
+  <li>How long a request may sit before it moves anyway.</li>
+  <li>Whether the deputy's signature carries the same weight, or is
+    provisional until the usual approver returns.</li>
+</ul>
+<blockquote>
+  <p>
+    If you only fix one thing after reading this, fix the deputy rule. It
+    costs an afternoon and it is the single most common reason approvals
+    stop.
+  </p>
+</blockquote>
+
+<h2>A return is not a rejection</h2>
+<p>
+  Most requests that come back are not refused. They are missing a quote, or
+  the wrong budget line, or a description nobody can act on. If your process
+  has only approve and reject, those requests get rejected, and the person who
+  raised them learns that the system is hostile.
+</p>
+<p>
+  Give the chain a third outcome that sends the request back with a reason
+  attached, and keep the history. A returned request that comes back corrected
+  should show both passes, not replace the first one.
+</p>
+
+<h2>Write down who may see what</h2>
+<p>
+  Visibility is part of the approval design and it is usually left implicit.
+  Can a site manager see spending on a site that is not theirs? Can a
+  procurement officer see the price a staff member proposed, or only the
+  vendor quotes they sourced themselves? These questions have answers in every
+  company. They are rarely written down, which means they are answered
+  differently by different people.
+</p>
+
+<h2>Then, and only then, put it in software</h2>
+<p>
+  A chain that is written down, has thresholds, names deputies, allows returns
+  and states who sees what is ready to be enforced. One that is not will
+  simply be automated in its broken form, and everyone will blame the
+  software.
+</p>
+<p>
+  This is why our own deployment starts with a mapping session rather than a
+  login. <a href="product.html">The routing engine</a> stores all of the
+  above as settings rather than code, so the chain you wrote down is the chain
+  that runs, and changing it later does not need a developer.
+</p>
