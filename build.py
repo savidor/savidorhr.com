@@ -47,6 +47,11 @@ REGION = "Lagos State"
 COUNTRY = "NG"
 LOCALE = "en-NG"
 
+# ── Analytics ────────────────────────────────────────────────────────────
+# Google Analytics 4 measurement id. Empty string disables the tag entirely,
+# which is what the local preview and any fork should use.
+GA_ID = "G-10MY2S22Y6"
+
 # Deliberately no <meta name="keywords">. Google has ignored it since 2009
 # and stuffing it is a spam signal, not a ranking one. Keywords earn their
 # place in titles, headings, body copy, link text and alt text instead.
@@ -154,6 +159,26 @@ ICONS = {
 # to run here and not with the rest of the script at the end of the body, or
 # the hidden things would flash visible during the parse and then disappear.
 JS_FLAG = '<script>document.documentElement.className+=" js";</script>'
+
+
+# Google's own snippet, unmodified. It is placed as high in the head as it
+# can go while still letting <meta charset> come first: a script before the
+# encoding declaration is parsed before the browser knows what bytes it is
+# reading, and charset has to appear inside the first 1024 bytes regardless.
+#
+# This is the one third-party request the site makes. Everything else, fonts
+# and photographs included, is served from our own origin. That was a
+# deliberate performance position and this is a deliberate exception to it:
+# the tag is async, so it does not block the first paint.
+GA_TAG = f'''<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){{dataLayer.push(arguments);}}
+  gtag('js', new Date());
+
+  gtag('config', '{GA_ID}');
+</script>''' if GA_ID else ""
 
 
 ARROW_S = ('<svg class="ar" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
@@ -1843,6 +1868,7 @@ def document(meta, body, slug, ld=None):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{GA_TAG}
 {JS_FLAG}
 <title>{meta.get('title', COMPANY)}</title>
 <meta name="description" content="{meta.get('desc', '')}">

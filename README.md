@@ -342,8 +342,14 @@ to set a handful of figures inside screenshot mockups.
 
 ## Notes
 
-- Nothing is fetched from a third party origin. Fonts and photographs are both
-  served from our own, which is what keeps the page to one connection.
+- Google Analytics is the only third party request on the site. Fonts and
+  photographs are all served from our own origin, so that tag is the single
+  outside connection a visitor makes. It is set by `GA_ID` in `build.py`, and
+  emptying that constant removes the tag from every page, which is what a fork
+  or a local experiment should do. The snippet is Google's own, unedited, and it
+  sits directly after the two `<meta>` declarations rather than literally first:
+  a script ahead of `charset` is parsed before the browser knows the encoding of
+  the bytes it is reading, and the charset has to land inside the first 1024.
 - Motion carries no information anywhere on the site, so
   `prefers-reduced-motion` turns all of it off rather than merely shortening it.
   Anything that starts hidden for the sake of an animation is gated behind a
