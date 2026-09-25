@@ -6,11 +6,17 @@
  * Environment variables (Site configuration → Environment variables):
  *   BREVO_API_KEY   a Brevo v3 API key            ─┐ set one of these
  *   RESEND_API_KEY  a Resend API key              ─┘
- *   NOTIFY_TO       where enquiries land          (default hello@savidorhr.com)
+ *   NOTIFY_TO       where enquiries land          (default below)
  *   NOTIFY_FROM     the verified sender address   (default hello@savidorhr.com)
+ *
+ * TO and FROM are not interchangeable. TO is any inbox you read. FROM has to be
+ * an address verified with the sending provider, which a Gmail address cannot
+ * be, so FROM stays on the domain even while TO is a personal inbox. Setting
+ * NOTIFY_TO in the Netlify dashboard overrides the default without putting the
+ * address in the repository.
  */
 
-const TO = process.env.NOTIFY_TO || "hello@savidorhr.com";
+const TO = process.env.NOTIFY_TO || "tochukwu.nwaiwu20@gmail.com";
 const FROM = process.env.NOTIFY_FROM || "hello@savidorhr.com";
 
 const BRAND = "#A24212";
@@ -23,6 +29,7 @@ const BG_2 = "#F9FAFB";
 // Known fields in the order they should read in the email. Anything the form
 // gains later still shows up, just after these, with its raw name as the label.
 const LABELS = {
+  enquiry_type: "Enquiry",
   first_name: "First name",
   last_name: "Last name",
   email: "Work email",
@@ -78,7 +85,11 @@ function buildHtml(data, meta) {
 
    <tr><td style="background:${BRAND};padding:22px 32px;">
      <div style="font:800 17px/1.3 'Segoe UI',-apple-system,BlinkMacSystemFont,Roboto,sans-serif;color:#FFFFFF;letter-spacing:-.01em;">SavidorHR</div>
-     <div style="font:500 13px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#F7E4D9;margin-top:2px;">New walkthrough request</div>
+     <div style="font:500 13px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#F7E4D9;margin-top:2px;">${esc(
+       String(data.enquiry_type || "").toLowerCase().startsWith("investor")
+         ? "New investor enquiry"
+         : "New walkthrough request"
+     )}</div>
    </td></tr>
 
    <tr><td style="padding:30px 32px 4px;">
@@ -176,7 +187,12 @@ export const handler = async (event) => {
 
   const data = payload.data || {};
   const name = [data.first_name, data.last_name].filter(Boolean).join(" ").trim();
-  const subject = `Walkthrough request${data.company ? ` — ${data.company}` : ""}${
+
+  // An investor enquiry and a sales enquiry need different handling, so the
+  // subject says which it is before the mail is even opened.
+  const isInvestor = String(data.enquiry_type || "").toLowerCase().startsWith("investor");
+  const kind = isInvestor ? "Investor enquiry" : "Walkthrough request";
+  const subject = `${kind}${data.company ? `, ${data.company}` : ""}${
     name ? ` (${name})` : ""
   }`;
 

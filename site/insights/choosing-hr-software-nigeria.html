@@ -245,11 +245,11 @@
         <li><a href="../crm.html">Revenue and CRM</a></li>
         <li><a href="../modules.html">Governance</a></li>
       </ul></div>
-      <div><h5>Company</h5><ul><li><a href="../insights.html">News and insights</a></li><li><a href="../investors.html">Investors</a></li><li><a href="../contact.html">Contact</a></li><li><a href="mailto:hello@savidorhr.com">Support</a></li></ul></div>
+      <div><h5>Company</h5><ul><li><a href="../insights.html">News and insights</a></li><li><a href="../investors.html">Investors</a></li><li><a href="../contact.html">Contact</a></li><li><a href="../contact.html">Support</a></li></ul></div>
       <div><h5>Get in touch</h5><ul>
-        <li><a href="mailto:hello@savidorhr.com">hello@savidorhr.com</a></li>
-        <li><a href="mailto:invest@savidorhr.com">invest@savidorhr.com</a></li>
-        <li><a href="tel:+2340000000000">+234 000 000 0000</a></li>
+        <li><a href="../contact.html">Book a walkthrough</a></li>
+        <li><a href="../contact.html?enquiry=investor">Investor enquiries</a></li>
+        <li><a href="../insights.html">News and insights</a></li>
       </ul></div>
     </div>
     <div class="ftr-btm">
@@ -866,6 +866,66 @@
     });
 
     paint();
+  }
+
+  /* ── Enquiry type ───────────────────────────────────────────────────
+     One form serves companies and investors, so it asks which it is and
+     then stops asking an investor for a headcount and a list of modules,
+     neither of which means anything to them.
+
+     This is an enhancement, not the mechanism: with JavaScript off the
+     select still submits its value and the sales fields are simply all
+     visible, which is harmless. The notification email reads the same
+     field either way. */
+  var ety = document.getElementById("ety");
+  if(ety){
+    var clientOnly = document.querySelectorAll("[data-client-only]");
+    var title  = document.getElementById("formTitle");
+    var lede   = document.getElementById("formLede");
+    var msLbl  = document.getElementById("msLabel");
+    var submit = document.getElementById("formSubmit");
+
+    var COPY = {
+      Client: {
+        title: "Request a walkthrough",
+        lede:  "We reply within one working day.",
+        ms:    "What process gives you the most trouble?",
+        btn:   "Request a walkthrough"
+      },
+      Investor: {
+        title: "Request the deck",
+        lede:  "We reply within one working day, with the deck and a time to walk through the live system.",
+        ms:    "Anything you want covered before we speak?",
+        btn:   "Request the deck"
+      }
+    };
+
+    function applyType(){
+      var investor = ety.value === "Investor";
+      var c = COPY[investor ? "Investor" : "Client"];
+
+      Array.prototype.forEach.call(clientOnly, function(f){
+        f.hidden = investor;
+        /* A hidden required field would block submission with a validation
+           message pointing at something nobody can see. */
+        Array.prototype.forEach.call(f.querySelectorAll("input,select,textarea"), function(el){
+          el.disabled = investor;
+        });
+      });
+
+      if(title)  title.textContent = c.title;
+      if(lede)   lede.textContent = c.lede;
+      if(msLbl)  msLbl.textContent = c.ms;
+      if(submit) submit.textContent = c.btn;
+    }
+
+    /* ?enquiry=investor, used by every investor link on the site, so somebody
+       arriving from the investors page does not have to find the field. */
+    var q = (new URLSearchParams(location.search).get("enquiry") || "").toLowerCase();
+    if(q === "investor" || q === "investors") ety.value = "Investor";
+
+    ety.addEventListener("change", applyType);
+    applyType();
   }
 
   var copyBtn = document.querySelector(".share-b.copy");

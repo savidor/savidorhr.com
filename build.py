@@ -33,9 +33,13 @@ OUT = HERE / "site"
 # ── Edit these when the domain and contact details are settled ────────────
 DOMAIN = "https://savidorhr.com"
 COMPANY = "SavidorHR"
-EMAIL = "hello@savidorhr.com"
-EMAIL_INV = "invest@savidorhr.com"
-PHONE = "+234 000 000 0000"
+# No public email address or phone number, on purpose. Every enquiry, from a
+# prospective customer or an investor, comes through the form on the contact
+# page, which reaches one inbox and arrives already sorted by enquiry type.
+# Publishing an address here only invites scraping and splits the same
+# conversation across two places. When a public address is wanted later, put it
+# back here and the footer and structured data pick it up again.
+CONTACT_PAGE = "contact.html"
 
 # ── Search ───────────────────────────────────────────────────────────────
 # Where the company is, in the terms a search engine understands. The city
@@ -357,7 +361,7 @@ def footer(preview):
         a("insights", "News and insights", "insights.html"),
         a("investors", "Investors", "investors.html"),
         a("contact", "Contact", "contact.html"),
-        f'<li><a href="mailto:{EMAIL}">Support</a></li>',
+        a("contact", "Support", CONTACT_PAGE),
     ])
     return f"""
 <footer class="ftr">
@@ -376,9 +380,9 @@ def footer(preview):
       </ul></div>
       <div><h5>Company</h5><ul>{comp}</ul></div>
       <div><h5>Get in touch</h5><ul>
-        <li><a href="mailto:{EMAIL}">{EMAIL}</a></li>
-        <li><a href="mailto:{EMAIL_INV}">{EMAIL_INV}</a></li>
-        <li><a href="tel:{PHONE.replace(' ', '')}">{PHONE}</a></li>
+        <li><a {'href="#" data-page="contact"' if preview else 'href="contact.html"'}>Book a walkthrough</a></li>
+        <li><a {'href="#" data-page="contact"' if preview else 'href="contact.html?enquiry=investor"'}>Investor enquiries</a></li>
+        <li><a {'href="#" data-page="insights"' if preview else 'href="insights.html"'}>News and insights</a></li>
       </ul></div>
     </div>
     <div class="ftr-btm">
@@ -999,6 +1003,66 @@ SCRIPT = """
     paint();
   }
 
+  /* ── Enquiry type ───────────────────────────────────────────────────
+     One form serves companies and investors, so it asks which it is and
+     then stops asking an investor for a headcount and a list of modules,
+     neither of which means anything to them.
+
+     This is an enhancement, not the mechanism: with JavaScript off the
+     select still submits its value and the sales fields are simply all
+     visible, which is harmless. The notification email reads the same
+     field either way. */
+  var ety = document.getElementById("ety");
+  if(ety){
+    var clientOnly = document.querySelectorAll("[data-client-only]");
+    var title  = document.getElementById("formTitle");
+    var lede   = document.getElementById("formLede");
+    var msLbl  = document.getElementById("msLabel");
+    var submit = document.getElementById("formSubmit");
+
+    var COPY = {
+      Client: {
+        title: "Request a walkthrough",
+        lede:  "We reply within one working day.",
+        ms:    "What process gives you the most trouble?",
+        btn:   "Request a walkthrough"
+      },
+      Investor: {
+        title: "Request the deck",
+        lede:  "We reply within one working day, with the deck and a time to walk through the live system.",
+        ms:    "Anything you want covered before we speak?",
+        btn:   "Request the deck"
+      }
+    };
+
+    function applyType(){
+      var investor = ety.value === "Investor";
+      var c = COPY[investor ? "Investor" : "Client"];
+
+      Array.prototype.forEach.call(clientOnly, function(f){
+        f.hidden = investor;
+        /* A hidden required field would block submission with a validation
+           message pointing at something nobody can see. */
+        Array.prototype.forEach.call(f.querySelectorAll("input,select,textarea"), function(el){
+          el.disabled = investor;
+        });
+      });
+
+      if(title)  title.textContent = c.title;
+      if(lede)   lede.textContent = c.lede;
+      if(msLbl)  msLbl.textContent = c.ms;
+      if(submit) submit.textContent = c.btn;
+    }
+
+    /* ?enquiry=investor, used by every investor link on the site, so somebody
+       arriving from the investors page does not have to find the field. */
+    var q = (new URLSearchParams(location.search).get("enquiry") || "").toLowerCase();
+    if(q === "investor" || q === "investors") ety.value = "Investor";
+
+    ety.addEventListener("change", applyType);
+    applyType();
+  }
+
   var copyBtn = document.querySelector(".share-b.copy");
   if(copyBtn){
     copyBtn.addEventListener("click", function(){
@@ -1452,7 +1516,16 @@ def _org():
         "name": COMPANY,
         "url": f"{DOMAIN}/",
         "logo": {"@type": "ImageObject", "url": f"{DOMAIN}/og.jpg"},
-        "email": EMAIL,
+        # No email or telephone published. contactPoint carries a url instead,
+        # which schema.org allows and which keeps the signal without putting an
+        # address on every page for scrapers to collect.
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "sales",
+            "url": f"{DOMAIN}/{CONTACT_PAGE}",
+            "availableLanguage": "English",
+            "areaServed": "NG",
+        },
         "address": {
             "@type": "PostalAddress",
             "addressLocality": CITY,

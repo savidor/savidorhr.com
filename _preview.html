@@ -3186,7 +3186,7 @@ html,body{max-width:100%;}
       in use rather than planned.
     </p>
     <div class="btn-row">
-      <a class="btn btn-p btn-lg" href="mailto:invest@savidorhr.com">Request the deck</a>
+      <a class="btn btn-p btn-lg" href="contact.html?enquiry=investor" data-page="contact">Request the deck</a>
       <a class="btn btn-s btn-lg" href="product.html" data-page="product">See the product</a>
     </div>
     <!-- The traction figures lead the page rather than sitting under it. How
@@ -3195,7 +3195,7 @@ html,body{max-width:100%;}
       <div class="hstat"><b>&#8358;2bn+</b><span>Value routed to date</span></div>
       <div class="hstat"><b>45</b><span>Staff on the platform</span></div>
       <div class="hstat"><b>1</b><span>Company live in production</span></div>
-      <div class="hstat"><b>&#8358;50m</b><span>Currently raising</span></div>
+      <div class="hstat"><b>&#8358;120m</b><span>Currently raising</span></div>
     </div>
   </div>
 </section>
@@ -3397,8 +3397,8 @@ html,body{max-width:100%;}
         <p>The deck, the metrics with their definitions, and a guided walkthrough of
           the live system rather than a recording.</p>
         <div class="btn-row">
-          <a class="btn btn-w btn-lg" href="mailto:invest@savidorhr.com">invest@savidorhr.com</a>
-          <a class="btn btn-o btn-lg" href="contact.html" data-page="contact">Arrange a call</a>
+          <a class="btn btn-w btn-lg" href="contact.html?enquiry=investor" data-page="contact">Request the deck</a>
+          <a class="btn btn-o btn-lg" href="contact.html?enquiry=investor" data-page="contact">Arrange a call</a>
         </div>
       </div>
     </div>
@@ -3439,19 +3439,18 @@ html,body{max-width:100%;}
         <div style="margin-top:36px;padding-top:28px;border-top:1px solid var(--line);">
           <div class="cards c2" style="gap:16px;">
             <div>
-              <h4 class="h4" style="margin-bottom:6px;">Sales and demos</h4>
-              <p class="small"><a href="mailto:hello@savidorhr.com"
-                style="color:var(--brand);font-weight:600;">hello@savidorhr.com</a></p>
+              <h4 class="h4" style="margin-bottom:6px;">Buying</h4>
+              <p class="small">Use the form. Tell us your headcount and which arms
+                are in scope and we will quote properly.</p>
             </div>
             <div>
-              <h4 class="h4" style="margin-bottom:6px;">Investors</h4>
-              <p class="small"><a href="mailto:invest@savidorhr.com"
-                style="color:var(--brand);font-weight:600;">invest@savidorhr.com</a></p>
+              <h4 class="h4" style="margin-bottom:6px;">Investing</h4>
+              <p class="small">Same form. Choose <b>Investor</b> at the top and we
+                will send the deck and book a walkthrough of the live system.</p>
             </div>
             <div>
-              <h4 class="h4" style="margin-bottom:6px;">Phone</h4>
-              <p class="small"><a href="tel:+2340000000000"
-                style="color:var(--brand);font-weight:600;">+234 000 000 0000</a></p>
+              <h4 class="h4" style="margin-bottom:6px;">Reply time</h4>
+              <p class="small">One working day, from a person, not an autoresponder.</p>
             </div>
             <div>
               <h4 class="h4" style="margin-bottom:6px;">Office</h4>
@@ -3466,8 +3465,8 @@ html,body{max-width:100%;}
       </div>
 
       <div class="form-card reveal">
-        <h3 class="h3" style="margin-bottom:6px;">Request a walkthrough</h3>
-        <p class="small" style="margin-bottom:26px;">We reply within one working day.</p>
+        <h3 class="h3" style="margin-bottom:6px;" id="formTitle">Request a walkthrough</h3>
+        <p class="small" style="margin-bottom:26px;" id="formLede">We reply within one working day.</p>
 
         <!-- Netlify Forms. Submissions are stored in the Netlify dashboard and
              netlify/functions/submission-created.mjs emails a formatted copy. -->
@@ -3477,6 +3476,18 @@ html,body{max-width:100%;}
           <p class="hp" aria-hidden="true">
             <label>Leave this field empty <input name="bot-field" tabindex="-1" autocomplete="off"></label>
           </p>
+          <!-- Whether this is a customer or an investor. It is the first field
+               because it changes what the rest of the form asks for, it puts the
+               answer at the top of the notification email, and the investor
+               links across the site arrive at ?enquiry=investor with it already
+               chosen. With JavaScript off it is simply a select that submits. -->
+          <div class="fld">
+            <label for="ety">I am</label>
+            <select id="ety" name="enquiry_type">
+              <option value="Client" selected>A company looking at SavidorHR</option>
+              <option value="Investor">An investor looking at the round</option>
+            </select>
+          </div>
           <div class="f2">
             <div class="fld">
               <label for="fn">First name</label>
@@ -3495,7 +3506,7 @@ html,body{max-width:100%;}
             <label for="co">Company</label>
             <input id="co" name="company" type="text" required placeholder="Your company name">
           </div>
-          <div class="fld">
+          <div class="fld" data-client-only>
             <label for="hc">Headcount</label>
             <select id="hc" name="headcount">
               <option>Under 50</option>
@@ -3507,7 +3518,7 @@ html,body{max-width:100%;}
           <!-- Its own row: this field holds chips that wrap, so half a row
                put one chip on each line and made the control grow taller the
                more somebody chose. -->
-          <div class="fld ms-fld">
+          <div class="fld ms-fld" data-client-only>
             <label for="iv" id="ivLabel">Interested in</label>
             <!-- The real control. A custom picker is built over it by the
                  page script; with JavaScript off this is what submits, and
@@ -3557,11 +3568,11 @@ html,body{max-width:100%;}
             <p class="fld-hint">Pick a whole family or single modules, as many as you like.</p>
           </div>
           <div class="fld">
-            <label for="ms">What process gives you the most trouble?</label>
+            <label for="ms" id="msLabel">What process gives you the most trouble?</label>
             <textarea id="ms" name="message"
               placeholder="For example: approvals over five million naira need three signatures and they sit for a week."></textarea>
           </div>
-          <button class="btn btn-p btn-lg" type="submit" style="width:100%;">Request a walkthrough</button>
+          <button class="btn btn-p btn-lg" type="submit" style="width:100%;" id="formSubmit">Request a walkthrough</button>
           <p class="tiny" style="margin-top:14px;text-align:center;">
             We will only use these details to contact you about SavidorHR.
           </p>
@@ -3589,8 +3600,8 @@ html,body{max-width:100%;}
       <div class="card reveal">
         <div class="ic"><svg><use href="#i-chart"/></svg></div>
         <h3 class="h4">Investing rather than buying?</h3>
-        <p>Write to the investor address for the deck and a live walkthrough of the
-          production system.</p>
+        <p>Choose Investor at the top of the form. We will send the deck and walk
+          you through the production system.</p>
       </div>
     </div>
   </div>
@@ -3666,11 +3677,11 @@ html,body{max-width:100%;}
         <li><a href="#" data-page="crm">Revenue and CRM</a></li>
         <li><a href="#" data-page="modules">Governance</a></li>
       </ul></div>
-      <div><h5>Company</h5><ul><li><a href="#" data-page="insights">News and insights</a></li><li><a href="#" data-page="investors">Investors</a></li><li><a href="#" data-page="contact">Contact</a></li><li><a href="mailto:hello@savidorhr.com">Support</a></li></ul></div>
+      <div><h5>Company</h5><ul><li><a href="#" data-page="insights">News and insights</a></li><li><a href="#" data-page="investors">Investors</a></li><li><a href="#" data-page="contact">Contact</a></li><li><a href="#" data-page="contact">Support</a></li></ul></div>
       <div><h5>Get in touch</h5><ul>
-        <li><a href="mailto:hello@savidorhr.com">hello@savidorhr.com</a></li>
-        <li><a href="mailto:invest@savidorhr.com">invest@savidorhr.com</a></li>
-        <li><a href="tel:+2340000000000">+234 000 000 0000</a></li>
+        <li><a href="#" data-page="contact">Book a walkthrough</a></li>
+        <li><a href="#" data-page="contact">Investor enquiries</a></li>
+        <li><a href="#" data-page="insights">News and insights</a></li>
       </ul></div>
     </div>
     <div class="ftr-btm">
@@ -4287,6 +4298,66 @@ html,body{max-width:100%;}
     });
 
     paint();
+  }
+
+  /* ── Enquiry type ───────────────────────────────────────────────────
+     One form serves companies and investors, so it asks which it is and
+     then stops asking an investor for a headcount and a list of modules,
+     neither of which means anything to them.
+
+     This is an enhancement, not the mechanism: with JavaScript off the
+     select still submits its value and the sales fields are simply all
+     visible, which is harmless. The notification email reads the same
+     field either way. */
+  var ety = document.getElementById("ety");
+  if(ety){
+    var clientOnly = document.querySelectorAll("[data-client-only]");
+    var title  = document.getElementById("formTitle");
+    var lede   = document.getElementById("formLede");
+    var msLbl  = document.getElementById("msLabel");
+    var submit = document.getElementById("formSubmit");
+
+    var COPY = {
+      Client: {
+        title: "Request a walkthrough",
+        lede:  "We reply within one working day.",
+        ms:    "What process gives you the most trouble?",
+        btn:   "Request a walkthrough"
+      },
+      Investor: {
+        title: "Request the deck",
+        lede:  "We reply within one working day, with the deck and a time to walk through the live system.",
+        ms:    "Anything you want covered before we speak?",
+        btn:   "Request the deck"
+      }
+    };
+
+    function applyType(){
+      var investor = ety.value === "Investor";
+      var c = COPY[investor ? "Investor" : "Client"];
+
+      Array.prototype.forEach.call(clientOnly, function(f){
+        f.hidden = investor;
+        /* A hidden required field would block submission with a validation
+           message pointing at something nobody can see. */
+        Array.prototype.forEach.call(f.querySelectorAll("input,select,textarea"), function(el){
+          el.disabled = investor;
+        });
+      });
+
+      if(title)  title.textContent = c.title;
+      if(lede)   lede.textContent = c.lede;
+      if(msLbl)  msLbl.textContent = c.ms;
+      if(submit) submit.textContent = c.btn;
+    }
+
+    /* ?enquiry=investor, used by every investor link on the site, so somebody
+       arriving from the investors page does not have to find the field. */
+    var q = (new URLSearchParams(location.search).get("enquiry") || "").toLowerCase();
+    if(q === "investor" || q === "investors") ety.value = "Investor";
+
+    ety.addEventListener("change", applyType);
+    applyType();
   }
 
   var copyBtn = document.querySelector(".share-b.copy");

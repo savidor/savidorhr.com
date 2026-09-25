@@ -111,7 +111,9 @@ Two things are placeholders.
 
 | What | Where | Note |
 |---|---|---|
-| Domain and contact details | `build.py`, the constants block at the top | Change `DOMAIN`, `EMAIL`, `EMAIL_INV`, `PHONE`, then rebuild. They propagate to every page, the footer, the sitemap and the social tags. |
+| Domain | `build.py`, the constants block at the top | Change `DOMAIN`, then rebuild. It propagates to every page, the sitemap, the canonicals and the social tags. |
+| Contact details | Nowhere, on purpose | No email address or phone number is published. Every enquiry, sales or investor, comes through the contact form, which asks which it is and routes to one inbox. To publish an address again, add the constant back in `build.py` and reference it from the footer and `_org()`. |
+| Where enquiries land | `NOTIFY_TO` in the Netlify dashboard | Overrides the default in `netlify/functions/submission-created.mjs`. `NOTIFY_FROM` is separate and must stay an address verified with the sending provider, which a Gmail address cannot be. |
 | Logo | `build.py`, `LOGO_MARK` | The three node triangle. It paints its own colours rather than inheriting `currentColor`, so it keeps a white tile on dark grounds. Also replace `src/favicon.svg` if you change it. |
 
 **There is no testimonial section.** It was removed rather than shipped with an
