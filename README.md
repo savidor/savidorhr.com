@@ -137,24 +137,25 @@ the input a clear `name` and that is the heading in the email.
 `src/pages/`, linked from the footer on every page and included in the sitemap.
 They are indexable on purpose: a policy nobody can find is not a policy.
 
-**One placeholder is deliberately loud.** The registered company name, number and
-address are not on the site, so terms carries a `.note-fill` panel saying so. It
-is styled to be visible rather than to blend in, because a placeholder that reads
-like body copy is how a site ships with "to be completed" in it. Fill it in and
-delete the panel.
+**Neither page names the company, and that is a gap, not a style choice.** Both
+carried a visible placeholder panel for the registered name, number and address.
+Both have been removed rather than filled, because a live public page reading "to
+be completed" is worse than the section's absence. Note what it costs: a privacy
+notice normally names the data controller and terms normally names who provides
+the site, and neither does. The contact route survives under "Your rights", so
+somebody can still exercise them. Put the identification back as soon as the
+entity details exist. The `.note-fill` style is kept in the stylesheet for the
+next placeholder that needs to be impossible to miss.
 
-Privacy had the same panel under a "Who is responsible" heading and it has been
-removed rather than filled. Note what that costs: a privacy notice normally names
-the data controller, and this one now does not. The contact route survives under
-"Your rights", so somebody can still exercise them, but the identification should
-go back once the entity details exist.
-
-Privacy is laid out in two columns (`.legal-2`), because eight short sections in a
-60ch ribbon left most of a wide screen empty. They are two independent stacks of
-whole sections rather than CSS `columns`, which flows one continuous text down and
-back up and would let a heading end one column with its paragraph starting the
-next. Sections stay in document order, so the left column is read before the
-right. They stack to one column below 860px.
+Privacy and terms are both laid out in two columns (`.legal-2`), because a handful
+of short sections in a 60ch ribbon left most of a wide screen empty. They are two
+independent stacks of whole sections rather than CSS `columns`, which flows one
+continuous text down and back up and would let a heading end one column with its
+paragraph starting the next. Sections stay in document order, so the left column
+is read before the right, and the split is chosen by measuring the rendered
+columns: aim to leave the ragged edge at the foot of the right one, where it
+reads as the end of the document rather than as a fault. They stack to one column
+below 860px.
 
 **Analytics does not load until somebody accepts it.** Google's own snippet
 requests `gtag.js` immediately, which sets cookies and reports the visit before
