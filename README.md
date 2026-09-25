@@ -46,8 +46,9 @@ publishes automatically.
    | Variable | Value |
    |---|---|
    | `BREVO_API_KEY` | a Brevo v3 API key (free plan: 300 emails/day) |
-   | `NOTIFY_TO` | where enquiries should land |
-   | `NOTIFY_FROM` | the sender address verified in Brevo |
+   | `NOTIFY_TO` | where enquiries should land. Must be a real mailbox: check with `notify-check` below |
+   | `NOTIFY_FROM` | the sender address **verified with the provider**. Not interchangeable with `NOTIFY_TO`, and a Gmail address cannot normally be one |
+   | `CHECK_TOKEN` | optional, enables test sending from `notify-check` |
 
    To use Resend instead, set `RESEND_API_KEY` rather than `BREVO_API_KEY`.
    The function picks up whichever is present.
@@ -76,6 +77,46 @@ What happens on submit:
 If sending ever fails the function still returns 200 and logs the reason, because
 the submission is already safely stored. Nothing is lost; check *Forms* in the
 dashboard and the function log.
+
+### Making sure the emails actually arrive
+
+The form cannot tell you it is broken. Netlify stores every submission whatever
+happens and the function swallows send failures on purpose, so a missing API key,
+an unverified sender and a destination that cannot receive mail all look the same
+from outside: the visitor gets the thank you page and nothing turns up.
+
+Open this to find out which it is:
+
+    https://savidorhr.com/.netlify/functions/notify-check
+
+It reports whether a provider key is set, and it resolves the real DNS for both
+addresses: whether the destination publishes an MX record at all, and whether the
+sending domain publishes SPF and DMARC. Addresses come back masked, so the URL is
+safe to open. It ends with a plain verdict and, when something is wrong, what to
+change. Set `CHECK_TOKEN` and open `?send=<that token>` to have it send one real
+test email to `NOTIFY_TO`. The destination is always `NOTIFY_TO` and never
+anything from the query string, so it cannot be aimed at a stranger.
+
+**Two things bite in practice.**
+
+*The sender has to be verified, and the domain currently is not.* `savidorhr.com`
+publishes no SPF, DKIM or DMARC record, so Brevo and Resend will both refuse to
+send as `hello@savidorhr.com`. Either verify the domain with the provider and add
+the records it gives you (DNS is on Netlify now, so this is a few entries in
+*Domain management*), or set `NOTIFY_FROM` to an address you have already
+verified with that provider.
+
+*The destination has to be able to receive.* `savidorhr.com` publishes no MX
+record either, so `hello@savidorhr.com` is not a mailbox and never was. Anything
+sent there was undeliverable. `NOTIFY_TO` must be an inbox that really exists.
+
+**The quickest way to working notifications, with no DNS work and no API key at
+all:** use Netlify's own form notification. *Forms → walkthrough → Settings and
+usage → Form notifications → Add notification → Email notification*, and put the
+destination address in. That sends from Netlify's own infrastructure, so none of
+the sender verification above applies. It is a plainer email than the function
+builds, but it works immediately and it is a good safety net to leave switched on
+even after the function is sending properly.
 
 ### The module picker
 
