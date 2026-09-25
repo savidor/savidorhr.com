@@ -165,6 +165,14 @@ To turn analytics off entirely, empty `GA_ID`. The loader, the banner and the
 cookie table stop being relevant, though the cookies page text would then need a
 trim.
 
+The cookies page is deliberately short. A first draft explained how the fonts
+and photographs are served, which share links exist and where form submissions
+go, none of which a cookies policy needs and all of which is site internals
+published for no reason. What is left is the part that has a purpose: what is
+set, why, for how long, and how to change your answer. The `_ga` table stays
+because naming the cookies is the core of the disclosure. Vendor names still
+appear in the privacy policy, where saying who processes your data is the point.
+
 ## Before it goes live
 
 Two things are placeholders.
