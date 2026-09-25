@@ -434,12 +434,11 @@ def footer(preview):
     <div>
       <p class="cc-t" id="ccTitle">Can we count this visit?</p>
       <p class="cc-b" id="ccBody">We use Google Analytics to see which pages get
-        read. It does not load at all unless you say yes, and it never tells us
-        who you are. <a href="cookies.html">What it sets</a>.</p>
+        read. It only loads if you say yes. <a href="cookies.html">What it sets</a>.</p>
     </div>
     <div class="cc-btns">
       <button type="button" class="btn btn-s" id="ccNo">No thanks</button>
-      <button type="button" class="btn btn-p" id="ccYes">Allow</button>
+      <button type="button" class="btn btn-s" id="ccYes">Allow</button>
     </div>
   </div>
 </div>"""

@@ -155,9 +155,13 @@ try/catch, and a failure is treated as *no consent*, never as consent: a browser
 that cannot tell us the answer has not given one. With JavaScript off there is no
 banner and no analytics, which is the right outcome for both.
 
-The banner is anchored to the bottom and never covers the page. It has no close
-button that quietly counts as yes, both buttons are the same size on a phone, and
-refusing sticks rather than being asked again on the next page. The cookies page
+The banner is a small card in the bottom corner. It is not a bar across the foot
+of the page, which reads as more serious than one question about one thing
+deserves, and not a centred modal, which covers the content it is asking about.
+It has no close button that quietly counts as yes, and the two buttons are the
+same size and the same style, so refusing is exactly as easy and as obvious as
+accepting rather than being the quiet outlined one beside a coloured Allow.
+Refusing sticks rather than being asked again on the next page. The cookies page
 carries a control to change the answer later, which is what makes the consent
 withdrawable rather than a one-way gate.
 
