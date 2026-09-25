@@ -1796,3 +1796,13 @@ html,body{max-width:100%;}
 }
 .skip:focus{top:0;}
 main:focus{outline:none;}
+.legal-2{
+  display:grid; grid-template-columns:1fr 1fr; gap:22px 56px;
+  align-items:start; max-width:none;
+}
+.legal-2 > div > h2:first-child{margin-top:0;}
+@media (max-width:860px){
+  .legal-2{grid-template-columns:1fr; gap:0;}
+  
+  .legal-2 > div + div > h2:first-child{margin-top:38px;}
+}

@@ -2509,3 +2509,23 @@ html,body{max-width:100%;}
 }
 .skip:focus{top:0;}
 main:focus{outline:none;}
+
+/* Two columns on the privacy page, so a short policy does not sit in a narrow
+   ribbon down the left of a wide screen. Each column lands around 70 characters,
+   which is still a comfortable measure to read: the point is to use the width,
+   not to set legal text in newspaper columns.
+
+   Real columns rather than CSS `columns`, because `columns` flows one continuous
+   text down and back up again, so a heading can end one column with its
+   paragraph starting the next. These are two independent stacks of whole
+   sections, which cannot split a section across the fold. */
+.legal-2{
+  display:grid; grid-template-columns:1fr 1fr; gap:22px 56px;
+  align-items:start; max-width:none;
+}
+.legal-2 > div > h2:first-child{margin-top:0;}
+@media (max-width:860px){
+  .legal-2{grid-template-columns:1fr; gap:0;}
+  /* Stacked, the second column's first heading needs its spacing back. */
+  .legal-2 > div + div > h2:first-child{margin-top:38px;}
+}
