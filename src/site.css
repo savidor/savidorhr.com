@@ -2468,30 +2468,64 @@ html,body{max-width:100%;}
 .ftr-legal a{color:inherit; opacity:.82;}
 .ftr-legal a:hover{opacity:1;}
 
-/* ── Consent banner ───────────────────────────────────────────────────────
-   A small card in the corner, not a bar across the foot of the page. One
-   question about one thing does not need the full width of the screen, and a
-   full width bar reads as more serious than it is. It also never covers the
-   content it is asking about, which a centred modal does. */
+/* ── Consent notice ───────────────────────────────────────────────────────
+   A card in the bottom corner, wide enough for three buttons on one line but
+   nowhere near the full width of the page, and never a modal over the content
+   it is asking about. */
 .cc{
   position:fixed; left:20px; z-index:80;
   bottom:calc(20px + env(safe-area-inset-bottom));
-  width:min(370px, calc(100vw - 40px));
+  width:min(452px, calc(100vw - 40px));
   background:#fff; border:1px solid var(--line); border-radius:14px;
   box-shadow:0 18px 44px rgba(16,24,40,.18);
-  padding:18px 20px;
+  padding:20px 22px;
 }
-.cc-in{display:block;}
-.cc-t{font-weight:700; color:var(--ink); margin:0 0 6px; font-size:.98rem;}
-.cc-b{margin:0 0 14px; color:var(--ink-2); font-size:.88rem; line-height:1.6;}
+.cc-t{font-weight:700; color:var(--ink); margin:0 0 6px; font-size:1rem;}
+.cc-b{margin:0 0 16px; color:var(--ink-2); font-size:.88rem; line-height:1.6;}
 .cc-b a{color:var(--brand); font-weight:600;}
-/* Equal width and equal weight. Refusing has to be exactly as easy and as
-   obvious as accepting, so neither button is the big coloured one. */
-.cc-btns{display:flex; gap:10px;}
-.cc-btns .btn{flex:1; justify-content:center; padding:9px 14px; font-size:.9rem;}
+
+/* Three across on one line. They are equal width so Reject All is never the
+   narrow one squeezed beside a wide Accept All. */
+.cc-btns{display:flex; gap:8px;}
+/* display:flex on a class beats the browser's own [hidden]{display:none}, so
+   the hidden attribute silently stops working and both button rows show at
+   once. Anything given a display value has to opt back out explicitly. */
+.cc-btns[hidden]{display:none;}
+.cc-btns .btn{flex:1; justify-content:center; padding:9px 10px; font-size:.86rem;}
+
+/* ── The Customise panel ── */
+.cc-prefs{
+  border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  margin:0 0 16px; padding:4px 0;
+  max-height:min(46vh, 300px); overflow-y:auto;
+}
+.cc-row{
+  display:flex; align-items:flex-start; gap:14px;
+  padding:13px 2px; border-bottom:1px solid var(--line);
+}
+.cc-row:last-child{border-bottom:0;}
+.cc-rx{display:block; flex:1; cursor:pointer;}
+label.cc-rx{cursor:pointer;}
+.cc-rt{display:block; font-weight:650; color:var(--ink); font-size:.85rem;}
+.cc-rb{display:block; color:var(--ink-3); font-size:.78rem; line-height:1.55; margin-top:3px;}
+.cc-always{
+  flex-shrink:0; font-size:.72rem; font-weight:650; color:var(--ink-3);
+  background:var(--bg-2); border:1px solid var(--line);
+  border-radius:999px; padding:4px 10px; margin-top:2px;
+}
+/* A real checkbox, scaled up and tinted, rather than a div pretending to be
+   one. It is focusable, it toggles with the keyboard and a screen reader
+   already knows what it is. */
+.cc-sw{
+  flex-shrink:0; width:20px; height:20px; margin-top:2px;
+  accent-color:var(--brand); cursor:pointer;
+}
 
 @media (max-width:640px){
   .cc{left:12px; right:12px; width:auto; bottom:calc(12px + env(safe-area-inset-bottom));}
+  /* Three buttons will not sit side by side at this width without becoming
+     unreadable, so they stack, with the same order top to bottom. */
+  .cc-btns{flex-direction:column;}
 }
 
 /* The one place the site says its mockups are invented. Quieter than body

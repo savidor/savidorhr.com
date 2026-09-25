@@ -46,7 +46,7 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preload" href="fonts/inter-latin.2cb1fa0bd3.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/jakarta-latin.a604a9e9ad.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.27ea6fe2cb.css">
+<link rel="stylesheet" href="site.77e6a71b0e.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://savidorhr.com/#organization","name":"SavidorHR","url":"https://savidorhr.com/","logo":{"@type":"ImageObject","url":"https://savidorhr.com/og.jpg"},"contactPoint":{"@type":"ContactPoint","contactType":"sales","url":"https://savidorhr.com/contact.html","availableLanguage":"English","areaServed":"NG"},"address":{"@type":"PostalAddress","addressLocality":"Lagos","addressRegion":"Lagos State","addressCountry":"NG"},"areaServed":{"@type":"Country","name":"Nigeria"}},{"@type":"SoftwareApplication","@id":"https://savidorhr.com/#software","name":"SavidorHR","applicationCategory":"BusinessApplication","applicationSubCategory":"Human Resources Management Software","operatingSystem":"Web browser, iOS, Android","url":"https://savidorhr.com/","publisher":{"@id":"https://savidorhr.com/#organization"},"areaServed":{"@type":"Country","name":"Nigeria"},"featureList":["Leave management and entitlement accrual","Requisition and procurement approval workflow","Staff appraisals and performance reviews","Attendance and employee lifecycle records","Recruitment, job portal and offer letters","CRM, guided calling and sales commissions","Audit trail on every view and decision"],"offers":{"@type":"Offer","priceCurrency":"NGN","availability":"https://schema.org/InStock","url":"https://savidorhr.com/pricing.html","description":"Priced on headcount and the modules switched on. Written quote within one working day."}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://savidorhr.com/"},{"@type":"ListItem","position":2,"name":"Modules","item":"https://savidorhr.com/modules.html"}]}]}</script>
 </head>
 <body>
@@ -274,14 +274,43 @@
 <div class="cc" id="cc" hidden role="dialog" aria-modal="false"
      aria-labelledby="ccTitle" aria-describedby="ccBody">
   <div class="cc-in">
-    <div>
-      <p class="cc-t" id="ccTitle">Analytics cookies</p>
-      <p class="cc-b" id="ccBody">We use Google Analytics to see which pages get
-        read. It only loads if you say yes. <a href="cookies.html">What it sets</a>.</p>
+    <p class="cc-t" id="ccTitle">We value your privacy</p>
+    <p class="cc-b" id="ccBody">We use cookies to understand how this site is
+      used. Analytics only loads if you allow it, and we do not run advertising
+      or tracking of any kind. <a href="cookies.html">Cookie Policy</a>.</p>
+
+    <!-- Customise opens this. It lists what there actually is, which is two
+         things: the record of your own choice, and analytics. A preferences
+         panel that invents categories to look thorough is worse than no panel,
+         so this one says plainly that one of the two cannot be switched off
+         and why. -->
+    <div class="cc-prefs" id="ccPrefs" hidden>
+      <div class="cc-row">
+        <div class="cc-rx">
+          <span class="cc-rt">Strictly necessary</span>
+          <span class="cc-rb">Remembers the answer you give here, in this
+            browser. It never leaves your device and there is nothing else.</span>
+        </div>
+        <span class="cc-always">Always on</span>
+      </div>
+      <div class="cc-row">
+        <label class="cc-rx" for="ccAnalytics">
+          <span class="cc-rt">Analytics</span>
+          <span class="cc-rb">Google Analytics, so we can see which pages get
+            read. Off unless you turn it on.</span>
+        </label>
+        <input type="checkbox" id="ccAnalytics" class="cc-sw">
+      </div>
     </div>
-    <div class="cc-btns">
-      <button type="button" class="btn btn-s" id="ccNo">No thanks</button>
-      <button type="button" class="btn btn-s" id="ccYes">Allow</button>
+
+    <div class="cc-btns" id="ccMain">
+      <button type="button" class="btn btn-s" id="ccCustom">Customise</button>
+      <button type="button" class="btn btn-s" id="ccNo">Reject All</button>
+      <button type="button" class="btn btn-p" id="ccYes">Accept All</button>
+    </div>
+    <div class="cc-btns" id="ccSaveRow" hidden>
+      <button type="button" class="btn btn-s" id="ccBack">Back</button>
+      <button type="button" class="btn btn-p" id="ccSave">Save my choices</button>
     </div>
   </div>
 </div>
@@ -971,31 +1000,47 @@
 
   var cc = document.getElementById("cc");
   if (cc) {
-    var yes = document.getElementById("ccYes");
-    var no  = document.getElementById("ccNo");
-
-    function ccHide(){
-      cc.hidden = true;
-      /* The banner may hold focus when it closes, and focus must not be lost
-         to the document body or a keyboard user is dropped back at the top. */
-      var back = document.getElementById("ccReturn");
-      if (back && back.focus) back.focus();
-    }
+    /* Every lookup is guarded. The notice is one block of markup today, but a
+       missing id should not take down the whole page script with it. */
+    var yes    = document.getElementById("ccYes");
+    var no     = document.getElementById("ccNo");
+    var custom = document.getElementById("ccCustom");
+    var save   = document.getElementById("ccSave");
+    var back   = document.getElementById("ccBack");
+    var prefs  = document.getElementById("ccPrefs");
+    var mainRow = document.getElementById("ccMain");
+    var saveRow = document.getElementById("ccSaveRow");
+    var analyticsBox = document.getElementById("ccAnalytics");
 
     function decide(v){
       ccWrite(v);
       if (v === "granted" && window.__svAnalytics) window.__svAnalytics();
-      ccHide();
+      cc.hidden = true;
     }
 
-    if (!ccRead()) {
-      cc.hidden = false;
-      /* Announced but not focus trapped: this is not a modal, and stealing
-         focus from somebody who came to read the page is hostile. */
+    /* Customise swaps the three buttons for the panel and its own pair, rather
+       than opening a second layer on top. One notice, two states. */
+    function showPrefs(on){
+      if (prefs)   prefs.hidden   = !on;
+      if (mainRow) mainRow.hidden = on;
+      if (saveRow) saveRow.hidden = !on;
+      if (on && analyticsBox) analyticsBox.focus();
     }
 
-    yes.addEventListener("click", function(){ decide("granted"); });
-    no.addEventListener("click",  function(){ decide("denied"); });
+    if (!ccRead()) cc.hidden = false;
+
+    if (yes) yes.addEventListener("click", function(){ decide("granted"); });
+    if (no)  no.addEventListener("click",  function(){ decide("denied"); });
+    if (custom) custom.addEventListener("click", function(){
+      /* Opens reflecting the current state, which is off until chosen. */
+      if (analyticsBox) analyticsBox.checked = ccRead() === "granted";
+      showPrefs(true);
+    });
+    if (back) back.addEventListener("click", function(){ showPrefs(false); });
+    if (save) save.addEventListener("click", function(){
+      decide(analyticsBox && analyticsBox.checked ? "granted" : "denied");
+      showPrefs(false);
+    });
   }
 
   /* The cookies page carries a control to change the answer later, which is

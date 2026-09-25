@@ -168,13 +168,23 @@ try/catch, and a failure is treated as *no consent*, never as consent: a browser
 that cannot tell us the answer has not given one. With JavaScript off there is no
 banner and no analytics, which is the right outcome for both.
 
-The banner is a small card in the bottom corner. It is not a bar across the foot
-of the page, which reads as more serious than one question about one thing
-deserves, and not a centred modal, which covers the content it is asking about.
-It has no close button that quietly counts as yes, and the two buttons are the
-same size and the same style, so refusing is exactly as easy and as obvious as
-accepting rather than being the quiet outlined one beside a coloured Allow.
-Refusing sticks rather than being asked again on the next page. The cookies page
+The notice is a card in the bottom corner, not a bar across the foot of the page
+and not a modal over the content it is asking about. Three buttons: Customise,
+Reject All, Accept All, equal width so Reject is never the narrow one. It has no
+close button that quietly counts as yes, and refusing sticks rather than being
+asked again on the next page.
+
+**Customise opens a real panel, because a button that only looks like a choice is
+worse than no button.** It lists the two things that exist: the record of your own
+answer, marked always on with the reason, and analytics with a real checkbox.
+Save applies whatever the checkbox says, so leaving it alone and saving is a
+refusal. Back returns without deciding anything.
+
+Watch out for one trap if you restyle it. `.cc-btns` sets `display:flex`, and a
+class selector beats the browser's own `[hidden]{display:none}`, so the `hidden`
+attribute silently stopped working and both button rows rendered at once. Hence
+`.cc-btns[hidden]{display:none}`. Anything here given a display value has to opt
+back out of `hidden` explicitly. The cookies page
 carries a control to change the answer later, which is what makes the consent
 withdrawable rather than a one-way gate.
 
