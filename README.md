@@ -131,6 +131,40 @@ Adding a field to the form needs no code change anywhere: Netlify lists whatever
 the form submits, in markup order, using the field's own name as the label. Give
 the input a clear `name` and that is the heading in the email.
 
+## Legal pages and consent
+
+`privacy.html`, `cookies.html` and `terms.html` are ordinary pages in
+`src/pages/`, linked from the footer on every page and included in the sitemap.
+They are indexable on purpose: a policy nobody can find is not a policy.
+
+**Two placeholders are deliberately loud.** The registered company name, number
+and address are not on the site, so privacy and terms each carry a `.note-fill`
+panel saying so. It is styled to be visible rather than to blend in, because a
+placeholder that reads like body copy is how a site ships with "to be completed"
+in it. Fill those in and delete the panels.
+
+**Analytics does not load until somebody accepts it.** Google's own snippet
+requests `gtag.js` immediately, which sets cookies and reports the visit before
+anyone has been asked, so it is not used as given. `GA_TAG` in `build.py` writes
+a small inline script that stores the answer in the visitor's own browser and
+injects Google's script only on yes. Decline, or ignore the banner, and the
+request to googletagmanager.com is never made at all.
+
+The choice lives in `localStorage` under `sv-consent`. Reading it is wrapped in
+try/catch, and a failure is treated as *no consent*, never as consent: a browser
+that cannot tell us the answer has not given one. With JavaScript off there is no
+banner and no analytics, which is the right outcome for both.
+
+The banner is anchored to the bottom and never covers the page. It has no close
+button that quietly counts as yes, both buttons are the same size on a phone, and
+refusing sticks rather than being asked again on the next page. The cookies page
+carries a control to change the answer later, which is what makes the consent
+withdrawable rather than a one-way gate.
+
+To turn analytics off entirely, empty `GA_ID`. The loader, the banner and the
+cookie table stop being relevant, though the cookies page text would then need a
+trim.
+
 ## Before it goes live
 
 Two things are placeholders.

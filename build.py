@@ -174,14 +174,37 @@ JS_FLAG = '<script>document.documentElement.className+=" js";</script>'
 # and photographs included, is served from our own origin. That was a
 # deliberate performance position and this is a deliberate exception to it:
 # the tag is async, so it does not block the first paint.
-GA_TAG = f'''<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){{dataLayer.push(arguments);}}
-  gtag('js', new Date());
-
-  gtag('config', '{GA_ID}');
+# Analytics is loaded ONLY after the visitor accepts it.
+#
+# Google's own snippet requests gtag.js immediately, which sets cookies and
+# tells Google about the visit before anyone has been asked. That is the thing
+# consent law is actually about, so the snippet is not used as given. This
+# stores the choice in the visitor's own browser and injects Google's script
+# only once the answer is yes. Decline, or ignore the banner, and the request
+# to googletagmanager.com is never made at all.
+#
+# Written inline in <head> so the decision is made before the page renders and
+# an accepting visitor is measured from their first page, not their second.
+GA_TAG = f'''<script>
+(function(){{
+  var KEY = "sv-consent", ID = "{GA_ID}";
+  function load(){{
+    if (window.__svGA) return; window.__svGA = 1;
+    var s = document.createElement("script");
+    s.async = true;
+    s.src = "https://www.googletagmanager.com/gtag/js?id=" + ID;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){{ dataLayer.push(arguments); }}
+    window.gtag = gtag;
+    gtag("js", new Date());
+    gtag("config", ID, {{ anonymize_ip: true }});
+  }}
+  window.__svAnalytics = load;
+  /* Storage throws in some privacy modes; a site that cannot read the choice
+     must behave as though consent was never given, never as though it was. */
+  try {{ if (localStorage.getItem(KEY) === "granted") load(); }} catch (e) {{}}
+}})();
 </script>''' if GA_ID else ""
 
 
@@ -370,6 +393,12 @@ def footer(preview):
       <div class="ftr-about">
         <a class="logo" href="{'#' if preview else 'index.html'}"><span class="logo-m">{LOGO_MARK}</span><span class="logo-t">Savidor<i>HR</i></span></a>
         <p>Workforce and approval infrastructure for African enterprise. Built in Lagos.</p>
+        <!-- Said once, in the footer, rather than stamped on twenty mockups.
+             The screens really are invented, and a reader should not have to
+             wonder whether a number on them is a customer's. -->
+        <p class="ftr-note">Screens shown throughout are illustrations. The
+          people, companies and figures in them are invented. The figures on the
+          investors page are real and the page states how each is counted.</p>
       </div>
       <div><h5>Product</h5><ul>{prod}</ul></div>
       <div><h5>Modules</h5><ul>
@@ -387,10 +416,33 @@ def footer(preview):
     </div>
     <div class="ftr-btm">
       <div>&copy; 2026 {COMPANY}. All rights reserved.</div>
+      <div class="ftr-legal">
+        <a {'href="#" data-page="privacy"' if preview else 'href="privacy.html"'}>Privacy</a>
+        <a {'href="#" data-page="cookies"' if preview else 'href="cookies.html"'}>Cookies</a>
+        <a {'href="#" data-page="terms"' if preview else 'href="terms.html"'}>Terms</a>
+      </div>
       <div>Lagos, Nigeria</div>
     </div>
   </div>
-</footer>"""
+</footer>
+<!-- Consent. Hidden in the markup and revealed by script only when no choice
+     has been stored, so a visitor with JavaScript off sees no banner and gets
+     no analytics either, which is the correct outcome for both. -->
+<div class="cc" id="cc" hidden role="dialog" aria-modal="false"
+     aria-labelledby="ccTitle" aria-describedby="ccBody">
+  <div class="cc-in">
+    <div>
+      <p class="cc-t" id="ccTitle">Can we count this visit?</p>
+      <p class="cc-b" id="ccBody">We use Google Analytics to see which pages get
+        read. It does not load at all unless you say yes, and it never tells us
+        who you are. <a href="cookies.html">What it sets</a>.</p>
+    </div>
+    <div class="cc-btns">
+      <button type="button" class="btn btn-s" id="ccNo">No thanks</button>
+      <button type="button" class="btn btn-p" id="ccYes">Allow</button>
+    </div>
+  </div>
+</div>"""
 
 
 SCRIPT = """
@@ -1061,6 +1113,77 @@ SCRIPT = """
 
     ety.addEventListener("change", applyType);
     applyType();
+  }
+
+  /* ── Consent ────────────────────────────────────────────────────────
+     The banner only appears when no choice has been stored. Accepting calls
+     the loader that GA_TAG left on window, so analytics starts on this page
+     rather than waiting for the next one. Declining stores the refusal so the
+     question is not asked again, and loads nothing.
+
+     Both answers are a real choice: the banner has no close button that
+     silently means yes, and it does not reappear on every page until you give
+     in. Refusing is one click and it sticks. */
+  var CC_KEY = "sv-consent";
+
+  function ccRead(){ try { return localStorage.getItem(CC_KEY); } catch(e){ return null; } }
+  function ccWrite(v){ try { localStorage.setItem(CC_KEY, v); } catch(e){} }
+
+  var cc = document.getElementById("cc");
+  if (cc) {
+    var yes = document.getElementById("ccYes");
+    var no  = document.getElementById("ccNo");
+
+    function ccHide(){
+      cc.hidden = true;
+      /* The banner may hold focus when it closes, and focus must not be lost
+         to the document body or a keyboard user is dropped back at the top. */
+      var back = document.getElementById("ccReturn");
+      if (back && back.focus) back.focus();
+    }
+
+    function decide(v){
+      ccWrite(v);
+      if (v === "granted" && window.__svAnalytics) window.__svAnalytics();
+      ccHide();
+    }
+
+    if (!ccRead()) {
+      cc.hidden = false;
+      /* Announced but not focus trapped: this is not a modal, and stealing
+         focus from somebody who came to read the page is hostile. */
+    }
+
+    yes.addEventListener("click", function(){ decide("granted"); });
+    no.addEventListener("click",  function(){ decide("denied"); });
+  }
+
+  /* The cookies page carries a control to change the answer later, which is
+     what makes consent withdrawable rather than a one time gate. */
+  var ccReset = document.getElementById("cookieReset");
+  if (ccReset) {
+    var state = document.getElementById("cookieState");
+    function paint(){
+      var v = ccRead();
+      if (state) {
+        state.textContent = v === "granted"
+          ? "Analytics is on in this browser."
+          : v === "denied"
+            ? "Analytics is off in this browser."
+            : "You have not been asked yet in this browser.";
+      }
+    }
+    paint();
+    ccReset.addEventListener("click", function(){
+      try { localStorage.removeItem(CC_KEY); } catch(e){}
+      paint();
+      if (cc) { cc.hidden = false; }
+      /* Already loaded scripts cannot be unloaded, so say so plainly rather
+         than implying the page is now clean. */
+      if (window.__svGA && state) {
+        state.textContent += " Analytics already loaded on this page; reload to clear it.";
+      }
+    });
   }
 
   var copyBtn = document.querySelector(".share-b.copy");
@@ -1967,9 +2090,12 @@ def document(meta, body, slug, ld=None):
 {ld if ld is not None else json_ld(slug, meta, body)}
 </head>
 <body>
+<!-- First thing focusable on the page: a keyboard user should not have to tab
+     through the whole nav and the mega menu on every page to reach the text. -->
+<a class="skip" href="#main">Skip to content</a>
 {sprite()}
 {header(slug, False)}
-<main>
+<main id="main" tabindex="-1">
 {body.strip()}
 </main>
 {footer(False)}
@@ -2232,7 +2358,7 @@ def main():
     (OUT / "og.jpg").write_bytes(og.read_bytes())
 
     order = ["index", "product", "modules", "crm", "pricing", "investors",
-             "contact", "thanks"]
+             "contact", "thanks", "privacy", "cookies", "terms"]
     frags = {}
     for slug in order:
         p = SRC / "pages" / f"{slug}.html"

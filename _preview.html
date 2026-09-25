@@ -1758,6 +1758,52 @@ html,body{max-width:100%;}
   .ms.open .ms-panel{animation:none;}
   .ms-caret{transition:none;}
 }
+.legal{margin-top:34px;}
+.legal h2{margin:38px 0 10px;}
+.legal h2:first-child{margin-top:0;}
+.legal p{margin:0 0 14px; color:var(--ink-2); line-height:1.75;}
+.legal ul.ticks{margin:8px 0 18px;}
+.legal a{color:var(--brand); font-weight:600;}
+.legal .t-scroll{margin:18px 0 20px;}
+.note-fill{
+  background:#FFF8EB; border:1px solid #E7C489; border-left:3px solid #C07C14;
+  border-radius:10px; padding:14px 16px; color:#7A4A06 !important;
+}
+.note-fill a{color:#7A4A06; text-decoration:underline;}
+.ftr-legal{display:flex; gap:18px; flex-wrap:wrap;}
+.ftr-legal a{color:inherit; opacity:.82;}
+.ftr-legal a:hover{opacity:1;}
+.cc{
+  position:fixed; left:0; right:0; bottom:0; z-index:80;
+  background:#fff; border-top:1px solid var(--line);
+  box-shadow:0 -10px 30px rgba(16,24,40,.10);
+  padding:16px 0 calc(16px + env(safe-area-inset-bottom));
+}
+.cc-in{
+  max-width:var(--wrap, 1160px); margin:0 auto; padding:0 24px;
+  display:flex; gap:22px; align-items:center; justify-content:space-between;
+  flex-wrap:wrap;
+}
+.cc-t{font-weight:700; color:var(--ink); margin:0 0 4px; font-size:1rem;}
+.cc-b{margin:0; color:var(--ink-2); font-size:.92rem; line-height:1.6; max-width:62ch;}
+.cc-b a{color:var(--brand); font-weight:600;}
+.cc-btns{display:flex; gap:10px; flex-shrink:0;}
+.cc-btns .btn{padding:10px 20px;}
+@media (max-width:640px){
+  .cc-in{gap:14px; padding:0 16px;}
+  .cc-btns{width:100%;}
+  
+  .cc-btns .btn{flex:1; justify-content:center;}
+}
+.ftr-note{font-size:.8rem; line-height:1.6; color:var(--ink-3); margin-top:12px; max-width:44ch;}
+.skip{
+  position:absolute; left:8px; top:-64px; z-index:200;
+  background:var(--brand); color:#fff; padding:12px 18px;
+  border-radius:0 0 10px 10px; font-weight:600; text-decoration:none;
+  transition:top .15s ease;
+}
+.skip:focus{top:0;}
+main:focus{outline:none;}
 
 </style>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol><symbol id="i-check-c" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="16 10 11 15 8 12"/></symbol><symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></symbol><symbol id="i-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></symbol><symbol id="i-wallet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></symbol><symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></symbol><symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol><symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol><symbol id="i-award" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5 17 22l-5-3-5 3 1.5-8.5"/></symbol><symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol><symbol id="i-case" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol><symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22 6 12 13 2 6"/></symbol><symbol id="i-mega" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1z"/><path d="M16 8a5 5 0 0 1 0 8"/><path d="M19 5a9 9 0 0 1 0 14"/></symbol><symbol id="i-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol><symbol id="i-laptop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="2"/><line x1="2" y1="20" x2="22" y2="20"/></symbol><symbol id="i-car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3v-5l2-5h14l2 5v5h-2"/><circle cx="7.5" cy="17" r="2"/><circle cx="16.5" cy="17" r="2"/><line x1="9.5" y1="17" x2="14.5" y2="17"/></symbol><symbol id="i-screen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></symbol><symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></symbol><symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol><symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol><symbol id="i-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/></symbol><symbol id="i-db" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.7-4 3-9 3s-9-1.3-9-3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/></symbol><symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol><symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></symbol><symbol id="i-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol><symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol><symbol id="i-route" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"/><circle cx="18" cy="5" r="3"/><path d="M9 19h4a4 4 0 0 0 4-4V9"/></symbol><symbol id="i-build" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 1 5 5L8.5 22.5 2 24l1.5-6.5z"/><line x1="12" y1="9" x2="18" y2="15"/></symbol></svg>
@@ -3580,7 +3626,8 @@ html,body{max-width:100%;}
           </div>
           <button class="btn btn-p btn-lg" type="submit" style="width:100%;" id="formSubmit">Request a walkthrough</button>
           <p class="tiny" style="margin-top:14px;text-align:center;">
-            We will only use these details to contact you about SavidorHR.
+            We will only use these details to reply to you, and nothing else.
+            No list, no sharing. See the <a href="privacy.html">privacy policy</a>.
           </p>
         </form>
       </div>
@@ -3609,6 +3656,243 @@ html,body{max-width:100%;}
         <p>Choose Investor at the top of the form. We will send the deck and walk
           you through the production system.</p>
       </div>
+    </div>
+  </div>
+</section></main></div>
+<div class="page" id="page-privacy" hidden><main><section class="sec">
+  <div class="wrap">
+    <span class="eyebrow">Legal</span>
+    <h1 class="h1">Privacy policy</h1>
+    <p class="lead measure-w">
+      This covers this website only: what it collects when you visit it or send
+      the contact form. It does not cover the SavidorHR application itself,
+      which your employer operates and whose data your employer controls.
+    </p>
+    <p class="small" style="color:var(--ink-3);">Last updated 25 September 2026.</p>
+
+    <div class="legal measure-w">
+      <h2 class="h3">Who is responsible</h2>
+      <p class="note-fill">
+        <b>To be completed.</b> The registered company name, registration number
+        and registered address belong here, together with the contact point for
+        privacy questions. Until that is filled in, use the
+        <a href="contact.html">contact form</a> and say the message is about
+        privacy.
+      </p>
+
+      <h2 class="h3">What is collected</h2>
+      <p>Two things, and nothing else.</p>
+      <ul class="ticks">
+        <li><svg><use href="#i-check-c"/></svg><span><b>What you type into the contact form.</b>
+          Whether you are a company or an investor, your name, work email,
+          company, headcount, which modules interest you, and your message.
+          Nothing in that form is required except the fields marked so, and
+          there is no field on it that is not used to answer you.</span></li>
+        <li><svg><use href="#i-check-c"/></svg><span><b>Anonymous usage statistics, but only if you agree.</b>
+          Google Analytics, which records things like which pages were opened
+          and roughly which country the visit came from. It does not run at all
+          until you accept it, and if you decline, the script is never loaded.
+          See the <a href="cookies.html">cookies policy</a>.</span></li>
+      </ul>
+
+      <h2 class="h3">Why, and on what basis</h2>
+      <p>
+        Form details are used to reply to you and for no other purpose. They are
+        not sold, rented, shared with advertisers, or added to a marketing list.
+        The lawful basis is your own request: you filled in a form asking to be
+        contacted. Analytics runs on consent, which is why it asks first.
+      </p>
+
+      <h2 class="h3">Who else sees it</h2>
+      <p>
+        Form submissions are stored by Netlify, which hosts this site, and are
+        emailed on to us by Netlify. Analytics data, if you accepted it, goes to
+        Google. Both are processors acting on our instructions. Nobody else
+        receives any of it.
+      </p>
+
+      <h2 class="h3">How long it is kept</h2>
+      <p>
+        Enquiries are kept while the conversation is live and for up to twenty
+        four months afterwards, so that we can pick up a thread you started.
+        After that they are deleted. Analytics is kept for the period Google
+        Analytics is configured to retain it.
+      </p>
+
+      <h2 class="h3">Your rights</h2>
+      <p>
+        You can ask what is held about you, ask for it to be corrected, or ask
+        for it to be deleted, and you can withdraw consent to analytics at any
+        time by declining it again. Ask through the
+        <a href="contact.html">contact form</a> and it will be actioned. Under
+        the Nigeria Data Protection Act 2023 you may also complain to the
+        Nigeria Data Protection Commission. If you are in the UK or the EU, the
+        UK GDPR and GDPR give you the same rights and a route to your own
+        supervisory authority.
+      </p>
+
+      <h2 class="h3">Transfers</h2>
+      <p>
+        Netlify and Google are based outside Nigeria, so enquiries and analytics
+        are processed abroad. Both publish the safeguards they use for
+        international transfers.
+      </p>
+
+      <h2 class="h3">Children</h2>
+      <p>
+        This site sells workplace software to organisations. It is not directed
+        at children and does not knowingly collect anything from them.
+      </p>
+
+      <h2 class="h3">Changes</h2>
+      <p>
+        If this policy changes the date at the top changes with it. There is no
+        archive of previous versions, so the page you are reading is the policy
+        that applies.
+      </p>
+    </div>
+  </div>
+</section></main></div>
+<div class="page" id="page-cookies" hidden><main><section class="sec">
+  <div class="wrap">
+    <span class="eyebrow">Legal</span>
+    <h1 class="h1">Cookies</h1>
+    <p class="lead measure-w">
+      This site sets no cookies at all unless you accept analytics. There is no
+      advertising, no retargeting, no social pixel and nothing that follows you
+      to another site.
+    </p>
+    <p class="small" style="color:var(--ink-3);">Last updated 25 September 2026.</p>
+
+    <div class="legal measure-w">
+      <h2 class="h3">If you decline, or ignore the banner</h2>
+      <p>
+        Nothing is set and nothing is loaded. The Google Analytics script is not
+        merely blocked from storing anything, it is never requested, so no third
+        party learns that you visited. The only thing kept is a single record of
+        your choice, stored in your own browser so you are not asked again. That
+        never leaves your device.
+      </p>
+
+      <h2 class="h3">If you accept</h2>
+      <p>Google Analytics is loaded and sets these:</p>
+      <div class="t-scroll">
+        <table class="t">
+          <thead><tr><th>Cookie</th><th>Set by</th><th>Purpose</th><th>Expires</th></tr></thead>
+          <tbody>
+            <tr><td class="n">_ga</td><td>Google Analytics</td>
+              <td>Tells one browser apart from another so visits can be counted</td><td>2 years</td></tr>
+            <tr><td class="n">_ga_&lt;id&gt;</td><td>Google Analytics</td>
+              <td>Keeps the state of the current visit</td><td>2 years</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        These tell us which pages are read and roughly which country a visit came
+        from. They do not tell us who you are, and we do not try to find out.
+      </p>
+
+      <h2 class="h3">Changing your mind</h2>
+      <p>
+        Use the button below. It clears the choice stored in this browser and
+        asks again on the next page you open. Declining also stops the analytics
+        script loading from that point.
+      </p>
+      <p>
+        <button type="button" class="btn btn-s" id="cookieReset">Change my cookie choice</button>
+        <span id="cookieState" class="small" style="margin-left:12px;color:var(--ink-3);"></span>
+      </p>
+
+      <h2 class="h3">Cookies we do not set</h2>
+      <p>
+        No advertising cookies, no cross-site tracking, no embedded video or
+        social widget that sets its own. The fonts and every photograph are
+        served from this site rather than from Google Fonts or a stock library,
+        so they set nothing either. The links to LinkedIn, X and WhatsApp are
+        ordinary links: nothing is requested from those companies unless you
+        click one.
+      </p>
+
+      <h2 class="h3">The contact form</h2>
+      <p>
+        The form does not need a cookie and does not set one. What it does with
+        what you type is covered in the <a href="privacy.html">privacy policy</a>.
+      </p>
+    </div>
+  </div>
+</section></main></div>
+<div class="page" id="page-terms" hidden><main><section class="sec">
+  <div class="wrap">
+    <span class="eyebrow">Legal</span>
+    <h1 class="h1">Terms of use</h1>
+    <p class="lead measure-w">
+      These cover this website. Use of the SavidorHR application itself is
+      governed by the separate agreement signed with the organisation that
+      licenses it, which takes precedence over anything here.
+    </p>
+    <p class="small" style="color:var(--ink-3);">Last updated 25 September 2026.</p>
+
+    <div class="legal measure-w">
+      <h2 class="h3">Who provides this site</h2>
+      <p class="note-fill">
+        <b>To be completed.</b> The registered company name, registration number
+        and registered address belong here.
+      </p>
+
+      <h2 class="h3">What this site is</h2>
+      <p>
+        Marketing material. Nothing on it is a contract, a quotation or an offer
+        capable of acceptance. A price becomes binding only in a written quote
+        issued to you.
+      </p>
+
+      <h2 class="h3">The figures on this site</h2>
+      <p>
+        Screens showing requisitions, leave requests, deals, names and amounts
+        are <b>illustrations built for this website</b>. The people and companies
+        in them are invented and the numbers are made up to show how a screen
+        reads. They are not customer data and are not claims about results.
+      </p>
+      <p>
+        The figures on the <a href="investors.html">investors page</a> are
+        different: those are real, and the page states how each one is counted.
+        They are evidenced on request.
+      </p>
+
+      <h2 class="h3">Availability</h2>
+      <p>
+        The site is provided as it is. We do not promise it will always be
+        reachable or free of errors, and we may change or remove any part of it
+        without notice.
+      </p>
+
+      <h2 class="h3">Our material</h2>
+      <p>
+        The text, layout, logo and interface designs on this site belong to us.
+        Read the site, quote a sentence with a link back, send a page to a
+        colleague. Do not republish it as your own or use the name or logo in a
+        way that suggests we endorse you. The photographs are licensed from
+        Pexels under the Pexels licence and are not ours to sublicense.
+      </p>
+
+      <h2 class="h3">Links out</h2>
+      <p>
+        Where this site links elsewhere, that site is not ours and we are not
+        responsible for it.
+      </p>
+
+      <h2 class="h3">Liability</h2>
+      <p>
+        We are not liable for loss arising from relying on this website alone.
+        Nothing here limits liability for anything that cannot lawfully be
+        limited, including fraud.
+      </p>
+
+      <h2 class="h3">Governing law</h2>
+      <p>
+        These terms are governed by the laws of the Federal Republic of Nigeria
+        and the Nigerian courts have jurisdiction.
+      </p>
     </div>
   </div>
 </section></main></div>
@@ -3675,6 +3959,12 @@ html,body{max-width:100%;}
       <div class="ftr-about">
         <a class="logo" href="#"><span class="logo-m"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.6 6.9 16.4H17.1Z" fill="none" stroke="#5B6B8C" stroke-width="1.5" stroke-linejoin="round" opacity=".92"/><circle cx="12" cy="6.6" r="2.75" fill="#F5B33F"/><circle cx="6.9" cy="16.4" r="2.75" fill="#16A55F"/><circle cx="17.1" cy="16.4" r="2.75" fill="#2E63D5"/></svg></span><span class="logo-t">Savidor<i>HR</i></span></a>
         <p>Workforce and approval infrastructure for African enterprise. Built in Lagos.</p>
+        <!-- Said once, in the footer, rather than stamped on twenty mockups.
+             The screens really are invented, and a reader should not have to
+             wonder whether a number on them is a customer's. -->
+        <p class="ftr-note">Screens shown throughout are illustrations. The
+          people, companies and figures in them are invented. The figures on the
+          investors page are real and the page states how each is counted.</p>
       </div>
       <div><h5>Product</h5><ul><li><a href="#" data-page="product">How it works</a></li><li><a href="#" data-page="modules">All 28 modules</a></li><li><a href="#" data-page="crm">CRM and calling</a></li><li><a href="#" data-page="pricing">Pricing</a></li></ul></div>
       <div><h5>Modules</h5><ul>
@@ -3692,10 +3982,33 @@ html,body{max-width:100%;}
     </div>
     <div class="ftr-btm">
       <div>&copy; 2026 SavidorHR. All rights reserved.</div>
+      <div class="ftr-legal">
+        <a href="#" data-page="privacy">Privacy</a>
+        <a href="#" data-page="cookies">Cookies</a>
+        <a href="#" data-page="terms">Terms</a>
+      </div>
       <div>Lagos, Nigeria</div>
     </div>
   </div>
 </footer>
+<!-- Consent. Hidden in the markup and revealed by script only when no choice
+     has been stored, so a visitor with JavaScript off sees no banner and gets
+     no analytics either, which is the correct outcome for both. -->
+<div class="cc" id="cc" hidden role="dialog" aria-modal="false"
+     aria-labelledby="ccTitle" aria-describedby="ccBody">
+  <div class="cc-in">
+    <div>
+      <p class="cc-t" id="ccTitle">Can we count this visit?</p>
+      <p class="cc-b" id="ccBody">We use Google Analytics to see which pages get
+        read. It does not load at all unless you say yes, and it never tells us
+        who you are. <a href="cookies.html">What it sets</a>.</p>
+    </div>
+    <div class="cc-btns">
+      <button type="button" class="btn btn-s" id="ccNo">No thanks</button>
+      <button type="button" class="btn btn-p" id="ccYes">Allow</button>
+    </div>
+  </div>
+</div>
 
 <script>
 (function(){
@@ -4364,6 +4677,77 @@ html,body{max-width:100%;}
 
     ety.addEventListener("change", applyType);
     applyType();
+  }
+
+  /* ── Consent ────────────────────────────────────────────────────────
+     The banner only appears when no choice has been stored. Accepting calls
+     the loader that GA_TAG left on window, so analytics starts on this page
+     rather than waiting for the next one. Declining stores the refusal so the
+     question is not asked again, and loads nothing.
+
+     Both answers are a real choice: the banner has no close button that
+     silently means yes, and it does not reappear on every page until you give
+     in. Refusing is one click and it sticks. */
+  var CC_KEY = "sv-consent";
+
+  function ccRead(){ try { return localStorage.getItem(CC_KEY); } catch(e){ return null; } }
+  function ccWrite(v){ try { localStorage.setItem(CC_KEY, v); } catch(e){} }
+
+  var cc = document.getElementById("cc");
+  if (cc) {
+    var yes = document.getElementById("ccYes");
+    var no  = document.getElementById("ccNo");
+
+    function ccHide(){
+      cc.hidden = true;
+      /* The banner may hold focus when it closes, and focus must not be lost
+         to the document body or a keyboard user is dropped back at the top. */
+      var back = document.getElementById("ccReturn");
+      if (back && back.focus) back.focus();
+    }
+
+    function decide(v){
+      ccWrite(v);
+      if (v === "granted" && window.__svAnalytics) window.__svAnalytics();
+      ccHide();
+    }
+
+    if (!ccRead()) {
+      cc.hidden = false;
+      /* Announced but not focus trapped: this is not a modal, and stealing
+         focus from somebody who came to read the page is hostile. */
+    }
+
+    yes.addEventListener("click", function(){ decide("granted"); });
+    no.addEventListener("click",  function(){ decide("denied"); });
+  }
+
+  /* The cookies page carries a control to change the answer later, which is
+     what makes consent withdrawable rather than a one time gate. */
+  var ccReset = document.getElementById("cookieReset");
+  if (ccReset) {
+    var state = document.getElementById("cookieState");
+    function paint(){
+      var v = ccRead();
+      if (state) {
+        state.textContent = v === "granted"
+          ? "Analytics is on in this browser."
+          : v === "denied"
+            ? "Analytics is off in this browser."
+            : "You have not been asked yet in this browser.";
+      }
+    }
+    paint();
+    ccReset.addEventListener("click", function(){
+      try { localStorage.removeItem(CC_KEY); } catch(e){}
+      paint();
+      if (cc) { cc.hidden = false; }
+      /* Already loaded scripts cannot be unloaded, so say so plainly rather
+         than implying the page is now clean. */
+      if (window.__svGA && state) {
+        state.textContent += " Analytics already loaded on this page; reload to clear it.";
+      }
+    });
   }
 
   var copyBtn = document.querySelector(".share-b.copy");
