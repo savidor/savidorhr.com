@@ -3468,8 +3468,14 @@ html,body{max-width:100%;}
         <h3 class="h3" style="margin-bottom:6px;" id="formTitle">Request a walkthrough</h3>
         <p class="small" style="margin-bottom:26px;" id="formLede">We reply within one working day.</p>
 
-        <!-- Netlify Forms. Submissions are stored in the Netlify dashboard and
-             netlify/functions/submission-created.mjs emails a formatted copy. -->
+        <!-- Netlify Forms. Submissions are stored in the Netlify dashboard,
+             which also emails them on: Forms, then Form notifications. There is
+             no sending code in this repo on purpose, so there is no API key to
+             leak and nothing that can break from sender verification.
+
+             enquiry_type is deliberately the FIRST field in this form, because
+             Netlify lists fields in markup order and that puts "Investor" or
+             "Client" at the top of the notification email. -->
         <form name="walkthrough" method="POST" action="/thanks.html"
               data-netlify="true" data-netlify-honeypot="bot-field">
           <input type="hidden" name="form-name" value="walkthrough">

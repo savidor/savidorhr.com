@@ -1,10 +1,12 @@
 # SavidorHR marketing site — Netlify configuration.
 # The repo root is the marketing site itself, so no base directory is needed.
 
+# No functions. Form submissions are emailed by Netlify's own form
+# notification, configured in the dashboard under Forms, so there is no
+# sending code, no provider account and no credentials to keep anywhere.
 [build]
   command   = "python3 build.py"
   publish   = "site"
-  functions = "netlify/functions"
 
 # Netlify already serves /crm for crm.html, so clean URLs need no rules.
 # Anything genuinely missing gets the home page rather than a bare 404.

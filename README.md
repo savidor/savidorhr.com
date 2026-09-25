@@ -36,24 +36,18 @@ publishes automatically.
 |---|---|
 | Build command | `python3 build.py` |
 | Publish directory | `site` |
-| Functions directory | `netlify/functions` |
+| Functions directory | none. There is no server-side code at all |
 
 **One-time setup in the Netlify dashboard**
 
 1. *Add new site → Import an existing project* → GitHub → this repo.
-2. *Site configuration → Environment variables*, add:
-
-   | Variable | Value |
-   |---|---|
-   | `BREVO_API_KEY` | a Brevo v3 API key (free plan: 300 emails/day) |
-   | `NOTIFY_TO` | where enquiries should land. Must be a real mailbox: check with `notify-check` below |
-   | `NOTIFY_FROM` | the sender address **verified with the provider**. Not interchangeable with `NOTIFY_TO`, and a Gmail address cannot normally be one |
-   | `CHECK_TOKEN` | optional, enables test sending from `notify-check` |
-
-   To use Resend instead, set `RESEND_API_KEY` rather than `BREVO_API_KEY`.
-   The function picks up whichever is present.
+2. Switch on the form notification, which is what emails you each enquiry:
+   *Forms → walkthrough → Settings and usage → Form notifications →
+   Add notification → Email notification*, and enter the address to be told at.
+   There are no environment variables and no API keys to set.
 3. *Domain management* → add `savidorhr.com` and follow the DNS steps.
-   HTTPS is issued automatically.
+   HTTPS is issued automatically. (Already done: the domain runs on Netlify DNS
+   and serves the site.)
 
 To work on it locally: edit files in `src/`, run `python3 build.py`, open
 `site/index.html`. Commit and push to publish.
@@ -68,55 +62,46 @@ What happens on submit:
 
 1. Netlify stores the submission (*Forms* in the dashboard) and screens it for
    spam using the `bot-field` honeypot.
-2. That fires `netlify/functions/submission-created.mjs`, which sends a branded
-   HTML email with `Reply-To` set to the enquirer, so replying goes straight
-   back to them.
+2. Netlify emails it on, using its own form notification. That is configured in
+   the dashboard, not here.
 3. The visitor lands on `thanks.html`, which is built but kept out of the nav,
    the sitemap and the preview, and carries `noindex`.
 
-If sending ever fails the function still returns 200 and logs the reason, because
-the submission is already safely stored. Nothing is lost; check *Forms* in the
-dashboard and the function log.
+### Why there is no sending code
 
-### Making sure the emails actually arrive
+There was a function that built a branded HTML email through Brevo or Resend. It
+is gone, and deliberately so. Anything that sends as `@savidorhr.com` has to be a
+verified sender, and the domain publishes no SPF, DKIM or DMARC record, so both
+providers refuse it. Meanwhile the domain publishes **no MX record**, which means
+`hello@savidorhr.com` was never a mailbox and everything addressed to it was
+undeliverable. On top of that the function swallowed send failures on purpose, so
+that none of it was visible: the visitor always got the thank you page.
 
-The form cannot tell you it is broken. Netlify stores every submission whatever
-happens and the function swallows send failures on purpose, so a missing API key,
-an unverified sender and a destination that cannot receive mail all look the same
-from outside: the visitor gets the thank you page and nothing turns up.
+Netlify's own notification sidesteps every part of that. It sends from Netlify's
+infrastructure, so there is no sender to verify, no DNS to maintain, no provider
+account, and no credential in this repository or its environment. The trade is a
+plainer email than the old template produced, and `Reply-To` is not reliably the
+enquirer, so reply to the address in the body rather than hitting reply.
 
-Open this to find out which it is:
+If a branded email is ever wanted again, the old function is in git history
+(`git log -- netlify/functions/`) and the practical route would be SMTP through a
+mailbox on a domain that can actually send, rather than another API provider.
 
-    https://savidorhr.com/.netlify/functions/notify-check
+### Reading a submission
 
-It reports whether a provider key is set, and it resolves the real DNS for both
-addresses: whether the destination publishes an MX record at all, and whether the
-sending domain publishes SPF and DMARC. Addresses come back masked, so the URL is
-safe to open. It ends with a plain verdict and, when something is wrong, what to
-change. Set `CHECK_TOKEN` and open `?send=<that token>` to have it send one real
-test email to `NOTIFY_TO`. The destination is always `NOTIFY_TO` and never
-anything from the query string, so it cannot be aimed at a stranger.
+`enquiry_type` is the **first** field in the form on purpose. Netlify lists fields
+in the order they appear in the markup, so every notification opens with whether
+this is a **Client** or an **Investor**. The subject line is Netlify's generic one
+and cannot be made conditional, so that first line is what tells them apart.
 
-**Two things bite in practice.**
+An investor submission arrives without Headcount or Interested in. Those fields
+are disabled for investors by the page script, which is intended: they mean
+nothing to somebody looking at the round.
 
-*The sender has to be verified, and the domain currently is not.* `savidorhr.com`
-publishes no SPF, DKIM or DMARC record, so Brevo and Resend will both refuse to
-send as `hello@savidorhr.com`. Either verify the domain with the provider and add
-the records it gives you (DNS is on Netlify now, so this is a few entries in
-*Domain management*), or set `NOTIFY_FROM` to an address you have already
-verified with that provider.
-
-*The destination has to be able to receive.* `savidorhr.com` publishes no MX
-record either, so `hello@savidorhr.com` is not a mailbox and never was. Anything
-sent there was undeliverable. `NOTIFY_TO` must be an inbox that really exists.
-
-**The quickest way to working notifications, with no DNS work and no API key at
-all:** use Netlify's own form notification. *Forms → walkthrough → Settings and
-usage → Form notifications → Add notification → Email notification*, and put the
-destination address in. That sends from Netlify's own infrastructure, so none of
-the sender verification above applies. It is a plainer email than the function
-builds, but it works immediately and it is a good safety net to leave switched on
-even after the function is sending properly.
+If an enquiry ever seems to have gone missing, check *Forms* in the dashboard
+first. Netlify stores every submission whether or not the notification email
+succeeded, so nothing is ever actually lost. Also check spam on the receiving
+account, since the first mail from a new sender often lands there.
 
 ### The module picker
 
@@ -138,13 +123,13 @@ against the nearest transformed ancestor, the form card carries the scroll
 reveal transform, and without the move the sheet rendered about 1800px down
 the page instead of at the bottom of the screen.
 
-A multiple select submits repeated values for one name, so
-`netlify/functions/submission-created.mjs` joins arrays with ", " rather than
-letting `String()` produce "A,B,C".
+A multiple select submits repeated values for one name. Netlify shows each of
+them, so several chosen modules read as a list in the notification rather than
+being run together.
 
-Adding a field to the form needs no code change: unknown fields appear in the
-email automatically. Add a label to `LABELS` in the function to give it a nicer
-heading.
+Adding a field to the form needs no code change anywhere: Netlify lists whatever
+the form submits, in markup order, using the field's own name as the label. Give
+the input a clear `name` and that is the heading in the email.
 
 ## Before it goes live
 
@@ -154,7 +139,7 @@ Two things are placeholders.
 |---|---|---|
 | Domain | `build.py`, the constants block at the top | Change `DOMAIN`, then rebuild. It propagates to every page, the sitemap, the canonicals and the social tags. |
 | Contact details | Nowhere, on purpose | No email address or phone number is published. Every enquiry, sales or investor, comes through the contact form, which asks which it is and routes to one inbox. To publish an address again, add the constant back in `build.py` and reference it from the footer and `_org()`. |
-| Where enquiries land | `NOTIFY_TO` in the Netlify dashboard | Overrides the default in `netlify/functions/submission-created.mjs`. `NOTIFY_FROM` is separate and must stay an address verified with the sending provider, which a Gmail address cannot be. |
+| Where enquiries land | Netlify dashboard, *Forms → walkthrough → Form notifications* | Not in this repo. Add or change the email notification there. |
 | Logo | `build.py`, `LOGO_MARK` | The three node triangle. It paints its own colours rather than inheriting `currentColor`, so it keeps a white tile on dark grounds. Also replace `src/favicon.svg` if you change it. |
 
 **There is no testimonial section.** It was removed rather than shipped with an
